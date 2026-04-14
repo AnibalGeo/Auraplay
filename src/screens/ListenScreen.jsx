@@ -17,7 +17,7 @@ function speak(text, rate = 0.82) {
 function ListenScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
   const rounds = getContent(patient.levelId).listenRounds ?? []
-  const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
   const [answered, setAnswered] = useState(false)
@@ -71,6 +71,7 @@ function ListenScreen({ onFinish, onBack }) {
 
   function handleAnswer(option) {
     if (answered) return
+    speak(option.l)
     setAnswered(true)
     setSelected(option.e)
     const correct = option.e === current.correct

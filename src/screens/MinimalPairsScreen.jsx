@@ -17,7 +17,7 @@ function speak(text, rate = 0.82, pitch = 1.05) {
 function MinimalPairsScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
   const pairs = getContent(patient.levelId).minimalPairs ?? []
-  const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
   const [score, setScore] = useState(0)
@@ -43,6 +43,7 @@ function MinimalPairsScreen({ onFinish, onBack }) {
 
   function handleAnswer(word) {
     if (answered) return
+    speak(word)
     setAnswered(true)
     setSelected(word)
     const correct = word === current.word

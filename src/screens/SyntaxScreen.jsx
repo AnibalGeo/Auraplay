@@ -13,14 +13,17 @@ function SyntaxScreen({ onFinish, onBack }) {
   const [feedback, setFeedback] = useState(null)
   const [answered, setAnswered] = useState(false)
   const [score, setScore] = useState(0)
+  const [shuffledOptions, setShuffledOptions] = useState([])
 
   const current = exercises[idx]
-  const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   useEffect(() => {
+    if (!current) return
     setSelected(null)
     setFeedback(null)
     setAnswered(false)
+    setShuffledOptions([...current.options].sort(() => Math.random() - 0.5))
   }, [idx])
 
   function handleAnswer(option) {
@@ -54,8 +57,11 @@ function SyntaxScreen({ onFinish, onBack }) {
 
   // Max 2 opciones si reducedOptions, garantizando que la correcta esté incluida
   const visibleOptions = estimulusSettings.reducedOptions
-    ? [current?.correct, current?.options?.find(o => o !== current?.correct)].filter(Boolean)
-    : current?.options ?? []
+    ? (() => {
+        const wrong = shuffledOptions.find(o => o !== current?.correct)
+        return shuffledOptions.filter(o => o === current?.correct || o === wrong)
+      })()
+    : shuffledOptions
 
   const parts = current?.sentence.split('___') ?? ['', '']
 

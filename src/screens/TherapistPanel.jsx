@@ -886,6 +886,38 @@ function ConfigPanel({ onViewProgress }) {
             ))}
           </div>
 
+          {/* Velocidad */}
+          <div>
+            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>
+              ⏱ VELOCIDAD
+            </p>
+            {[
+              { key: 'wordSpeakDelay',       label: 'Tiempo para pronunciar palabra', defaultVal: 1000 },
+              { key: 'slideTransitionDelay', label: 'Tiempo entre ejercicios',         defaultVal: 1500 },
+            ].map(({ key, label, defaultVal }) => {
+              const val = estimulusSettings[key] ?? defaultVal
+              return (
+                <div key={key} style={{ marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#3a3a3a' }}>{label}</span>
+                    <span style={{ fontSize: '13px', fontWeight: '700', color: '#4aab8a' }}>{(val / 1000).toFixed(1)}s</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={300} max={2100} step={300}
+                    value={val}
+                    onChange={e => updateStimulusSettings(key, Number(e.target.value))}
+                    style={{ width: '100%', accentColor: '#4aab8a' }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2px' }}>
+                    <span style={{ fontSize: '11px', color: '#999' }}>0.3s</span>
+                    <span style={{ fontSize: '11px', color: '#999' }}>2.1s</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
           <p style={{ fontSize: '11px', color: '#999', lineHeight: '1.6', padding: '12px', background: '#f8f8f6', borderRadius: '12px' }}>
             Los estímulos se configuran según el perfil sensorial individual del paciente, independiente del diagnóstico.
           </p>

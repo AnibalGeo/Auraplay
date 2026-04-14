@@ -16,7 +16,7 @@ function NarrativeScreen({ onFinish, onBack }) {
   const [score, setScore] = useState(0)
 
   const story = stories[idx]
-  const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   useEffect(() => {
     if (!story) return

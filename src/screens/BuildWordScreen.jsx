@@ -17,7 +17,7 @@ function speak(text, rate = 0.82) {
 function BuildWordScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
   const words = getContent(patient.levelId).buildWords ?? []
-  const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
   const [selected, setSelected] = useState([])

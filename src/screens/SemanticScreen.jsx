@@ -34,7 +34,7 @@ function SemanticScreen({ onFinish, onBack }) {
   const [options, setOptions] = useState([])
 
   const current = allExercises[idx]
-  const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   useEffect(() => {
     if (!current) return
@@ -67,6 +67,7 @@ function SemanticScreen({ onFinish, onBack }) {
 
   function handleAnswer(word) {
     if (answered) return
+    speak(word)
     setAnswered(true)
     setSelected(word)
     const correct =

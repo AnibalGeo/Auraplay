@@ -11,7 +11,7 @@ const DEFAULT_PATIENT = {
   ageMonths: 54,
   phone: '',
   guardianName: '',
-  diagnosis: 'tdl',
+  diagnosis: 'tel',
   levelId: 'N4',
   stars: 0,
   sessionsCompleted: 0,
@@ -66,7 +66,7 @@ export function PatientProvider({ children }) {
   useEffect(() => { saveStimulusSettings(estimulusSettings) }, [estimulusSettings])
 
   const level = getLevelById(patient.levelId)
-  const stimulusConfig = STIMULUS_CONFIG[patient.diagnosis] ?? STIMULUS_CONFIG.tdl
+  const stimulusConfig = STIMULUS_CONFIG[patient.diagnosis] ?? STIMULUS_CONFIG['tel']
 
   function updatePatient(changes) {
     setPatient(prev => ({ ...prev, ...changes }))

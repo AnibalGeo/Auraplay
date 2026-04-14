@@ -418,27 +418,59 @@ export const LEVELS = {
   },
 }
 
-// Diagnósticos — solo etiqueta, descripción y color para UI
+// Diagnósticos — etiqueta, descripción, color y configuración de estímulos por defecto
 export const STIMULUS_CONFIG = {
-  tdl: {
-    label: 'TDL',
+  tel: {
+    label: 'TEL',
     color: '#4aab8a',
-    description: 'Trastorno del desarrollo del lenguaje sin neurodivergencia',
+    description: 'Trastorno Específico del Lenguaje',
+    simultaneousAudioVisual: true,
+    animationsEnabled: true,
+    backgroundElements: true,
+    reducedOptions: false,
+    largerText: false,
+    sequentialStimulus: false,
+    extendedExposureTime: false,
+    simplifiedInstructions: false,
   },
-  tdl_tea: {
-    label: 'TDL asociado a TEA',
+  tl_tea: {
+    label: 'TL asociado a TEA',
     color: '#7c6bb0',
-    description: 'TDL con Trastorno del Espectro Autista',
+    description: 'Trastorno del Lenguaje asociado a TEA',
+    simultaneousAudioVisual: false,
+    animationsEnabled: false,
+    backgroundElements: false,
+    reducedOptions: true,
+    largerText: true,
+    sequentialStimulus: true,
+    extendedExposureTime: true,
+    simplifiedInstructions: true,
   },
-  tdl_tdah: {
-    label: 'TDL asociado a TDAH',
+  tl_tdah: {
+    label: 'TL asociado a TDAH',
     color: '#e8a020',
-    description: 'TDL con Trastorno por Déficit de Atención e Hiperactividad',
+    description: 'Trastorno del Lenguaje asociado a TDAH',
+    simultaneousAudioVisual: true,
+    animationsEnabled: false,
+    backgroundElements: false,
+    reducedOptions: true,
+    largerText: false,
+    sequentialStimulus: false,
+    extendedExposureTime: true,
+    simplifiedInstructions: true,
   },
-  tdl_tea_tdah: {
-    label: 'TDL + TEA y TDAH',
-    color: '#c05c7e',
-    description: 'TDL con TEA y TDAH asociados',
+  tl_tea_tdah: {
+    label: 'TL asociado a TEA y TDAH',
+    color: '#e07a5f',
+    description: 'Trastorno del Lenguaje asociado a TEA y TDAH',
+    simultaneousAudioVisual: false,
+    animationsEnabled: false,
+    backgroundElements: false,
+    reducedOptions: true,
+    largerText: true,
+    sequentialStimulus: true,
+    extendedExposureTime: true,
+    simplifiedInstructions: true,
   },
 }
 
@@ -452,6 +484,8 @@ export const DEFAULT_STIMULUS_SETTINGS = {
   sequentialStimulus: false,
   extendedExposureTime: false,
   simplifiedInstructions: false,
+  wordSpeakDelay: 1000,
+  slideTransitionDelay: 1500,
 }
 
 export const LEVEL_IDS = Object.keys(LEVELS)
