@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { getContent } from '../data/getContent'
+import ProgressBar from '../components/ProgressBar'
+import { playFeedback } from '../utils/audioFeedback'
 
 function SyntaxScreen({ onFinish, onBack }) {
-  const { level, estimulusSettings } = usePatient()
-  const exercises = level.morfosintaxis.connectors
+  const { patient, level, estimulusSettings } = usePatient()
+  const exercises = getContent(patient.levelId).connectors ?? []
 
   const [idx, setIdx] = useState(0)
   const [selected, setSelected] = useState(null)
@@ -26,19 +29,23 @@ function SyntaxScreen({ onFinish, onBack }) {
     setSelected(option)
     const correct = option === current.correct
     const newScore = correct ? score + 1 : score
-    if (correct) {
-      setScore(newScore)
-      setFeedback({ type: 'correct', text: `¡Correcto! ✨ ${current.explanation}` })
-    } else {
-      setFeedback({ type: 'wrong', text: `La respuesta era "${current.correct}". ${current.explanation}` })
-    }
+    if (correct) setScore(newScore)
+    playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
-      if (idx + 1 >= exercises.length) {
-        onFinish(newScore, exercises.length)
-      } else {
-        setIdx(i => i + 1)
-      }
-    }, exposureMs)
+      setFeedback({
+        type: correct ? 'correct' : 'wrong',
+        text: correct
+          ? `¡Correcto! ✨ ${current.explanation}`
+          : `La respuesta era "${current.correct}". ${current.explanation}`,
+      })
+      setTimeout(() => {
+        if (idx + 1 >= exercises.length) {
+          onFinish(newScore, exercises.length)
+        } else {
+          setIdx(i => i + 1)
+        }
+      }, exposureMs)
+    }, 1000)
   }
 
   const noAnim = !estimulusSettings.animationsEnabled
@@ -60,7 +67,7 @@ function SyntaxScreen({ onFinish, onBack }) {
           <span className="activity-title">Completar Frases</span>
         </div>
         <div className="game-area">
-          <p className="instruction">Esta actividad no está disponible para el nivel actual.</p>
+          <p className="instruction">No hay ejercicios disponibles para este nivel.</p>
           <button className="check-btn" onClick={onBack}>Volver</button>
         </div>
       </div>
@@ -69,14 +76,10 @@ function SyntaxScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <ProgressBar current={idx + 1} total={exercises.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Completar Frases</span>
-        <div className="progress-dots">
-          {exercises.map((_, i) => (
-            <div key={i} className={`dot ${i < idx ? 'done' : i === idx ? 'current' : ''}`} />
-          ))}
-        </div>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>

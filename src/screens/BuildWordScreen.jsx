@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { getContent } from '../data/getContent'
+import ProgressBar from '../components/ProgressBar'
+import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -12,8 +15,8 @@ function speak(text, rate = 0.82) {
 }
 
 function BuildWordScreen({ onFinish, onBack }) {
-  const { level, estimulusSettings } = usePatient()
-  const words = level.fonologia.buildWords
+  const { patient, level, estimulusSettings } = usePatient()
+  const words = getContent(patient.levelId).buildWords ?? []
   const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
 
   const [idx, setIdx] = useState(0)
@@ -58,22 +61,40 @@ function BuildWordScreen({ onFinish, onBack }) {
     const attempt = selected.map(s => s.syl).join('')
     const correct = current.syllables.join('')
     const isCorrect = attempt === correct
-    setFeedback({
-      type: isCorrect ? 'correct' : 'wrong',
-      text: isCorrect ? '¡Perfecto! 🎉' : `Era: ${current.syllables.join(' · ')}`,
-    })
+    playFeedback(isCorrect ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
-      if (idx + 1 >= words.length) {
-        onFinish(isCorrect ? 1 : 0, words.length)
-      } else {
-        setIdx(i => i + 1)
-      }
-    }, exposureMs)
+      setFeedback({
+        type: isCorrect ? 'correct' : 'wrong',
+        text: isCorrect ? '¡Perfecto! 🎉' : `Era: ${current.syllables.join(' · ')}`,
+      })
+      setTimeout(() => {
+        if (idx + 1 >= words.length) {
+          onFinish(isCorrect ? 1 : 0, words.length)
+        } else {
+          setIdx(i => i + 1)
+        }
+      }, exposureMs)
+    }, 1000)
   }
 
   function handleClear() {
     if (answered) return
     setSelected([])
+  }
+
+  if (words.length === 0) {
+    return (
+      <div className="screen">
+        <div className="activity-header">
+          <button className="back-btn" onClick={onBack}>←</button>
+          <span className="activity-title">Armar Palabras</span>
+        </div>
+        <div className="game-area">
+          <p className="instruction">No hay ejercicios disponibles para este nivel.</p>
+          <button className="check-btn" onClick={onBack}>Volver</button>
+        </div>
+      </div>
+    )
   }
 
   const isUsed = id => selected.some(s => s.id === id)
@@ -83,14 +104,10 @@ function BuildWordScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <ProgressBar current={idx + 1} total={words.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Armar Palabras</span>
-        <div className="progress-dots">
-          {words.map((_, i) => (
-            <div key={i} className={`dot ${i < idx ? 'done' : i === idx ? 'current' : ''}`} />
-          ))}
-        </div>
       </div>
 
       <div className="game-area" style={{ gap: '14px' }}>

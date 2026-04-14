@@ -73,6 +73,42 @@ export function deletePatient(id) {
   return true
 }
 
+const DIAGNOSIS_MIGRATION = {
+  neurodiverse: 'tdl_tea',
+  tdl_neurodiverse: 'tdl_tea_tdah',
+}
+
+export function migratePatientData() {
+  // Migrar roster de pacientes
+  try {
+    const patients = load()
+    let changed = false
+    patients.forEach(p => {
+      if (DIAGNOSIS_MIGRATION[p.diagnosis]) {
+        p.diagnosis = DIAGNOSIS_MIGRATION[p.diagnosis]
+        changed = true
+      }
+    })
+    if (changed) persist(patients)
+  } catch {
+    console.warn('Error migrando roster de pacientes')
+  }
+
+  // Migrar paciente activo en contexto
+  try {
+    const raw = localStorage.getItem('auraplay_patient')
+    if (raw) {
+      const p = JSON.parse(raw)
+      if (DIAGNOSIS_MIGRATION[p.diagnosis]) {
+        p.diagnosis = DIAGNOSIS_MIGRATION[p.diagnosis]
+        localStorage.setItem('auraplay_patient', JSON.stringify(p))
+      }
+    }
+  } catch {
+    console.warn('Error migrando paciente activo')
+  }
+}
+
 export function searchPatients(query) {
   if (!query || !query.trim()) return load()
   const q = query.trim().toLowerCase()

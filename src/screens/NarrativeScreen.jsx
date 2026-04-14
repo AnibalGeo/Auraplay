@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { getContent } from '../data/getContent'
+import ProgressBar from '../components/ProgressBar'
+import { playFeedback } from '../utils/audioFeedback'
 
 function NarrativeScreen({ onFinish, onBack }) {
-  const { level, estimulusSettings } = usePatient()
-  const stories = level.morfosintaxis?.narrativeSequence ?? []
+  const { patient, level, estimulusSettings } = usePatient()
+  const stories = getContent(patient.levelId).narrativeSequences ?? []
 
   const [idx, setIdx] = useState(0)
   const [cards, setCards] = useState([])
@@ -66,17 +69,20 @@ function NarrativeScreen({ onFinish, onBack }) {
     const isCorrect = cards.every((card, i) => card.originalIndex === story.correctOrder[i])
     setAnswered(true)
     if (isCorrect) setScore(s => s + 1)
-    setFeedback({
-      type: isCorrect ? 'correct' : 'wrong',
-      text: isCorrect ? '¡Muy bien! Ordenaste la historia 🎉' : 'Casi... el orden correcto era diferente.',
-    })
+    playFeedback(isCorrect ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
-      if (idx + 1 >= stories.length) {
-        onFinish(isCorrect ? score + 1 : score, stories.length)
-      } else {
-        setIdx(i => i + 1)
-      }
-    }, exposureMs)
+      setFeedback({
+        type: isCorrect ? 'correct' : 'wrong',
+        text: isCorrect ? '¡Muy bien! Ordenaste la historia 🎉' : 'Casi... el orden correcto era diferente.',
+      })
+      setTimeout(() => {
+        if (idx + 1 >= stories.length) {
+          onFinish(isCorrect ? score + 1 : score, stories.length)
+        } else {
+          setIdx(i => i + 1)
+        }
+      }, exposureMs)
+    }, 1000)
   }
 
   function handleReset() {
@@ -94,14 +100,10 @@ function NarrativeScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <ProgressBar current={idx + 1} total={stories.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Ordenar Historia</span>
-        <div className="progress-dots">
-          {stories.map((_, i) => (
-            <div key={i} className={`dot ${i < idx ? 'done' : i === idx ? 'current' : ''}`} />
-          ))}
-        </div>
       </div>
 
       <div className="game-area" style={{ gap: '14px' }}>

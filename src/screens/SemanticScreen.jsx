@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { getContent } from '../data/getContent'
+import ProgressBar from '../components/ProgressBar'
+import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -12,10 +15,11 @@ function speak(text, rate = 0.82) {
 }
 
 function SemanticScreen({ onFinish, onBack }) {
-  const { level, estimulusSettings } = usePatient()
+  const { patient, level, estimulusSettings } = usePatient()
+  const content = getContent(patient.levelId)
 
-  const opposites = level.semantica.opposites || []
-  const definitions = level.semantica.definitions || []
+  const opposites = content.opposites ?? []
+  const definitions = content.definitions ?? []
 
   const allExercises = [
     ...opposites.map(o => ({ type: 'opposite', data: o })),
@@ -70,20 +74,22 @@ function SemanticScreen({ onFinish, onBack }) {
         ? word === current.data.opposite
         : word === current.data.correct
     const newScore = correct ? score + 1 : score
-    if (correct) {
-      setScore(newScore)
-      setFeedback({ type: 'correct', text: '¡Muy bien! ✨' })
-    } else {
-      const correctWord = current.type === 'opposite' ? current.data.opposite : current.data.correct
-      setFeedback({ type: 'wrong', text: `Era: ${correctWord}` })
-    }
+    if (correct) setScore(newScore)
+    const correctWord = current.type === 'opposite' ? current.data.opposite : current.data.correct
+    playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
-      if (idx + 1 >= allExercises.length) {
-        onFinish(newScore, allExercises.length)
-      } else {
-        setIdx(i => i + 1)
-      }
-    }, exposureMs)
+      setFeedback({
+        type: correct ? 'correct' : 'wrong',
+        text: correct ? '¡Muy bien! ✨' : `Era: ${correctWord}`,
+      })
+      setTimeout(() => {
+        if (idx + 1 >= allExercises.length) {
+          onFinish(newScore, allExercises.length)
+        } else {
+          setIdx(i => i + 1)
+        }
+      }, exposureMs)
+    }, 1000)
   }
 
   const noAnim = !estimulusSettings.animationsEnabled
@@ -99,7 +105,7 @@ function SemanticScreen({ onFinish, onBack }) {
           <span className="activity-title">Semántica</span>
         </div>
         <div className="game-area">
-          <p className="instruction">Esta actividad no está disponible para este nivel aún.</p>
+          <p className="instruction">No hay ejercicios disponibles para este nivel.</p>
           <button className="check-btn" onClick={onBack}>Volver</button>
         </div>
       </div>
@@ -108,14 +114,10 @@ function SemanticScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <ProgressBar current={idx + 1} total={allExercises.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Semántica</span>
-        <div className="progress-dots">
-          {allExercises.map((_, i) => (
-            <div key={i} className={`dot ${i < idx ? 'done' : i === idx ? 'current' : ''}`} />
-          ))}
-        </div>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>
@@ -125,11 +127,15 @@ function SemanticScreen({ onFinish, onBack }) {
             <p className="instruction" style={{ fontSize: instrSize }}>
               {estimulusSettings.simplifiedInstructions ? '¿Cuál es el contrario?' : '¿Cuál es el contrario de esta palabra?'}
             </p>
-            <div style={{ background: 'white', borderRadius: '18px', padding: '20px 28px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', textAlign: 'center' }}>
+            <div style={{ background: 'white', borderRadius: '18px', padding: '20px 28px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', textAlign: 'center', position: 'relative' }}>
               <span style={{ fontSize: '52px', display: 'block', marginBottom: '8px' }}>{current.data.emoji}</span>
               <span style={{ fontSize: '22px', fontWeight: '700', color: 'var(--text)', letterSpacing: '1px' }}>
                 {current.data.word}
               </span>
+              <button
+                onClick={() => speak(current.data.word)}
+                style={{ position: 'absolute', top: '10px', right: '12px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', padding: '4px', lineHeight: 1 }}
+              >🔊</button>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: `repeat(${gridCols}, 1fr)`, gap: '12px', width: '100%', maxWidth: '380px' }}>
               {options.map(opt => {
@@ -142,7 +148,11 @@ function SemanticScreen({ onFinish, onBack }) {
                   border = '3px solid var(--teal)'; bg = '#f0faf6'
                 }
                 return (
-                  <div key={opt.word} onClick={() => handleAnswer(opt.word)} style={{ background: bg, borderRadius: '16px', padding: '16px 8px', textAlign: 'center', cursor: answered ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.06)', border, transition: noAnim ? 'none' : 'all 0.2s' }}>
+                  <div key={opt.word} onClick={() => handleAnswer(opt.word)} style={{ background: bg, borderRadius: '16px', padding: '16px 8px', textAlign: 'center', cursor: answered ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.06)', border, transition: noAnim ? 'none' : 'all 0.2s', position: 'relative' }}>
+                    <button
+                      onClick={e => { e.stopPropagation(); speak(opt.word) }}
+                      style={{ position: 'absolute', top: '6px', right: '8px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', padding: '2px', lineHeight: 1 }}
+                    >🔊</button>
                     <span style={{ fontSize: '32px', display: 'block', marginBottom: '4px' }}>{opt.emoji}</span>
                     <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text)' }}>{opt.word}</span>
                   </div>

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { getContent } from '../data/getContent'
+import ProgressBar from '../components/ProgressBar'
+import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -12,8 +15,8 @@ function speak(text, rate = 0.82) {
 }
 
 function ListenScreen({ onFinish, onBack }) {
-  const { level, estimulusSettings } = usePatient()
-  const rounds = level.semantica.listen
+  const { patient, level, estimulusSettings } = usePatient()
+  const rounds = getContent(patient.levelId).listenRounds ?? []
   const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
 
   const [idx, setIdx] = useState(0)
@@ -72,19 +75,21 @@ function ListenScreen({ onFinish, onBack }) {
     setSelected(option.e)
     const correct = option.e === current.correct
     const newScore = correct ? score + 1 : score
-    if (correct) {
-      setScore(newScore)
-      setFeedback({ type: 'correct', text: '¡Muy bien! ✨' })
-    } else {
-      setFeedback({ type: 'wrong', text: `Era: ${current.label}` })
-    }
+    if (correct) setScore(newScore)
+    playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
-      if (idx + 1 >= rounds.length) {
-        onFinish(newScore, rounds.length)
-      } else {
-        setIdx(i => i + 1)
-      }
-    }, exposureMs)
+      setFeedback({
+        type: correct ? 'correct' : 'wrong',
+        text: correct ? '¡Muy bien! ✨' : `Era: ${current.label}`,
+      })
+      setTimeout(() => {
+        if (idx + 1 >= rounds.length) {
+          onFinish(newScore, rounds.length)
+        } else {
+          setIdx(i => i + 1)
+        }
+      }, exposureMs)
+    }, 1000)
   }
 
   const noAnim = !estimulusSettings.animationsEnabled
@@ -92,16 +97,27 @@ function ListenScreen({ onFinish, onBack }) {
   const instrSize = estimulusSettings.largerText ? '18px' : '15px'
   const cols = estimulusSettings.reducedOptions ? 2 : choices.length
 
+  if (rounds.length === 0) {
+    return (
+      <div className="screen">
+        <div className="activity-header">
+          <button className="back-btn" onClick={onBack}>←</button>
+          <span className="activity-title">Escucha Atento</span>
+        </div>
+        <div className="game-area">
+          <p className="instruction">No hay ejercicios disponibles para este nivel.</p>
+          <button className="check-btn" onClick={onBack}>Volver</button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <ProgressBar current={idx + 1} total={rounds.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Escucha Atento</span>
-        <div className="progress-dots">
-          {rounds.map((_, i) => (
-            <div key={i} className={`dot ${i < idx ? 'done' : i === idx ? 'current' : ''}`} />
-          ))}
-        </div>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>

@@ -425,15 +425,20 @@ export const STIMULUS_CONFIG = {
     color: '#4aab8a',
     description: 'Trastorno del desarrollo del lenguaje sin neurodivergencia',
   },
-  neurodiverse: {
-    label: 'TEA / TDAH',
+  tdl_tea: {
+    label: 'TDL asociado a TEA',
     color: '#7c6bb0',
-    description: 'Neurodivergencia sin TDL primario',
+    description: 'TDL con Trastorno del Espectro Autista',
   },
-  tdl_neurodiverse: {
-    label: 'TDL + TEA/TDAH',
+  tdl_tdah: {
+    label: 'TDL asociado a TDAH',
     color: '#e8a020',
-    description: 'TDL con neurodivergencia asociada',
+    description: 'TDL con Trastorno por Déficit de Atención e Hiperactividad',
+  },
+  tdl_tea_tdah: {
+    label: 'TDL + TEA y TDAH',
+    color: '#c05c7e',
+    description: 'TDL con TEA y TDAH asociados',
   },
 }
 

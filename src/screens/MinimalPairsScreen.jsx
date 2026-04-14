@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { getContent } from '../data/getContent'
+import ProgressBar from '../components/ProgressBar'
+import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82, pitch = 1.05) {
   const synth = window.speechSynthesis
@@ -12,8 +15,8 @@ function speak(text, rate = 0.82, pitch = 1.05) {
 }
 
 function MinimalPairsScreen({ onFinish, onBack }) {
-  const { level, estimulusSettings } = usePatient()
-  const pairs = level.fonologia.minimalPairs
+  const { patient, level, estimulusSettings } = usePatient()
+  const pairs = getContent(patient.levelId).minimalPairs ?? []
   const exposureMs = estimulusSettings.extendedExposureTime ? 3500 : 2000
 
   const [idx, setIdx] = useState(0)
@@ -44,35 +47,48 @@ function MinimalPairsScreen({ onFinish, onBack }) {
     setSelected(word)
     const correct = word === current.word
     const newScore = correct ? score + 1 : score
-    if (correct) {
-      setScore(newScore)
-      setFeedback({ type: 'correct', text: '¡Muy bien! ✨' })
-    } else {
-      setFeedback({ type: 'wrong', text: `La palabra era: ${current.word}` })
-    }
+    if (correct) setScore(newScore)
+    playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
-      if (idx + 1 >= pairs.length) {
-        onFinish(newScore, pairs.length)
-      } else {
-        setIdx(i => i + 1)
-      }
-    }, exposureMs)
+      setFeedback({
+        type: correct ? 'correct' : 'wrong',
+        text: correct ? '¡Muy bien! ✨' : `La palabra era: ${current.word}`,
+      })
+      setTimeout(() => {
+        if (idx + 1 >= pairs.length) {
+          onFinish(newScore, pairs.length)
+        } else {
+          setIdx(i => i + 1)
+        }
+      }, exposureMs)
+    }, 1000)
   }
 
   const noAnim = !estimulusSettings.animationsEnabled
   const whiteBg = !estimulusSettings.backgroundElements
   const instrSize = estimulusSettings.largerText ? '18px' : '15px'
 
+  if (pairs.length === 0) {
+    return (
+      <div className="screen">
+        <div className="activity-header">
+          <button className="back-btn" onClick={onBack}>←</button>
+          <span className="activity-title">Palabras Similares</span>
+        </div>
+        <div className="game-area">
+          <p className="instruction">No hay ejercicios disponibles para este nivel.</p>
+          <button className="check-btn" onClick={onBack}>Volver</button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <ProgressBar current={idx + 1} total={pairs.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Palabras Similares</span>
-        <div className="progress-dots">
-          {pairs.map((_, i) => (
-            <div key={i} className={`dot ${i < idx ? 'done' : i === idx ? 'current' : ''}`} />
-          ))}
-        </div>
       </div>
 
       <div className="game-area">
