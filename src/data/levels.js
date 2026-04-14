@@ -3,6 +3,14 @@
 // González Lajas & García Cruz (DSM-5, AEPap 2019),
 // Lara Díaz & Araque (Comunicación y Lenguaje en TEA)
 
+import n1 from './content/N1.json'
+import n2 from './content/N2.json'
+import n3 from './content/N3.json'
+import n4 from './content/N4.json'
+import n5 from './content/N5.json'
+import n6 from './content/N6.json'
+import n7 from './content/N7.json'
+
 export const LEVELS = {
   N1: {
     id: 'N1',
@@ -13,16 +21,8 @@ export const LEVELS = {
     description: 'Holofrase y primeras combinaciones de dos palabras',
     fonologia: {
       description: 'Fonemas /p/, /t/, /k/, /m/. Sílabas CV.',
-      minimalPairs: [
-        { word: 'MAMÁ', emoji: '👩', distractor: { word: 'PAPÁ', emoji: '👨' } },
-        { word: 'PATO', emoji: '🦆', distractor: { word: 'GATO', emoji: '🐱' } },
-        { word: 'MANO', emoji: '✋', distractor: { word: 'PANO', emoji: '🧻' } },
-      ],
-      buildWords: [
-        { word: 'MAMÁ', emoji: '👩', syllables: ['MA', 'MÁ'], hint: '2 sílabas' },
-        { word: 'PAPÁ', emoji: '👨', syllables: ['PA', 'PÁ'], hint: '2 sílabas' },
-        { word: 'PATO', emoji: '🦆', syllables: ['PA', 'TO'], hint: '2 sílabas' },
-      ],
+      minimalPairs: n1.minimalPairs,
+      buildWords: n1.buildWords,
     },
     semantica: {
       description: 'Sustantivos y verbos de alta frecuencia. Categorías básicas.',
@@ -46,21 +46,20 @@ export const LEVELS = {
           ],
         },
       ],
-      listen: [
-        { sound: 'PERRO', correct: '🐶', label: 'Perro', options: [{ e: '🐶', l: 'Perro' }, { e: '🍎', l: 'Manzana' }, { e: '🚗', l: 'Auto' }] },
-        { sound: 'LECHE', correct: '🥛', label: 'Leche', options: [{ e: '🥛', l: 'Leche' }, { e: '🐶', l: 'Perro' }, { e: '⚽', l: 'Pelota' }] },
-        { sound: 'MAMÁ', correct: '👩', label: 'Mamá', options: [{ e: '👩', l: 'Mamá' }, { e: '👨', l: 'Papá' }, { e: '🐱', l: 'Gato' }] },
-      ],
+      listen: n1.listenRounds,
+      opposites: n1.opposites,
+      definitions: n1.definitions,
     },
     morfosintaxis: {
       description: 'Instrucciones de 1 elemento. Comprensión de "dame", "mira", "ven".',
-      connectors: [],
+      connectors: n1.connectors,
       orderSentences: [],
       completeSentences: [],
+      narrativeSequence: n1.narrativeSequences,
     },
     pragmatica: {
       description: 'Función declarativa. Reconocimiento de rutinas cotidianas.',
-      inferences: [],
+      inferences: n1.inferences,
     },
   },
 
@@ -73,16 +72,8 @@ export const LEVELS = {
     description: 'Estructura S+V, habla telegráfica, negación',
     fonologia: {
       description: 'Fonemas /y/, /b/, /j/, /g/, /n/, /ch/. Emisiones de 2-3 elementos.',
-      minimalPairs: [
-        { word: 'PATO', emoji: '🦆', distractor: { word: 'GATO', emoji: '🐱' } },
-        { word: 'BOCA', emoji: '👄', distractor: { word: 'VACA', emoji: '🐄' } },
-        { word: 'NIDO', emoji: '🪺', distractor: { word: 'DEDO', emoji: '👆' } },
-      ],
-      buildWords: [
-        { word: 'GATO', emoji: '🐱', syllables: ['GA', 'TO'], hint: '2 sílabas' },
-        { word: 'NENE', emoji: '👶', syllables: ['NE', 'NE'], hint: '2 sílabas' },
-        { word: 'JUGO', emoji: '🧃', syllables: ['JU', 'GO'], hint: '2 sílabas' },
-      ],
+      minimalPairs: n2.minimalPairs,
+      buildWords: n2.buildWords,
     },
     semantica: {
       description: 'Acción locativa, posesión, cantidad. Verbos: ir, dar, caer, poner.',
@@ -106,23 +97,23 @@ export const LEVELS = {
           ],
         },
       ],
-      listen: [
-        { sound: 'GATO', correct: '🐱', label: 'Gato', options: [{ e: '🐱', l: 'Gato' }, { e: '🐶', l: 'Perro' }, { e: '🐸', l: 'Rana' }] },
-        { sound: 'MANZANA', correct: '🍎', label: 'Manzana', options: [{ e: '🍎', l: 'Manzana' }, { e: '🍌', l: 'Plátano' }, { e: '🍊', l: 'Naranja' }] },
-      ],
+      listen: n2.listenRounds,
+      opposites: n2.opposites,
+      definitions: n2.definitions,
     },
     morfosintaxis: {
       description: 'Comprensión de órdenes de 2 elementos. Inicio de "mío", preposiciones a/en.',
-      connectors: [],
+      connectors: n2.connectors,
       orderSentences: [
         { words: ['NENE', 'COME'], correctOrder: ['NENE', 'COME'], emoji: ['👶', '🍽️'] },
         { words: ['MAMÁ', 'DUERME'], correctOrder: ['MAMÁ', 'DUERME'], emoji: ['👩', '😴'] },
       ],
       completeSentences: [],
+      narrativeSequence: n2.narrativeSequences,
     },
     pragmatica: {
       description: 'Mantención de tópico. Deícticos. Función heurística.',
-      inferences: [],
+      inferences: n2.inferences,
     },
   },
 
@@ -135,16 +126,8 @@ export const LEVELS = {
     description: 'Oraciones de 3-4 palabras. Nexos "que", "pero". Causa-efecto básica.',
     fonologia: {
       description: 'Fonemas /l/, /ñ/, /f/, /s/. Enunciados de 3-4 palabras.',
-      minimalPairs: [
-        { word: 'PALA', emoji: '🪣', distractor: { word: 'BALA', emoji: '🎱' } },
-        { word: 'SALA', emoji: '🛋️', distractor: { word: 'SOLA', emoji: '🧍' } },
-        { word: 'FOCA', emoji: '🦭', distractor: { word: 'BOCA', emoji: '👄' } },
-      ],
-      buildWords: [
-        { word: 'PELOTA', emoji: '⚽', syllables: ['PE', 'LO', 'TA'], hint: '3 sílabas' },
-        { word: 'ZAPATO', emoji: '👟', syllables: ['ZA', 'PA', 'TO'], hint: '3 sílabas' },
-        { word: 'CAMISA', emoji: '👕', syllables: ['CA', 'MI', 'SA'], hint: '3 sílabas' },
-      ],
+      minimalPairs: n3.minimalPairs,
+      buildWords: n3.buildWords,
     },
     semantica: {
       description: 'Opuestos, causa-efecto básica, colores, posición espacial.',
@@ -162,51 +145,23 @@ export const LEVELS = {
           instruction: '¿Cuáles pueden volar?',
         },
       ],
-      opposites: [
-        { word: 'GRANDE', emoji: '🐘', opposite: 'PEQUEÑO', oppositeEmoji: '🐭' },
-        { word: 'CALIENTE', emoji: '☀️', opposite: 'FRÍO', oppositeEmoji: '❄️' },
-        { word: 'ARRIBA', emoji: '⬆️', opposite: 'ABAJO', oppositeEmoji: '⬇️' },
-      ],
-      listen: [
-        { sound: 'PÁJARO', correct: '🐦', label: 'Pájaro', options: [{ e: '🐦', l: 'Pájaro' }, { e: '🐟', l: 'Pez' }, { e: '🐶', l: 'Perro' }] },
-        { sound: 'MARIPOSA', correct: '🦋', label: 'Mariposa', options: [{ e: '🦋', l: 'Mariposa' }, { e: '🐝', l: 'Abeja' }, { e: '🐛', l: 'Gusano' }] },
-      ],
+      listen: n3.listenRounds,
+      opposites: n3.opposites,
+      definitions: n3.definitions,
     },
     morfosintaxis: {
       description: 'S+V+O. Artículo indefinido. Pronombres yo/tú. Nexo "pero" y "que".',
-      connectors: [
-        {
-          sentence: 'Quiero jugar ___ tengo sueño.',
-          options: ['pero', 'porque', 'y'],
-          correct: 'pero',
-          explanation: '"Pero" indica contraste entre dos ideas.',
-          level: 'coordinante_adversativo',
-        },
-        {
-          sentence: 'El niño llora ___ tiene hambre.',
-          options: ['porque', 'pero', 'y'],
-          correct: 'porque',
-          explanation: '"Porque" explica el motivo.',
-          level: 'subordinante_causal',
-        },
-      ],
+      connectors: n3.connectors,
       orderSentences: [
         { words: ['LA', 'NIÑA', 'COME', 'MANZANA'], correctOrder: ['LA', 'NIÑA', 'COME', 'MANZANA'], emoji: ['👧', '🍎'] },
         { words: ['EL', 'PERRO', 'DUERME', 'AQUÍ'], correctOrder: ['EL', 'PERRO', 'DUERME', 'AQUÍ'], emoji: ['🐶', '😴'] },
       ],
       completeSentences: [],
+      narrativeSequence: n3.narrativeSequences,
     },
     pragmatica: {
       description: 'Función reguladora. Comprensión de relaciones causa-efecto simples.',
-      inferences: [
-        {
-          situation: 'La niña está llorando. Tiene la rodilla roja.',
-          question: '¿Qué pasó?',
-          options: ['Se cayó', 'Tiene sueño', 'Tiene hambre'],
-          correct: 'Se cayó',
-          emoji: '😢',
-        },
-      ],
+      inferences: n3.inferences,
     },
   },
 
@@ -219,16 +174,8 @@ export const LEVELS = {
     description: 'Verbos auxiliares, causales y consecutivas. Conector "porque" y "entonces".',
     fonologia: {
       description: 'Fonemas /d/, /r/. Dífonos vocálicos. Desaparecen procesos de simplificación.',
-      minimalPairs: [
-        { word: 'PERRO', emoji: '🐶', distractor: { word: 'PERO', emoji: '🚧' } },
-        { word: 'CARRO', emoji: '🚗', distractor: { word: 'CARO', emoji: '💎' } },
-        { word: 'ROSA', emoji: '🌹', distractor: { word: 'BOSA', emoji: '💊' } },
-      ],
-      buildWords: [
-        { word: 'ELEFANTE', emoji: '🐘', syllables: ['E', 'LE', 'FAN', 'TE'], hint: '4 sílabas' },
-        { word: 'MARIPOSA', emoji: '🦋', syllables: ['MA', 'RI', 'PO', 'SA'], hint: '4 sílabas' },
-        { word: 'DORMIR', emoji: '😴', syllables: ['DOR', 'MIR'], hint: '2 sílabas' },
-      ],
+      minimalPairs: n4.minimalPairs,
+      buildWords: n4.buildWords,
     },
     semantica: {
       description: 'Conceptos de distancia, temporalidad, forma. Resolución de problemas simples.',
@@ -247,41 +194,13 @@ export const LEVELS = {
           ],
         },
       ],
-      opposites: [
-        { word: 'RÁPIDO', emoji: '🐇', opposite: 'LENTO', oppositeEmoji: '🐢' },
-        { word: 'LARGO', emoji: '📏', opposite: 'CORTO', oppositeEmoji: '✂️' },
-        { word: 'GORDO', emoji: '🫃', opposite: 'DELGADO', oppositeEmoji: '🧍' },
-      ],
-      listen: [
-        { sound: 'ELEFANTE', correct: '🐘', label: 'Elefante', options: [{ e: '🐘', l: 'Elefante' }, { e: '🦁', l: 'León' }, { e: '🦒', l: 'Jirafa' }] },
-        { sound: 'MARIPOSA', correct: '🦋', label: 'Mariposa', options: [{ e: '🦋', l: 'Mariposa' }, { e: '🐝', l: 'Abeja' }, { e: '🐛', l: 'Gusano' }] },
-      ],
+      listen: n4.listenRounds,
+      opposites: n4.opposites,
+      definitions: n4.definitions,
     },
     morfosintaxis: {
       description: 'Verbos auxiliares. Tiempos verbales. Causales y consecutivas.',
-      connectors: [
-        {
-          sentence: 'Tengo frío ___ me pongo el abrigo.',
-          options: ['entonces', 'pero', 'aunque'],
-          correct: 'entonces',
-          explanation: '"Entonces" expresa consecuencia.',
-          level: 'consecutivo',
-        },
-        {
-          sentence: 'No puedo salir ___ está lloviendo.',
-          options: ['porque', 'pero', 'entonces'],
-          correct: 'porque',
-          explanation: '"Porque" explica la razón.',
-          level: 'causal',
-        },
-        {
-          sentence: 'Me gusta el helado ___ el chocolate.',
-          options: ['y', 'pero', 'porque'],
-          correct: 'y',
-          explanation: '"Y" une dos ideas similares.',
-          level: 'coordinante_copulativo',
-        },
-      ],
+      connectors: n4.connectors,
       orderSentences: [
         { words: ['EL', 'NIÑO', 'ESTÁ', 'JUGANDO', 'FÚTBOL'], correctOrder: ['EL', 'NIÑO', 'ESTÁ', 'JUGANDO', 'FÚTBOL'], emoji: ['👦', '⚽'] },
         { words: ['LA', 'MAMÁ', 'ESTÁ', 'COCINANDO', 'ARROZ'], correctOrder: ['LA', 'MAMÁ', 'ESTÁ', 'COCINANDO', 'ARROZ'], emoji: ['👩', '🍚'] },
@@ -294,25 +213,11 @@ export const LEVELS = {
           type: 'verbo_auxiliar',
         },
       ],
+      narrativeSequence: n4.narrativeSequences,
     },
     pragmatica: {
       description: 'Toma de turnos básica. Resolución de problemas simples.',
-      inferences: [
-        {
-          situation: 'Pedro tiene mucha hambre. Son las 12 del día.',
-          question: '¿Qué va a hacer Pedro?',
-          options: ['Comer almuerzo', 'Dormir', 'Jugar'],
-          correct: 'Comer almuerzo',
-          emoji: '🍽️',
-        },
-        {
-          situation: 'Está lloviendo muy fuerte afuera.',
-          question: '¿Qué necesita Ana para salir?',
-          options: ['Un paraguas', 'Lentes de sol', 'Una pelota'],
-          correct: 'Un paraguas',
-          emoji: '🌧️',
-        },
-      ],
+      inferences: n4.inferences,
     },
   },
 
@@ -325,16 +230,8 @@ export const LEVELS = {
     description: 'Dominio gramatical básico. Conectores temporales. Narrativa con estructura.',
     fonologia: {
       description: 'Fonema /rr/, dífonos con /r/ y trabantes. Culminación del repertorio fonético.',
-      minimalPairs: [
-        { word: 'CARRO', emoji: '🚗', distractor: { word: 'CARO', emoji: '💎' } },
-        { word: 'TIERRA', emoji: '🌍', distractor: { word: 'PERRA', emoji: '🐶' } },
-        { word: 'ARROZ', emoji: '🍚', distractor: { word: 'AROS', emoji: '💍' } },
-      ],
-      buildWords: [
-        { word: 'MARIPOSA', emoji: '🦋', syllables: ['MA', 'RI', 'PO', 'SA'], hint: '4 sílabas' },
-        { word: 'MURCIÉLAGO', emoji: '🦇', syllables: ['MUR', 'CIÉ', 'LA', 'GO'], hint: '4 sílabas' },
-        { word: 'TREN', emoji: '🚂', syllables: ['TREN'], hint: '1 sílaba con grupo consonántico' },
-      ],
+      minimalPairs: n5.minimalPairs,
+      buildWords: n5.buildWords,
     },
     semantica: {
       description: 'Atributos de edad. Responde ¿qué? ¿cómo? ¿cuándo? ¿quién?',
@@ -353,52 +250,13 @@ export const LEVELS = {
           ],
         },
       ],
-      definitions: [
-        {
-          definition: 'Es un animal grande, vive en la selva y tiene rayas negras y naranjas',
-          options: [{ word: 'TIGRE', emoji: '🐯' }, { word: 'ELEFANTE', emoji: '🐘' }, { word: 'JIRAFA', emoji: '🦒' }],
-          correct: 'TIGRE',
-        },
-        {
-          definition: 'Es la comida favorita de los monos, es amarilla y larga',
-          options: [{ word: 'MANZANA', emoji: '🍎' }, { word: 'PLÁTANO', emoji: '🍌' }, { word: 'NARANJA', emoji: '🍊' }],
-          correct: 'PLÁTANO',
-        },
-      ],
-      opposites: [
-        { word: 'JOVEN', emoji: '👦', opposite: 'VIEJO', oppositeEmoji: '👴' },
-        { word: 'LLENO', emoji: '🪣', opposite: 'VACÍO', oppositeEmoji: '🫙' },
-        { word: 'SUCIO', emoji: '🐷', opposite: 'LIMPIO', oppositeEmoji: '🛁' },
-      ],
-      listen: [
-        { sound: 'TIBURÓN', correct: '🦈', label: 'Tiburón', options: [{ e: '🦈', l: 'Tiburón' }, { e: '🐬', l: 'Delfín' }, { e: '🐙', l: 'Pulpo' }] },
-      ],
+      listen: n5.listenRounds,
+      opposites: n5.opposites,
+      definitions: n5.definitions,
     },
     morfosintaxis: {
       description: 'Posesivos grupales. Conectores temporales: cuando, después, antes, primero.',
-      connectors: [
-        {
-          sentence: '___ termino de comer, me lavo los dientes.',
-          options: ['Cuando', 'Porque', 'Aunque'],
-          correct: 'Cuando',
-          explanation: '"Cuando" indica el momento en que ocurre algo.',
-          level: 'temporal',
-        },
-        {
-          sentence: 'Primero me baño y ___ me pongo el pijama.',
-          options: ['después', 'pero', 'porque'],
-          correct: 'después',
-          explanation: '"Después" indica que algo ocurre más tarde.',
-          level: 'temporal_secuencial',
-        },
-        {
-          sentence: 'Hace frío ___ no me pongo el abrigo.',
-          options: ['aunque', 'porque', 'cuando'],
-          correct: 'aunque',
-          explanation: '"Aunque" indica que algo ocurre a pesar de una dificultad.',
-          level: 'concesivo',
-        },
-      ],
+      connectors: n5.connectors,
       orderSentences: [
         { words: ['DESPUÉS', 'DE', 'CENAR', 'ME', 'LAVO', 'LOS', 'DIENTES'], correctOrder: ['DESPUÉS', 'DE', 'CENAR', 'ME', 'LAVO', 'LOS', 'DIENTES'], emoji: ['🍽️', '🦷'] },
         { words: ['CUANDO', 'LLUEVE', 'USO', 'PARAGUAS'], correctOrder: ['CUANDO', 'LLUEVE', 'USO', 'PARAGUAS'], emoji: ['🌧️', '☂️'] },
@@ -417,37 +275,11 @@ export const LEVELS = {
           type: 'tiempo_verbal_pasado',
         },
       ],
-      narrativeSequence: [
-        {
-          title: 'El día de lluvia',
-          frames: [
-            { emoji: '☀️', text: 'En la mañana hacía sol.' },
-            { emoji: '🌧️', text: 'De repente empezó a llover.' },
-            { emoji: '☂️', text: 'Ana agarró su paraguas.' },
-            { emoji: '🏠', text: 'Llegó a casa seca.' },
-          ],
-          correctOrder: [0, 1, 2, 3],
-        },
-      ],
+      narrativeSequence: n5.narrativeSequences,
     },
     pragmatica: {
       description: 'Función interaccional. Comprensión de contexto.',
-      inferences: [
-        {
-          situation: 'María llegó corriendo a casa. Estaba toda mojada.',
-          question: '¿Qué pasó afuera?',
-          options: ['Estaba lloviendo', 'Hacía calor', 'Había sol'],
-          correct: 'Estaba lloviendo',
-          emoji: '🌧️',
-        },
-        {
-          situation: 'Carlos bosteza mucho y tiene los ojos cerrados.',
-          question: '¿Cómo se siente Carlos?',
-          options: ['Con sueño', 'Feliz', 'Enojado'],
-          correct: 'Con sueño',
-          emoji: '😴',
-        },
-      ],
+      inferences: n5.inferences,
     },
   },
 
@@ -460,16 +292,8 @@ export const LEVELS = {
     description: 'Oraciones subordinadas. Conectores adversativos y concesivos complejos.',
     fonologia: {
       description: 'Afianzamiento generalizado. Habilidades metafonológicas.',
-      minimalPairs: [
-        { word: 'CAZA', emoji: '🎯', distractor: { word: 'CASA', emoji: '🏠' } },
-        { word: 'PECES', emoji: '🐟', distractor: { word: 'VECES', emoji: '🔢' } },
-        { word: 'COSER', emoji: '🧵', distractor: { word: 'COCER', emoji: '🍳' } },
-      ],
-      buildWords: [
-        { word: 'HELICÓPTERO', emoji: '🚁', syllables: ['HE', 'LI', 'CÓP', 'TE', 'RO'], hint: '5 sílabas' },
-        { word: 'DINOSAURIO', emoji: '🦕', syllables: ['DI', 'NO', 'SAU', 'RIO'], hint: '4 sílabas' },
-        { word: 'BIBLIOTECA', emoji: '📚', syllables: ['BI', 'BLIO', 'TE', 'CA'], hint: '4 sílabas' },
-      ],
+      minimalPairs: n6.minimalPairs,
+      buildWords: n6.buildWords,
     },
     semantica: {
       description: 'Cantidades relativas. Referentes témporo-espaciales complejos. Semejanzas verbales.',
@@ -488,52 +312,18 @@ export const LEVELS = {
           ],
         },
       ],
-      definitions: [
-        {
-          definition: 'Es un lugar donde hay muchos libros y puedes ir a leer o pedir prestados',
-          options: [{ word: 'BIBLIOTECA', emoji: '📚' }, { word: 'HOSPITAL', emoji: '🏥' }, { word: 'MERCADO', emoji: '🏪' }],
-          correct: 'BIBLIOTECA',
-        },
-        {
-          definition: 'Es lo que usamos para cortar el pan, tiene un mango y un filo',
-          options: [{ word: 'CUCHILLO', emoji: '🔪' }, { word: 'TENEDOR', emoji: '🍴' }, { word: 'CUCHARA', emoji: '🥄' }],
-          correct: 'CUCHILLO',
-        },
-      ],
       synonyms: [
         { word: 'CONTENTO', emoji: '😊', synonym: 'FELIZ', synonymEmoji: '😄' },
         { word: 'RÁPIDO', emoji: '⚡', synonym: 'VELOZ', synonymEmoji: '🏃' },
         { word: 'GRANDE', emoji: '🐘', synonym: 'ENORME', synonymEmoji: '🏔️' },
       ],
-      listen: [
-        { sound: 'HELICÓPTERO', correct: '🚁', label: 'Helicóptero', options: [{ e: '🚁', l: 'Helicóptero' }, { e: '✈️', l: 'Avión' }, { e: '🚀', l: 'Cohete' }] },
-      ],
+      listen: n6.listenRounds,
+      opposites: n6.opposites,
+      definitions: n6.definitions,
     },
     morfosintaxis: {
       description: 'Oraciones subordinadas. Voz pasiva. Cantidades relativas. Conectores: sin embargo, a pesar de.',
-      connectors: [
-        {
-          sentence: 'Estudié mucho ___ saqué mala nota.',
-          options: ['sin embargo', 'porque', 'cuando'],
-          correct: 'sin embargo',
-          explanation: '"Sin embargo" introduce una idea contraria a lo esperado.',
-          level: 'adversativo_complejo',
-        },
-        {
-          sentence: '___ estar cansado, terminó su tarea.',
-          options: ['A pesar de', 'Porque', 'Entonces'],
-          correct: 'A pesar de',
-          explanation: '"A pesar de" indica que algo ocurre aunque hay un obstáculo.',
-          level: 'concesivo_complejo',
-        },
-        {
-          sentence: 'El perro ladra ___ el gato maúlla.',
-          options: ['mientras que', 'porque', 'entonces'],
-          correct: 'mientras que',
-          explanation: '"Mientras que" compara dos situaciones simultáneas.',
-          level: 'comparativo',
-        },
-      ],
+      connectors: n6.connectors,
       orderSentences: [
         { words: ['A', 'PESAR', 'DE', 'LLOVER', 'SALIMOS', 'AL', 'PARQUE'], correctOrder: ['A', 'PESAR', 'DE', 'LLOVER', 'SALIMOS', 'AL', 'PARQUE'], emoji: ['🌧️', '🌳'] },
         { words: ['EL', 'NIÑO', 'FUE', 'PREMIADO', 'POR', 'SU', 'MAESTRA'], correctOrder: ['EL', 'NIÑO', 'FUE', 'PREMIADO', 'POR', 'SU', 'MAESTRA'], emoji: ['👦', '🏆', '👩‍🏫'] },
@@ -552,40 +342,11 @@ export const LEVELS = {
           type: 'voz_pasiva',
         },
       ],
-      narrativeSequence: [
-        {
-          title: 'La tortuga y la liebre',
-          frames: [
-            { emoji: '🐢🐇', text: 'La tortuga y la liebre decidieron hacer una carrera.' },
-            { emoji: '🏃🐇', text: 'La liebre corrió muy rápido y se adelantó mucho.' },
-            { emoji: '😴🐇', text: 'La liebre se durmió porque pensó que ganaría igual.' },
-            { emoji: '🚶🐢', text: 'La tortuga siguió caminando sin parar.' },
-            { emoji: '🏆🐢', text: 'La tortuga llegó primero y ganó la carrera.' },
-          ],
-          correctOrder: [0, 1, 2, 3, 4],
-        },
-      ],
+      narrativeSequence: n6.narrativeSequences,
     },
     pragmatica: {
       description: 'Comprensión de lenguaje no literal básico. Adecuación al contexto.',
-      inferences: [
-        {
-          situation: 'Paula dice: "Estoy tan cansada que me caigo de sueño".',
-          question: '¿Qué quiere decir Paula realmente?',
-          options: ['Que tiene mucho sueño', 'Que se va a caer', 'Que está enferma'],
-          correct: 'Que tiene mucho sueño',
-          emoji: '😴',
-          type: 'lenguaje_figurado',
-        },
-        {
-          situation: 'Tomás llega tarde a clases. La profesora lo mira y dice: "¡Qué puntual eres, Tomás!"',
-          question: '¿Qué quiso decir realmente la profesora?',
-          options: ['Que llegó tarde', 'Que es muy puntual', 'Que llegó temprano'],
-          correct: 'Que llegó tarde',
-          emoji: '⏰',
-          type: 'ironia_basica',
-        },
-      ],
+      inferences: n6.inferences,
     },
   },
 
@@ -598,16 +359,8 @@ export const LEVELS = {
     description: 'Lenguaje figurado, metáforas, subordinadas complejas. Discurso narrativo avanzado.',
     fonologia: {
       description: 'Habilidades metafonológicas completas. Conciencia fonológica avanzada.',
-      minimalPairs: [
-        { word: 'COSER', emoji: '🧵', distractor: { word: 'COCER', emoji: '🍳' } },
-        { word: 'TUBO', emoji: '🚿', distractor: { word: 'TUVO', emoji: '✅' } },
-        { word: 'ECHO', emoji: '📤', distractor: { word: 'HECHO', emoji: '✔️' } },
-      ],
-      buildWords: [
-        { word: 'METEOROLOGÍA', emoji: '🌤️', syllables: ['ME', 'TE', 'O', 'RO', 'LO', 'GÍ', 'A'], hint: '7 sílabas' },
-        { word: 'ELECTRICIDAD', emoji: '⚡', syllables: ['E', 'LEC', 'TRI', 'CI', 'DAD'], hint: '5 sílabas' },
-        { word: 'TRANSFORMACIÓN', emoji: '🔄', syllables: ['TRANS', 'FOR', 'MA', 'CIÓN'], hint: '4 sílabas' },
-      ],
+      minimalPairs: n7.minimalPairs,
+      buildWords: n7.buildWords,
     },
     semantica: {
       description: 'Lenguaje figurado. Polisemia. Sinónimos y antónimos avanzados. Metáforas.',
@@ -626,59 +379,18 @@ export const LEVELS = {
           ],
         },
       ],
-      definitions: [
-        {
-          definition: 'Manera de decir algo de forma indirecta usando una comparación, como "sus ojos son estrellas"',
-          options: [{ word: 'METÁFORA', emoji: '✨' }, { word: 'PREGUNTA', emoji: '❓' }, { word: 'ORDEN', emoji: '📢' }],
-          correct: 'METÁFORA',
-        },
-        {
-          definition: 'Cuando alguien dice lo contrario de lo que piensa, generalmente para bromear',
-          options: [{ word: 'IRONÍA', emoji: '😏' }, { word: 'VERDAD', emoji: '✅' }, { word: 'MENTIRA', emoji: '🤥' }],
-          correct: 'IRONÍA',
-        },
-      ],
       synonyms: [
         { word: 'COMENZAR', emoji: '▶️', synonym: 'INICIAR', synonymEmoji: '🚀' },
         { word: 'TERMINAR', emoji: '⏹️', synonym: 'CONCLUIR', synonymEmoji: '🏁' },
         { word: 'AYUDAR', emoji: '🤝', synonym: 'COLABORAR', synonymEmoji: '👥' },
       ],
-      listen: [
-        { sound: 'TRANSFORMACIÓN', correct: '🔄', label: 'Transformación', options: [{ e: '🔄', l: 'Transformación' }, { e: '⚡', l: 'Electricidad' }, { e: '🌤️', l: 'Meteorología' }] },
-      ],
+      listen: n7.listenRounds,
+      opposites: n7.opposites,
+      definitions: n7.definitions,
     },
     morfosintaxis: {
       description: 'Conectores complejos. Subordinadas. Concordancia de tiempos verbales.',
-      connectors: [
-        {
-          sentence: 'El proyecto fracasó, ___ no habíamos planificado bien.',
-          options: ['dado que', 'aunque', 'mientras'],
-          correct: 'dado que',
-          explanation: '"Dado que" introduce una causa formal.',
-          level: 'causal_formal',
-        },
-        {
-          sentence: '___ los resultados sean negativos, seguiremos intentando.',
-          options: ['Aunque', 'Porque', 'Entonces'],
-          correct: 'Aunque',
-          explanation: '"Aunque" introduce una concesión formal.',
-          level: 'concesivo_subjuntivo',
-        },
-        {
-          sentence: 'Estudió mucho; ___, reprobó el examen.',
-          options: ['sin embargo', 'porque', 'cuando'],
-          correct: 'sin embargo',
-          explanation: '"Sin embargo" contrasta dos ideas opuestas.',
-          level: 'adversativo_formal',
-        },
-        {
-          sentence: 'No solo llegó tarde, ___ tampoco trajo los materiales.',
-          options: ['sino que', 'porque', 'aunque'],
-          correct: 'sino que',
-          explanation: '"Sino que" añade una idea negativa adicional.',
-          level: 'adversativo_exclusivo',
-        },
-      ],
+      connectors: n7.connectors,
       orderSentences: [
         { words: ['AUNQUE', 'LLOVÍA', 'EL', 'EQUIPO', 'JUGÓ', 'EL', 'PARTIDO'], correctOrder: ['AUNQUE', 'LLOVÍA', 'EL', 'EQUIPO', 'JUGÓ', 'EL', 'PARTIDO'], emoji: ['🌧️', '⚽'] },
         { words: ['LOS', 'LIBROS', 'FUERON', 'ESCRITOS', 'POR', 'GRANDES', 'AUTORES'], correctOrder: ['LOS', 'LIBROS', 'FUERON', 'ESCRITOS', 'POR', 'GRANDES', 'AUTORES'], emoji: ['📚', '✍️'] },
@@ -697,48 +409,11 @@ export const LEVELS = {
           type: 'presente_habitual',
         },
       ],
-      narrativeSequence: [
-        {
-          title: 'El niño y el lobo',
-          frames: [
-            { emoji: '👦🐑', text: 'Un pastor cuidaba sus ovejas en el monte.' },
-            { emoji: '😂👦', text: 'Para divertirse, gritó: "¡El lobo, el lobo!" aunque no había ninguno.' },
-            { emoji: '🏃🏃', text: 'Los aldeanos corrieron a ayudarlo, pero no encontraron ningún lobo.' },
-            { emoji: '🐺👦', text: 'Un día llegó un lobo de verdad y el niño pidió ayuda.' },
-            { emoji: '🚫👥', text: 'Nadie le creyó esta vez. Aprendió que mentir trae consecuencias.' },
-          ],
-          correctOrder: [0, 1, 2, 3, 4],
-        },
-      ],
+      narrativeSequence: n7.narrativeSequences,
     },
     pragmatica: {
       description: 'Lenguaje figurado. Ironía. Metáforas. Adecuación a distintos interlocutores.',
-      inferences: [
-        {
-          situation: 'Lucas dice: "Tengo tantas tareas que me estoy ahogando en libros".',
-          question: '¿Qué significa eso realmente?',
-          options: ['Tiene muchísimas tareas', 'Cayó dentro de libros', 'Le gustan los libros'],
-          correct: 'Tiene muchísimas tareas',
-          emoji: '📚',
-          type: 'metafora',
-        },
-        {
-          situation: 'Ana rompió accidentalmente un vaso. Su mamá dice: "¡Qué cuidadosa eres!"',
-          question: '¿La mamá lo dice en serio o es ironía?',
-          options: ['Es ironía, porque fue descuidada', 'Lo dice en serio, fue cuidadosa', 'No está segura'],
-          correct: 'Es ironía, porque fue descuidada',
-          emoji: '😏',
-          type: 'ironia_compleja',
-        },
-        {
-          situation: 'Estás hablando con tu abuela vs. hablando con tu mejor amigo.',
-          question: '¿Cómo debería ser tu lenguaje con tu abuela?',
-          options: ['Más formal y respetuoso', 'Igual que con tu amigo', 'Más rápido y con jerga'],
-          correct: 'Más formal y respetuoso',
-          emoji: '👵',
-          type: 'adecuacion_interlocutor',
-        },
-      ],
+      inferences: n7.inferences,
     },
   },
 }

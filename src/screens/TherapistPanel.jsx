@@ -684,6 +684,7 @@ function ConfigPanel({ onViewProgress }) {
   } = usePatient()
   const [activeTab, setActiveTab] = useState('patient')
   const [confirmReset, setConfirmReset] = useState(false)
+  const [previewLevelId, setPreviewLevelId] = useState(patient.levelId)
   const { resetPatient } = usePatient()
 
   return (
@@ -782,17 +783,61 @@ function ConfigPanel({ onViewProgress }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {Object.values(LEVELS).map(lvl => (
-              <button key={lvl.id} onClick={() => setLevelById(lvl.id)} style={{
-                padding: '12px 16px', borderRadius: '12px', cursor: 'pointer',
-                border: `2px solid ${patient.levelId === lvl.id ? '#4aab8a' : '#e8f5f0'}`,
-                background: patient.levelId === lvl.id ? '#e8f5f0' : 'white',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.2s',
-              }}>
+              <button
+                key={lvl.id}
+                onClick={() => { setLevelById(lvl.id); setPreviewLevelId(lvl.id) }}
+                onMouseEnter={() => setPreviewLevelId(lvl.id)}
+                onMouseLeave={() => setPreviewLevelId(patient.levelId)}
+                style={{
+                  padding: '12px 16px', borderRadius: '12px', cursor: 'pointer',
+                  border: `2px solid ${patient.levelId === lvl.id ? '#4aab8a' : previewLevelId === lvl.id ? '#b0ddd0' : '#e8f5f0'}`,
+                  background: patient.levelId === lvl.id ? '#e8f5f0' : previewLevelId === lvl.id ? '#f4faf8' : 'white',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.15s',
+                }}
+              >
                 <span style={{ fontSize: '13px', fontWeight: '700', color: patient.levelId === lvl.id ? '#2d7a62' : '#3a3a3a' }}>{lvl.label}</span>
                 <span style={{ fontSize: '12px', color: '#888' }}>{lvl.ageRange}</span>
               </button>
             ))}
           </div>
+
+          {(() => {
+            const pl = LEVELS[previewLevelId]
+            if (!pl) return null
+            const items = [
+              { label: 'Pares mínimos',  count: pl.fonologia?.minimalPairs?.length ?? 0 },
+              { label: 'Armar palabras', count: pl.fonologia?.buildWords?.length ?? 0 },
+              { label: 'Escucha',        count: pl.semantica?.listen?.length ?? 0 },
+              { label: 'Conectores',     count: pl.morfosintaxis?.connectors?.length ?? 0 },
+              { label: 'Opuestos',       count: pl.semantica?.opposites?.length ?? 0 },
+              { label: 'Definiciones',   count: pl.semantica?.definitions?.length ?? 0 },
+              { label: 'Narrativa',      count: pl.morfosintaxis?.narrativeSequence?.length ?? 0 },
+              { label: 'Inferencias',    count: pl.pragmatica?.inferences?.length ?? 0 },
+            ].filter(i => i.count > 0)
+
+            return (
+              <div style={{ background: '#f4faf8', borderRadius: '14px', padding: '14px 16px', border: '1px solid #d0ede4' }}>
+                <p style={{ fontSize: '11px', fontWeight: '700', color: '#2d7a62', marginBottom: '10px', letterSpacing: '0.05em' }}>
+                  VISTA PREVIA · {pl.label} · {pl.ageRange}
+                </p>
+                {items.length === 0 ? (
+                  <p style={{ fontSize: '12px', color: '#aaa', fontStyle: 'italic' }}>Sin contenido disponible</p>
+                ) : (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {items.map(i => (
+                      <span key={i.label} style={{
+                        fontSize: '12px', background: 'white', color: '#3a3a3a',
+                        border: '1px solid #c8e8de', borderRadius: '8px',
+                        padding: '4px 10px', fontWeight: '600',
+                      }}>
+                        {i.label}: <span style={{ color: '#2d7a62' }}>{i.count}</span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
 

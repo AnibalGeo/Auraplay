@@ -1,0 +1,49 @@
+{
+  "minimalPairs": [
+    { "word": "MAMÁ", "emoji": "👩", "distractor": { "word": "PAPÁ", "emoji": "👨" } },
+    { "word": "PATO", "emoji": "🦆", "distractor": { "word": "GATO", "emoji": "🐱" } },
+    { "word": "MANO", "emoji": "✋", "distractor": { "word": "PANO", "emoji": "🧻" } },
+    { "word": "TOMA", "emoji": "🤲", "distractor": { "word": "COMA", "emoji": "😴" } },
+    { "word": "PALA", "emoji": "🪣", "distractor": { "word": "MALA", "emoji": "😠" } },
+    { "word": "CAMA", "emoji": "🛏️", "distractor": { "word": "TAMA", "emoji": "🫓" } },
+    { "word": "TAPA", "emoji": "🍳", "distractor": { "word": "PAPA", "emoji": "🥔" } },
+    { "word": "PATO", "emoji": "🦆", "distractor": { "word": "DATO", "emoji": "📊" } },
+    { "word": "MAPA", "emoji": "🗺️", "distractor": { "word": "CAPA", "emoji": "🧥" } },
+    { "word": "MATA", "emoji": "🌿", "distractor": { "word": "KATA", "emoji": "🥋" } },
+    { "word": "PECA", "emoji": "🔴", "distractor": { "word": "MECA", "emoji": "🕌" } },
+    { "word": "TACO", "emoji": "🌮", "distractor": { "word": "MACO", "emoji": "🪄" } }
+  ],
+  "buildWords": [
+    { "word": "MAMÁ", "emoji": "👩", "syllables": ["MA", "MÁ"], "hint": "2 sílabas" },
+    { "word": "PAPÁ", "emoji": "👨", "syllables": ["PA", "PÁ"], "hint": "2 sílabas" },
+    { "word": "PATO", "emoji": "🦆", "syllables": ["PA", "TO"], "hint": "2 sílabas" },
+    { "word": "GATO", "emoji": "🐱", "syllables": ["GA", "TO"], "hint": "2 sílabas" },
+    { "word": "TOMA", "emoji": "🤲", "syllables": ["TO", "MA"], "hint": "2 sílabas" },
+    { "word": "CAMA", "emoji": "🛏️", "syllables": ["CA", "MA"], "hint": "2 sílabas" },
+    { "word": "MAPA", "emoji": "🗺️", "syllables": ["MA", "PA"], "hint": "2 sílabas" },
+    { "word": "TAPA", "emoji": "🍳", "syllables": ["TA", "PA"], "hint": "2 sílabas" },
+    { "word": "COPA", "emoji": "🏆", "syllables": ["CO", "PA"], "hint": "2 sílabas" },
+    { "word": "PECA", "emoji": "🔴", "syllables": ["PE", "CA"], "hint": "2 sílabas" },
+    { "word": "PELO", "emoji": "💇", "syllables": ["PE", "LO"], "hint": "2 sílabas" },
+    { "word": "MESA", "emoji": "🪑", "syllables": ["ME", "SA"], "hint": "2 sílabas" }
+  ],
+  "listenRounds": [
+    { "sound": "PERRO", "correct": "🐶", "label": "Perro", "options": [{ "e": "🐶", "l": "Perro" }, { "e": "🍎", "l": "Manzana" }, { "e": "🚗", "l": "Auto" }] },
+    { "sound": "LECHE", "correct": "🥛", "label": "Leche", "options": [{ "e": "🥛", "l": "Leche" }, { "e": "🐶", "l": "Perro" }, { "e": "⚽", "l": "Pelota" }] },
+    { "sound": "MAMÁ", "correct": "👩", "label": "Mamá", "options": [{ "e": "👩", "l": "Mamá" }, { "e": "👨", "l": "Papá" }, { "e": "🐱", "l": "Gato" }] },
+    { "sound": "PAPÁ", "correct": "👨", "label": "Papá", "options": [{ "e": "👨", "l": "Papá" }, { "e": "👩", "l": "Mamá" }, { "e": "🐶", "l": "Perro" }] },
+    { "sound": "PATO", "correct": "🦆", "label": "Pato", "options": [{ "e": "🦆", "l": "Pato" }, { "e": "🐱", "l": "Gato" }, { "e": "🐶", "l": "Perro" }] },
+    { "sound": "GATO", "correct": "🐱", "label": "Gato", "options": [{ "e": "🐱", "l": "Gato" }, { "e": "🦆", "l": "Pato" }, { "e": "🍎", "l": "Manzana" }] },
+    { "sound": "PELOTA", "correct": "⚽", "label": "Pelota", "options": [{ "e": "⚽", "l": "Pelota" }, { "e": "🏠", "l": "Casa" }, { "e": "🐶", "l": "Perro" }] },
+    { "sound": "CASA", "correct": "🏠", "label": "Casa", "options": [{ "e": "🏠", "l": "Casa" }, { "e": "⚽", "l": "Pelota" }, { "e": "🥛", "l": "Leche" }] },
+    { "sound": "MANO", "correct": "✋", "label": "Mano", "options": [{ "e": "✋", "l": "Mano" }, { "e": "👁️", "l": "Ojo" }, { "e": "🦶", "l": "Pie" }] },
+    { "sound": "PIE", "correct": "🦶", "label": "Pie", "options": [{ "e": "🦶", "l": "Pie" }, { "e": "✋", "l": "Mano" }, { "e": "👃", "l": "Nariz" }] },
+    { "sound": "OJO", "correct": "👁️", "label": "Ojo", "options": [{ "e": "👁️", "l": "Ojo" }, { "e": "👃", "l": "Nariz" }, { "e": "👄", "l": "Boca" }] },
+    { "sound": "AGUA", "correct": "💧", "label": "Agua", "options": [{ "e": "💧", "l": "Agua" }, { "e": "🥛", "l": "Leche" }, { "e": "🍎", "l": "Manzana" }] }
+  ],
+  "connectors": [],
+  "opposites": [],
+  "definitions": [],
+  "narrativeSequences": [],
+  "inferences": []
+}

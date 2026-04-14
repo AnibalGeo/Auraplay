@@ -68,38 +68,51 @@ function HomeScreen({ onNavigate }) {
 
         <p className="section-title">Actividades de hoy</p>
 
-        <div className="activities-grid">
-          <div className="activity-card teal" onClick={() => onNavigate('minimal-pairs')}>
-            <span className="activity-icon">👂</span>
-            <div className="activity-name">Palabras Similares</div>
-            <div className="activity-desc">Pares mínimos</div>
-          </div>
-          <div className="activity-card purple" onClick={() => onNavigate('build-word')}>
-            <span className="activity-icon">🧩</span>
-            <div className="activity-name">Armar Palabras</div>
-            <div className="activity-desc">Une las sílabas</div>
-          </div>
-          <div className="activity-card peach" onClick={() => onNavigate('listen')}>
-            <span className="activity-icon">🔊</span>
-            <div className="activity-name">Escucha Atento</div>
-            <div className="activity-desc">Discriminación auditiva</div>
-          </div>
-          <div className="activity-card yellow" onClick={() => onNavigate('syntax')}>
-            <span className="activity-icon">📝</span>
-            <div className="activity-name">Completar Frases</div>
-            <div className="activity-desc">Conectores</div>
-          </div>
-          <div className="activity-card teal" onClick={() => onNavigate('semantic')}>
-            <span className="activity-icon">🧠</span>
-            <div className="activity-name">Semántica</div>
-            <div className="activity-desc">Opuestos y definiciones</div>
-          </div>
-          <div className="activity-card purple" onClick={() => onNavigate('pragmatic')}>
-            <span className="activity-icon">💬</span>
-            <div className="activity-name">Inferencias</div>
-            <div className="activity-desc">Contexto social</div>
-          </div>
-        </div>
+        {(() => {
+          const f = level.fonologia
+          const s = level.semantica
+          const m = level.morfosintaxis
+          const p = level.pragmatica
+
+          const all = [
+            { key: 'minimal-pairs', color: 'teal',   icon: '👂', name: 'Palabras Similares', desc: 'Pares mínimos',           show: f.minimalPairs?.length > 0 },
+            { key: 'build-word',    color: 'purple',  icon: '🧩', name: 'Armar Palabras',     desc: 'Une las sílabas',         show: f.buildWords?.length > 0 },
+            { key: 'listen',        color: 'peach',   icon: '🔊', name: 'Escucha Atento',     desc: 'Discriminación auditiva', show: s.listen?.length > 0 },
+            { key: 'syntax',        color: 'yellow',  icon: '📝', name: 'Completar Frases',   desc: 'Conectores',              show: m.connectors?.length > 0 },
+            { key: 'semantic',      color: 'teal',    icon: '🧠', name: 'Semántica',           desc: 'Opuestos y definiciones', show: (s.opposites?.length > 0) || (s.definitions?.length > 0) },
+            { key: 'narrative',     color: 'peach',   icon: '📖', name: 'Ordenar Historia',   desc: 'Secuencia narrativa',     show: m.narrativeSequence?.length > 0 },
+            { key: 'pragmatic',     color: 'purple',  icon: '💬', name: 'Inferencias',         desc: 'Contexto social',         show: p.inferences?.length > 0 },
+          ]
+
+          const visible = all.filter(a => a.show)
+          const few = visible.length <= 2
+
+          return (
+            <div
+              className={few ? undefined : 'activities-grid'}
+              style={few ? {
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: '12px',
+                marginBottom: '24px',
+              } : undefined}
+            >
+              {visible.map(a => (
+                <div
+                  key={a.key}
+                  className={`activity-card ${a.color}`}
+                  style={few ? { width: 'calc(50% - 6px)', maxWidth: '160px' } : undefined}
+                  onClick={() => onNavigate(a.key)}
+                >
+                  <span className="activity-icon">{a.icon}</span>
+                  <div className="activity-name">{a.name}</div>
+                  <div className="activity-desc">{a.desc}</div>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
 
         <p className="section-title">Progreso de la semana</p>
         <div className="progress-section">

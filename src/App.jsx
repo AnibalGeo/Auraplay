@@ -9,6 +9,7 @@ import SyntaxScreen from './screens/SyntaxScreen'
 import ResultsScreen from './screens/ResultsScreen'
 import SemanticScreen from './screens/SemanticScreen'
 import PragmaticScreen from './screens/PragmaticScreen'
+import NarrativeScreen from './screens/NarrativeScreen'
 import ProgressScreen from './screens/ProgressScreen'
 import PatientSelectScreen from './screens/PatientSelectScreen'
 import { updatePatient as persistPatient, getPatientById, getAllPatients, savePatient } from './data/patients'
@@ -259,6 +260,12 @@ function App() {
       {screen === 'pragmatic' && (
         <PragmaticScreen
           onFinish={(s, t) => finishActivity(s, t, 'pragmatic')}
+          onBack={() => goTo('home')}
+        />
+      )}
+      {screen === 'narrative' && (
+        <NarrativeScreen
+          onFinish={(s, t) => finishActivity(s, t, 'narrative')}
           onBack={() => goTo('home')}
         />
       )}
