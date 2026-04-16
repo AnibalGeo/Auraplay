@@ -22,7 +22,7 @@
     { "word": "NARIZ", "emoji": "👃", "syllables": ["NA", "RIZ"], "hint": "2 sílabas" },
     { "word": "FLORES", "emoji": "🌸", "syllables": ["FLO", "RES"], "hint": "2 sílabas" },
     { "word": "FIESTA", "emoji": "🎉", "syllables": ["FIES", "TA"], "hint": "2 sílabas" },
-    { "word": "SOMERO", "emoji": "🧢", "syllables": ["SO", "ME", "RO"], "hint": "3 sílabas" },
+    { "word": "SOMBRERO", "emoji": "🧢", "syllables": ["SOM", "BRE", "RO"], "hint": "3 sílabas" },
     { "word": "LIMÓN", "emoji": "🍋", "syllables": ["LI", "MÓN"], "hint": "2 sílabas" },
     { "word": "PALOMA", "emoji": "🕊️", "syllables": ["PA", "LO", "MA"], "hint": "3 sílabas" },
     { "word": "FUSIBLE", "emoji": "⚡", "syllables": ["FU", "SI", "BLE"], "hint": "3 sílabas" }
@@ -73,7 +73,7 @@
   "narrativeSequences": [],
   "inferences": [
     { "situation": "La niña está llorando. Tiene la rodilla roja.", "question": "¿Qué pasó?", "options": ["Se cayó", "Tiene sueño", "Tiene hambre"], "correct": "Se cayó", "emoji": "😢", "type": "causal_basica" },
-    { "situation": "El perro mueve la cola y salta cuando ves llegar a su dueño.", "question": "¿Cómo se siente el perro?", "options": ["Contento", "Triste", "Asustado"], "correct": "Contento", "emoji": "🐶", "type": "emocion_basica" },
+    { "situation": "El perro mueve la cola y salta cuando ve llegar a su dueño.", "question": "¿Cómo se siente el perro?", "options": ["Contento", "Triste", "Asustado"], "correct": "Contento", "emoji": "🐶", "type": "emocion_basica" },
     { "situation": "El niño tiene mucha hambre. La mamá está cocinando.", "question": "¿Qué quiere hacer el niño?", "options": ["Comer", "Dormir", "Jugar"], "correct": "Comer", "emoji": "🍽️", "type": "inferencia_simple" },
     { "situation": "Afuera hay mucho sol y calor.", "question": "¿Qué ropa debería ponerse el niño?", "options": ["Ropa ligera", "Abrigo", "Bufanda"], "correct": "Ropa ligera", "emoji": "☀️", "type": "contexto_ambiental" },
     { "situation": "La mamá apagó la luz del cuarto del bebé.", "question": "¿Qué va a pasar?", "options": ["El bebé va a dormir", "El bebé va a comer", "El bebé va a jugar"], "correct": "El bebé va a dormir", "emoji": "🌙", "type": "inferencia_simple" },

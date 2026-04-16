@@ -1,6 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { LEVELS, STIMULUS_CONFIG, DEFAULT_STIMULUS_SETTINGS, getLevelByAge, getLevelById } from '../data/levels'
 
+const VALID_DIAGNOSES = ['tel', 'tl_tea', 'tl_tdah', 'tl_tea_tdah']
+function normalizeDiagnosis(d) { return VALID_DIAGNOSES.includes(d) ? d : 'tel' }
+
 const PatientContext = createContext(null)
 
 const DEFAULT_PATIENT = {
@@ -23,7 +26,9 @@ const DEFAULT_PATIENT = {
 function loadFromStorage() {
   try {
     const saved = localStorage.getItem('auraplay_patient')
-    return saved ? { ...DEFAULT_PATIENT, ...JSON.parse(saved) } : DEFAULT_PATIENT
+    if (!saved) return DEFAULT_PATIENT
+    const parsed = JSON.parse(saved)
+    return { ...DEFAULT_PATIENT, ...parsed, diagnosis: normalizeDiagnosis(parsed.diagnosis) }
   } catch {
     return DEFAULT_PATIENT
   }
@@ -106,7 +111,7 @@ export function PatientProvider({ children }) {
   }
 
   function loadPatient(data) {
-    setPatient({ ...DEFAULT_PATIENT, ...data })
+    setPatient({ ...DEFAULT_PATIENT, ...data, diagnosis: normalizeDiagnosis(data.diagnosis) })
     if (data.estimulusSettings) {
       loadStimulusSettings(data.estimulusSettings)
     }

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
 import { savePatient, searchPatients, updatePatient as persistPatient, getPatientById } from '../data/patients'
+import { analyzeText } from '../utils/textAnalyzer'
 
 const PIN = '1234'
 
@@ -395,6 +396,23 @@ function todayISO() {
   return new Date().toISOString().slice(0, 10)
 }
 
+const CATEGORY_LABELS = {
+  concordancia_genero:  'Género',
+  concordancia_numero:  'Número',
+  concordancia_verbal:  'Verbal',
+  conector:             'Conector',
+  termino_clinico:      'Clínico',
+  frase_incompleta:     'Incompleta',
+}
+const CATEGORY_COLORS = {
+  concordancia_genero:  '#7c6bb0',
+  concordancia_numero:  '#e8a020',
+  concordancia_verbal:  '#e07a5f',
+  conector:             '#4aab8a',
+  termino_clinico:      '#3b82f6',
+  frase_incompleta:     '#888',
+}
+
 function SessionTab() {
   const { patient, addSessionEntry } = usePatient()
   const [date, setDate] = useState(todayISO())
@@ -404,9 +422,35 @@ function SessionTab() {
   const [otroText, setOtroText] = useState('')
   const [expanded, setExpanded] = useState(new Set())
   const [saved, setSaved] = useState(false)
+  const [analysis, setAnalysis] = useState(null)
+  const [analysisOpen, setAnalysisOpen] = useState(true)
+  const debounceRef = useRef(null)
 
   const wc = wordCount(notes)
   const MAX_WORDS = 300
+
+  // Debounce análisis 800ms
+  useEffect(() => {
+    clearTimeout(debounceRef.current)
+    if (!notes.trim()) { setAnalysis(null); return }
+    debounceRef.current = setTimeout(() => {
+      const result = analyzeText(notes)
+      setAnalysis(result.errors.length > 0 ? result : null)
+    }, 800)
+    return () => clearTimeout(debounceRef.current)
+  }, [notes])
+
+  function handleApplySuggestions() {
+    if (!analysis) return
+    let corrected = notes
+    for (const err of analysis.errors) {
+      if (err.suggestion) {
+        corrected = corrected.replaceAll(err.original, err.suggestion)
+      }
+    }
+    setNotes(corrected)
+    setAnalysis(null)
+  }
 
   function toggleTest(test) {
     setTestsApplied(prev => {
@@ -447,6 +491,7 @@ function SessionTab() {
     setDate(todayISO())
     setTestsApplied(new Set())
     setOtroText('')
+    setAnalysis(null)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -526,10 +571,82 @@ function SessionTab() {
             resize: 'vertical',
             fontFamily: 'inherit',
             lineHeight: '1.5',
-            borderColor: wc >= MAX_WORDS ? '#e07a5f' : '#e8f5f0',
+            borderColor: wc >= MAX_WORDS ? '#e07a5f' : analysis ? '#e8a020' : '#e8f5f0',
           }}
         />
       </div>
+
+      {/* ── Panel de análisis lingüístico ── */}
+      {analysis && (
+        <div style={{ border: '2px solid #f0d080', borderRadius: '14px', overflow: 'hidden' }}>
+          {/* Encabezado colapsable */}
+          <button
+            onClick={() => setAnalysisOpen(o => !o)}
+            style={{
+              width: '100%', padding: '10px 14px', background: '#fffbe8',
+              border: 'none', cursor: 'pointer', textAlign: 'left',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            }}
+          >
+            <span style={{ fontSize: '12px', fontWeight: '700', color: '#7a5c00' }}>
+              🔍 Análisis lingüístico · {analysis.summary.total} {analysis.summary.total === 1 ? 'sugerencia' : 'sugerencias'}
+            </span>
+            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+              {Object.entries(analysis.summary.por_categoria).map(([cat, n]) => (
+                <span key={cat} style={{
+                  fontSize: '10px', fontWeight: '700', padding: '2px 7px', borderRadius: '10px',
+                  background: CATEGORY_COLORS[cat] + '22', color: CATEGORY_COLORS[cat],
+                  border: `1px solid ${CATEGORY_COLORS[cat]}55`,
+                }}>
+                  {CATEGORY_LABELS[cat] ?? cat}: {n}
+                </span>
+              ))}
+              <span style={{ fontSize: '12px', color: '#aaa' }}>{analysisOpen ? '▲' : '▼'}</span>
+            </div>
+          </button>
+
+          {analysisOpen && (
+            <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '10px', background: 'white' }}>
+              {analysis.errors.map((err, i) => (
+                <div key={i} style={{ borderLeft: `3px solid ${CATEGORY_COLORS[err.category]}`, paddingLeft: '10px' }}>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginBottom: '3px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '13px', color: '#e07a5f', fontWeight: '600', textDecoration: 'line-through' }}>
+                      {err.original}
+                    </span>
+                    {err.suggestion && (
+                      <>
+                        <span style={{ fontSize: '12px', color: '#aaa' }}>→</span>
+                        <span style={{ fontSize: '13px', color: '#2d7a62', fontWeight: '600' }}>{err.suggestion}</span>
+                      </>
+                    )}
+                    <span style={{
+                      fontSize: '10px', fontWeight: '700', padding: '1px 6px', borderRadius: '8px',
+                      background: CATEGORY_COLORS[err.category] + '18', color: CATEGORY_COLORS[err.category],
+                      marginLeft: 'auto',
+                    }}>
+                      {CATEGORY_LABELS[err.category] ?? err.category}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '11px', color: '#999', margin: 0 }}>{err.explanation}</p>
+                </div>
+              ))}
+
+              {analysis.errors.some(e => e.suggestion) && (
+                <button
+                  onClick={handleApplySuggestions}
+                  style={{
+                    marginTop: '4px', padding: '8px 14px', borderRadius: '10px',
+                    border: 'none', background: '#2d7a62', color: 'white',
+                    fontSize: '12px', fontWeight: '700', cursor: 'pointer', alignSelf: 'flex-start',
+                  }}
+                >
+                  ✓ Aplicar todas las sugerencias
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       <button onClick={handleSave} style={{ ...primaryBtnStyle, background: saved ? '#2d7a62' : '#4aab8a' }}>
         {saved ? '✓ Registro guardado' : '💾 Guardar registro'}
@@ -674,6 +791,104 @@ function StimulusToggle({ label, desc, value, onChange }) {
   )
 }
 
+// ── Hitos del desarrollo ──────────────────────────────────────────────────────
+
+const MILESTONES_BY_LEVEL = {
+  N1: [
+    { id: 'n1_palabras',    label: 'Más de 10 palabras funcionales' },
+    { id: 'n1_combinacion', label: 'Combinaciones de 2 palabras' },
+    { id: 'n1_ordenes',     label: 'Comprensión de órdenes simples' },
+    { id: 'n1_juego',       label: 'Juego funcional con objetos' },
+  ],
+  N2: [
+    { id: 'n2_vocabulario', label: 'Más de 50 palabras' },
+    { id: 'n2_frases',      label: 'Frases de 2-3 elementos' },
+    { id: 'n2_pronombres',  label: 'Uso de pronombres yo/tú' },
+    { id: 'n2_juego',       label: 'Juego simbólico básico' },
+  ],
+  N3: [
+    { id: 'n3_oraciones',   label: 'Oraciones simples completas' },
+    { id: 'n3_preguntas',   label: 'Preguntas qué / dónde / quién' },
+    { id: 'n3_narracion',   label: 'Narración de 3 eventos en secuencia' },
+    { id: 'n3_plurales',    label: 'Uso de plurales regulares' },
+  ],
+  N4: [
+    { id: 'n4_compuestas',  label: 'Oraciones compuestas' },
+    { id: 'n4_conectores',  label: 'Conectores: y / pero / porque' },
+    { id: 'n4_fonologia',   label: 'Conciencia fonológica emergente' },
+    { id: 'n4_vocabulario', label: 'Vocabulario +1500 palabras' },
+  ],
+  N5: [
+    { id: 'n5_narracion',   label: 'Narración inicio-nudo-desenlace' },
+    { id: 'n5_metaforas',   label: 'Comprensión de metáforas básicas' },
+    { id: 'n5_lectura',     label: 'Lectoescritura emergente' },
+  ],
+  N6: [
+    { id: 'n6_inferencial', label: 'Comprensión inferencial' },
+    { id: 'n6_escolar',     label: 'Lenguaje escolar funcional' },
+    { id: 'n6_morfologia',  label: 'Morfología compleja' },
+    { id: 'n6_ironia',      label: 'Comprensión de ironía básica' },
+  ],
+  N7: [
+    { id: 'n7_academico',   label: 'Lenguaje académico' },
+    { id: 'n7_textos',      label: 'Comprensión de textos escritos' },
+    { id: 'n7_argumenta',   label: 'Discurso argumentativo' },
+  ],
+}
+
+const MILESTONE_STATES = ['no_iniciado', 'en_proceso', 'logrado']
+const MILESTONE_LABELS = { no_iniciado: 'No iniciado', en_proceso: 'En proceso', logrado: 'Logrado' }
+const MILESTONE_COLORS = { no_iniciado: '#bbb', en_proceso: '#e8a020', logrado: '#4aab8a' }
+const MILESTONE_ICONS  = { no_iniciado: '○', en_proceso: '◑', logrado: '●' }
+
+function MilestonesSection() {
+  const { patient, level, updatePatient } = usePatient()
+  const hitos = MILESTONES_BY_LEVEL[patient.levelId] || []
+  const milestones = patient.milestones || {}
+
+  function cycleState(id) {
+    const current = milestones[id] || 'no_iniciado'
+    const next = MILESTONE_STATES[(MILESTONE_STATES.indexOf(current) + 1) % MILESTONE_STATES.length]
+    updatePatient({ milestones: { ...milestones, [id]: next } })
+  }
+
+  if (!hitos.length) return null
+
+  const counts = hitos.reduce((acc, h) => {
+    const st = milestones[h.id] || 'no_iniciado'
+    acc[st] = (acc[st] || 0) + 1
+    return acc
+  }, {})
+
+  return (
+    <div style={{ background: '#f8f8f6', borderRadius: '14px', padding: '14px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', margin: 0 }}>HITOS DEL DESARROLLO · {level.ageRange}</p>
+        <span style={{ fontSize: '11px', color: '#4aab8a', fontWeight: '600' }}>
+          {counts.logrado || 0}/{hitos.length} logrados
+        </span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        {hitos.map(h => {
+          const st = milestones[h.id] || 'no_iniciado'
+          return (
+            <button key={h.id} onClick={() => cycleState(h.id)} style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              background: 'white', border: `1.5px solid ${MILESTONE_COLORS[st]}22`,
+              borderRadius: '10px', padding: '8px 12px', cursor: 'pointer',
+              textAlign: 'left', transition: 'all 0.15s',
+            }}>
+              <span style={{ fontSize: '16px', color: MILESTONE_COLORS[st], flexShrink: 0 }}>{MILESTONE_ICONS[st]}</span>
+              <span style={{ fontSize: '13px', color: '#3a3a3a', flex: 1, lineHeight: '1.3' }}>{h.label}</span>
+              <span style={{ fontSize: '10px', fontWeight: '700', color: MILESTONE_COLORS[st], flexShrink: 0 }}>{MILESTONE_LABELS[st]}</span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ── Config tabs (panel original) ──────────────────────────────────────────────
 
 function ConfigPanel({ onViewProgress }) {
@@ -744,6 +959,8 @@ function ConfigPanel({ onViewProgress }) {
             </div>
           </div>
 
+          <MilestonesSection />
+
           {onViewProgress && (
             <button onClick={onViewProgress} style={{ ...primaryBtnStyle, background: '#f0faf6', color: '#2d7a62', border: '2px solid #c8e8dc' }}>
               📊 Ver progreso completo
@@ -756,7 +973,7 @@ function ConfigPanel({ onViewProgress }) {
             </button>
           ) : (
             <div style={{ background: '#fef4f2', borderRadius: '14px', padding: '16px', border: '2px solid #fde8e3', textAlign: 'center' }}>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#3a3a3a', marginBottom: '8px' }}>¿Estás segura?</p>
+              <p style={{ fontSize: '14px', fontWeight: '700', color: '#3a3a3a', marginBottom: '8px' }}>¿Confirmas esta acción?</p>
               <p style={{ fontSize: '12px', color: '#888', marginBottom: '16px', lineHeight: '1.5' }}>
                 Se borrarán los datos del paciente actual.
               </p>

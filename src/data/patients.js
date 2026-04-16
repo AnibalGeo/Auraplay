@@ -1,4 +1,6 @@
 const STORAGE_KEY = 'auraplay_patients'
+const VALID_DIAGNOSES = ['tel', 'tl_tea', 'tl_tdah', 'tl_tea_tdah']
+function normalizeDiagnosis(d) { return VALID_DIAGNOSES.includes(d) ? d : 'tel' }
 
 function load() {
   try {
@@ -41,7 +43,7 @@ export function savePatient(patient) {
     ageMonths: 0,
     phone: '',
     guardianName: '',
-    diagnosis: 'tdl',
+    diagnosis: normalizeDiagnosis(patient.diagnosis),
     levelId: 'N1',
     stars: 0,
     sessionsCompleted: 0,

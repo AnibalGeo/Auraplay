@@ -137,9 +137,9 @@ export const LEVELS = {
           target: { word: 'PÁJARO', emoji: '🐦' },
           options: [
             { word: 'PÁJARO', emoji: '🐦', correct: true },
-            { word: 'PERRO', emoji: '🐶', correct: true },
+            { word: 'PERRO', emoji: '🐶', correct: false },
             { word: 'MARIPOSA', emoji: '🦋', correct: true },
-            { word: 'PECES', emoji: '🐟', correct: false },
+            { word: 'PEZ', emoji: '🐟', correct: false },
           ],
           multiSelect: true,
           instruction: '¿Cuáles pueden volar?',

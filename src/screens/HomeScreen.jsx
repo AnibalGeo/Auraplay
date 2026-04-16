@@ -114,6 +114,47 @@ function HomeScreen({ onNavigate }) {
           )
         })()}
 
+        {(() => {
+          const suggestions = {
+            tel: [
+              { icon: '👂', text: 'Pares mínimos con /r/ y /l/: refuerza discriminación fonológica' },
+              { icon: '📝', text: 'Frases con conectores "pero" y "porque": morfosintaxis funcional' },
+            ],
+            tl_tea: [
+              { icon: '💬', text: 'Inferencias sobre emociones en láminas' },
+              { icon: '🧩', text: 'Contexto social: ¿qué diría o haría el personaje?' },
+            ],
+            tl_tdah: [
+              { icon: '🔊', text: 'Discriminación auditiva: sesión corta de 5 min' },
+              { icon: '🧠', text: 'Semántica: opuestos con tarjetas de imágenes' },
+              { icon: '👂', text: 'Escucha atenta: instrucciones de 2 pasos' },
+            ],
+            tl_tea_tdah: [
+              { icon: '💬', text: 'Inferencias simples: ¿qué pasó primero?' },
+              { icon: '🔊', text: 'Escucha atenta con turno de habla regulado' },
+            ],
+          }
+          const items = suggestions[patient.diagnosis] ?? suggestions.tel
+          return (
+            <div style={{ marginBottom: '20px' }}>
+              <p className="section-title">Sugerencias para esta sesión</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {items.map((s, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'flex-start', gap: '10px',
+                    background: 'white', borderRadius: '12px',
+                    border: `1.5px solid ${stimulusConfig.color}33`,
+                    padding: '10px 14px',
+                  }}>
+                    <span style={{ fontSize: '18px', flexShrink: 0 }}>{s.icon}</span>
+                    <span style={{ fontSize: '13px', color: '#3a3a3a', lineHeight: '1.4' }}>{s.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })()}
+
         <p className="section-title">Progreso de la semana</p>
         <div className="progress-section">
           <div className="progress-row">
