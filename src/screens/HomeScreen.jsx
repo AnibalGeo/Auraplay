@@ -40,7 +40,7 @@ function HomeScreen({ onNavigate }) {
         </div>
       </div>
 
-      {showPanel && <TherapistPanel onClose={() => setShowPanel(false)} onViewProgress={() => { setShowPanel(false); onNavigate('progress') }} />}
+      {showPanel && <TherapistPanel onClose={() => setShowPanel(false)} onViewProgress={() => { setShowPanel(false); onNavigate('progress') }} onViewHistory={() => { setShowPanel(false); onNavigate('session-history') }} />}
 
       <div className="home-content">
         <div className="patient-card">

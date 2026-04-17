@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { usePatient } from './context/PatientContext'
-import { STIMULUS_CONFIG, getLevelByAge } from './data/levels'
+import { STIMULUS_CONFIG, getLevelByAge, LEVELS } from './data/levels'
 import HomeScreen from './screens/HomeScreen'
 import MinimalPairsScreen from './screens/MinimalPairsScreen'
 import BuildWordScreen from './screens/BuildWordScreen'
@@ -12,7 +12,20 @@ import PragmaticScreen from './screens/PragmaticScreen'
 import NarrativeScreen from './screens/NarrativeScreen'
 import ProgressScreen from './screens/ProgressScreen'
 import PatientSelectScreen from './screens/PatientSelectScreen'
+import SessionHistoryScreen from './screens/SessionHistoryScreen'
 import { updatePatient as persistPatient, getPatientById, getAllPatients, savePatient } from './data/patients'
+
+const ACTIVITY_LABELS = {
+  'minimal-pairs': 'Palabras Similares',
+  'build-word': 'Armar Palabras',
+  'listen': 'Escucha Atento',
+  'syntax': 'Completar Frases',
+  'semantic': 'Semántica',
+  'narrative': 'Ordenar Historia',
+  'pragmatic': 'Inferencias',
+}
+
+const ACTIVITY_SCREENS = new Set(['minimal-pairs', 'build-word', 'listen', 'syntax', 'semantic', 'narrative', 'pragmatic'])
 
 // Mostrar selector si ya hay pacientes guardados; si no, directo al formulario de nuevo paciente
 const hasPatients = getAllPatients().length > 0
@@ -168,22 +181,34 @@ function App() {
   const [showSelect, setShowSelect] = useState(hasPatients)
   const [welcomed, setWelcomed] = useState(!isFirstRun)
   const { patient, estimulusSettings, addStars, addSessionEntry } = usePatient()
+  const activityStartRef = useRef(null)
 
   function goTo(screenName) {
+    if (ACTIVITY_SCREENS.has(screenName)) {
+      activityStartRef.current = Date.now()
+    }
     setScreen(screenName)
   }
 
   function finishActivity(score, total, activityId) {
     const earned = score >= total ? 3 : score >= total * 0.6 ? 2 : 1
+    const duration = activityStartRef.current
+      ? Math.round((Date.now() - activityStartRef.current) / 1000)
+      : 0
+    activityStartRef.current = null
 
     const entry = {
+      id: String(Date.now()),
       type: 'activity',
       date: new Date().toISOString(),
       activityId,
+      activityLabel: ACTIVITY_LABELS[activityId] ?? activityId,
       score,
       total,
       earned,
       levelId: patient.levelId,
+      levelLabel: LEVELS[patient.levelId]?.label ?? patient.levelId,
+      duration,
       stimulusSettings: { ...estimulusSettings },
     }
 
@@ -271,6 +296,9 @@ function App() {
       )}
       {screen === 'progress' && (
         <ProgressScreen onBack={() => goTo('home')} />
+      )}
+      {screen === 'session-history' && (
+        <SessionHistoryScreen onBack={() => goTo('home')} />
       )}
       {screen === 'results' && (
         <ResultsScreen

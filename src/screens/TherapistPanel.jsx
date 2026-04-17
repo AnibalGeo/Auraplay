@@ -6,6 +6,8 @@ import { analyzeText } from '../utils/textAnalyzer'
 
 const PIN = '1234'
 
+function isNote(e) { return e.type === 'note' || e.type === 'nota_clinica' }
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 function formatRut(value) {
@@ -238,9 +240,9 @@ function NewPatientForm({ onBack, onSaved }) {
 function PatientSummary({ patient: p, onConfirm, onBack }) {
   const lvl = LEVELS[p.levelId]
   const cfg = STIMULUS_CONFIG[p.diagnosis]
-  const lastNote = [...(p.sessionHistory || [])].reverse().find(e => e.type === 'note')
-  const lastActivity = [...(p.sessionHistory || [])].reverse().find(e => e.type !== 'note')
-  const totalNotes = (p.sessionHistory || []).filter(e => e.type === 'note').length
+  const lastNote = [...(p.sessionHistory || [])].reverse().find(e => isNote(e))
+  const lastActivity = [...(p.sessionHistory || [])].reverse().find(e => !isNote(e))
+  const totalNotes = (p.sessionHistory || []).filter(e => isNote(e)).length
   const ageMonths = p.ageMonths || calcAgeMonths(p.birthDate)
 
   function row(label, value) {
@@ -357,7 +359,7 @@ function SearchPatient({ onBack, onSelected }) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {results.map(p => {
-          const lastNote = [...(p.sessionHistory || [])].reverse().find(e => e.type === 'note')
+          const lastNote = [...(p.sessionHistory || [])].reverse().find(e => isNote(e))
           const lvl = LEVELS[p.levelId]
           return (
             <button key={p.id} onClick={() => setPreview(p)} style={{
@@ -414,7 +416,7 @@ const CATEGORY_COLORS = {
 }
 
 function SessionTab() {
-  const { patient, addSessionEntry } = usePatient()
+  const { patient, addSessionEntry, updatePatient } = usePatient()
   const [date, setDate] = useState(todayISO())
   const [duration, setDuration] = useState('')
   const [notes, setNotes] = useState('')
@@ -467,25 +469,67 @@ function SessionTab() {
 
   function handleSave() {
     const tests = [...testsApplied].map(t => t === 'Otro' && otroText ? otroText : t)
-    const entry = {
-      type: 'note',
-      date,
-      duration: parseInt(duration) || 0,
-      notes: notes.trim(),
-      testsApplied: tests,
-      activitiesCompleted: patient.sessionsCompleted ?? 0,
-      starsEarned: patient.stars ?? 0,
+    const noteData = {
+      clinicalNote: notes.trim(),
+      clinicalNoteTests: tests,
+      clinicalNoteDuration: parseInt(duration) || 0,
     }
-    addSessionEntry(entry)
-    if (patient.id) {
-      const current = getPatientById(patient.id)
-      if (current) {
-        persistPatient(patient.id, {
-          sessionHistory: [...(current.sessionHistory ?? []), entry],
-          updatedAt: new Date().toISOString(),
-        })
+
+    // Check if there's an activity entry for this date in context history
+    const contextHistory = [...(patient.sessionHistory || [])]
+    let activityIdx = -1
+    for (let i = contextHistory.length - 1; i >= 0; i--) {
+      if (contextHistory[i].type === 'activity' && contextHistory[i].date?.slice(0, 10) === date) {
+        activityIdx = i
+        break
       }
     }
+
+    if (activityIdx !== -1) {
+      // Attach note to existing activity entry
+      contextHistory[activityIdx] = { ...contextHistory[activityIdx], ...noteData }
+      updatePatient({ sessionHistory: contextHistory })
+      if (patient.id) {
+        const current = getPatientById(patient.id)
+        if (current) {
+          const rHistory = [...(current.sessionHistory ?? [])]
+          let rIdx = -1
+          for (let i = rHistory.length - 1; i >= 0; i--) {
+            if (rHistory[i].type === 'activity' && rHistory[i].date?.slice(0, 10) === date) {
+              rIdx = i; break
+            }
+          }
+          if (rIdx !== -1) {
+            rHistory[rIdx] = { ...rHistory[rIdx], ...noteData }
+          } else {
+            rHistory.push({ id: String(Date.now()), type: 'nota_clinica', date, ...noteData, notes: notes.trim(), testsApplied: tests, duration: parseInt(duration) || 0 })
+          }
+          persistPatient(patient.id, { sessionHistory: rHistory, updatedAt: new Date().toISOString() })
+        }
+      }
+    } else {
+      const entry = {
+        id: String(Date.now()),
+        type: 'nota_clinica',
+        date,
+        duration: parseInt(duration) || 0,
+        notes: notes.trim(),
+        testsApplied: tests,
+        activitiesCompleted: patient.sessionsCompleted ?? 0,
+        starsEarned: patient.stars ?? 0,
+      }
+      addSessionEntry(entry)
+      if (patient.id) {
+        const current = getPatientById(patient.id)
+        if (current) {
+          persistPatient(patient.id, {
+            sessionHistory: [...(current.sessionHistory ?? []), entry],
+            updatedAt: new Date().toISOString(),
+          })
+        }
+      }
+    }
+
     setNotes('')
     setDuration('')
     setDate(todayISO())
@@ -497,7 +541,7 @@ function SessionTab() {
   }
 
   const history = [...(patient.sessionHistory || [])]
-    .filter(e => e.type === 'note')
+    .filter(e => isNote(e))
     .reverse()
     .slice(0, 3)
 
@@ -891,7 +935,7 @@ function MilestonesSection() {
 
 // ── Config tabs (panel original) ──────────────────────────────────────────────
 
-function ConfigPanel({ onViewProgress }) {
+function ConfigPanel({ onViewProgress, onViewHistory }) {
   const {
     patient, level, stimulusConfig,
     estimulusSettings, updateStimulusSettings,
@@ -961,6 +1005,11 @@ function ConfigPanel({ onViewProgress }) {
 
           <MilestonesSection />
 
+          {onViewHistory && (
+            <button onClick={onViewHistory} style={{ ...primaryBtnStyle, background: '#f0ecfa', color: '#6a4c9c', border: '2px solid #d4c8f0' }}>
+              📋 Ver historial completo
+            </button>
+          )}
           {onViewProgress && (
             <button onClick={onViewProgress} style={{ ...primaryBtnStyle, background: '#f0faf6', color: '#2d7a62', border: '2px solid #c8e8dc' }}>
               📊 Ver progreso completo
@@ -1148,7 +1197,7 @@ function ConfigPanel({ onViewProgress }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-function TherapistPanel({ onClose, onViewProgress }) {
+function TherapistPanel({ onClose, onViewProgress, onViewHistory }) {
   const { patient, level, loadPatient, setLevelById } = usePatient()
   const [unlocked, setUnlocked] = useState(false)
   const [view, setView] = useState('menu') // 'menu' | 'new' | 'search' | 'config'
@@ -1240,7 +1289,7 @@ function TherapistPanel({ onClose, onViewProgress }) {
             {view === 'config' && (
               <div>
                 <button onClick={() => setView('menu')} style={{ ...backBtnStyle, marginBottom: '16px' }}>← Volver</button>
-                <ConfigPanel onViewProgress={onViewProgress} />
+                <ConfigPanel onViewProgress={onViewProgress} onViewHistory={onViewHistory} />
               </div>
             )}
           </div>
