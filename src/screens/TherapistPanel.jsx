@@ -1053,85 +1053,156 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
       )}
 
       {activeTab === 'level' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ background: '#e8f5f0', borderRadius: '16px', padding: '16px', textAlign: 'center' }}>
-            <p style={{ fontSize: '12px', color: '#2d7a62', fontWeight: '700', marginBottom: '4px' }}>NIVEL ACTUAL</p>
-            <p style={{ fontSize: '20px', fontWeight: '700', color: '#3a3a3a' }}>{level.label}</p>
-            <p style={{ fontSize: '13px', color: '#666' }}>{level.ageRange}</p>
-            <p style={{ fontSize: '12px', color: '#888', marginTop: '4px', fontStyle: 'italic' }}>{level.description}</p>
-          </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button onClick={decreaseLevel} style={{ flex: 1, padding: '12px', borderRadius: '14px', border: '2px solid #e8f5f0', background: 'white', cursor: 'pointer', fontSize: '14px', fontWeight: '700', color: '#666' }}>← Bajar</button>
-            <button onClick={advanceLevel} style={{ flex: 1, padding: '12px', borderRadius: '14px', border: '2px solid #4aab8a', background: '#e8f5f0', cursor: 'pointer', fontSize: '14px', fontWeight: '700', color: '#2d7a62' }}>Subir →</button>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {Object.values(LEVELS).map(lvl => (
-              <button
-                key={lvl.id}
-                onClick={() => { setLevelById(lvl.id); setPreviewLevelId(lvl.id) }}
-                onMouseEnter={() => setPreviewLevelId(lvl.id)}
-                onMouseLeave={() => setPreviewLevelId(patient.levelId)}
-                style={{
-                  padding: '12px 16px', borderRadius: '12px', cursor: 'pointer',
-                  border: `2px solid ${patient.levelId === lvl.id ? '#4aab8a' : previewLevelId === lvl.id ? '#b0ddd0' : '#e8f5f0'}`,
-                  background: patient.levelId === lvl.id ? '#e8f5f0' : previewLevelId === lvl.id ? '#f4faf8' : 'white',
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.15s',
-                }}
-              >
-                <span style={{ fontSize: '13px', fontWeight: '700', color: patient.levelId === lvl.id ? '#2d7a62' : '#3a3a3a' }}>{lvl.label}</span>
-                <span style={{ fontSize: '12px', color: '#888' }}>{lvl.ageRange}</span>
-              </button>
-            ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+          {/* ── Sección 1: Nivel del paciente ── */}
+          <div>
+            <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', marginBottom: '10px', letterSpacing: '0.05em' }}>NIVEL CRONOLÓGICO DEL PACIENTE</p>
+            <div style={{ background: '#e8f5f0', borderRadius: '14px', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <div>
+                <p style={{ fontSize: '18px', fontWeight: '800', color: '#2d7a62' }}>{level.label}</p>
+                <p style={{ fontSize: '12px', color: '#4aab8a' }}>{level.ageRange}</p>
+                {level.description && <p style={{ fontSize: '11px', color: '#888', fontStyle: 'italic', marginTop: '2px' }}>{level.description}</p>}
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button onClick={decreaseLevel} style={{ padding: '8px 14px', borderRadius: '10px', border: '2px solid #c8e8dc', background: 'white', cursor: 'pointer', fontSize: '13px', fontWeight: '700', color: '#666' }}>←</button>
+                <button onClick={advanceLevel} style={{ padding: '8px 14px', borderRadius: '10px', border: '2px solid #4aab8a', background: '#4aab8a', cursor: 'pointer', fontSize: '13px', fontWeight: '700', color: 'white' }}>→</button>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {Object.values(LEVELS).map(lvl => (
+                <button
+                  key={lvl.id}
+                  onClick={() => { setLevelById(lvl.id); setPreviewLevelId(lvl.id) }}
+                  onMouseEnter={() => setPreviewLevelId(lvl.id)}
+                  onMouseLeave={() => setPreviewLevelId(patient.levelId)}
+                  style={{
+                    padding: '10px 14px', borderRadius: '10px', cursor: 'pointer',
+                    border: `2px solid ${patient.levelId === lvl.id ? '#4aab8a' : previewLevelId === lvl.id ? '#b0ddd0' : '#e8f5f0'}`,
+                    background: patient.levelId === lvl.id ? '#e8f5f0' : previewLevelId === lvl.id ? '#f4faf8' : 'white',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.15s',
+                  }}
+                >
+                  <span style={{ fontSize: '13px', fontWeight: '700', color: patient.levelId === lvl.id ? '#2d7a62' : '#3a3a3a' }}>{lvl.label}</span>
+                  <span style={{ fontSize: '11px', color: '#888' }}>{lvl.ageRange}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
+          {/* ── Sección 2: Componentes del lenguaje ── */}
+          <div>
+            <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', marginBottom: '10px', letterSpacing: '0.05em' }}>NIVEL DE DIFICULTAD POR COMPONENTE</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                { key: 'fonologico',      name: 'Fonético-Fonológico', emoji: '🔊', color: '#4aab8a' },
+                { key: 'lexico',          name: 'Léxico-Semántico',    emoji: '📚', color: '#7c6bb0' },
+                { key: 'morfosintactico', name: 'Morfosintáctico',     emoji: '🧩', color: '#e07a5f' },
+                { key: 'pragmatico',      name: 'Pragmático',          emoji: '💬', color: '#e8a020' },
+              ].map(comp => {
+                const current = patient.componentLevels?.[comp.key] ?? 'inicial'
+                return (
+                  <div key={comp.key} style={{ border: `1.5px solid ${comp.color}33`, borderRadius: '14px', padding: '12px 14px', background: comp.color + '08' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <span style={{ fontSize: '18px' }}>{comp.emoji}</span>
+                      <span style={{ fontSize: '13px', fontWeight: '700', color: '#3a3a3a' }}>{comp.name}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      {['inicial', 'intermedio', 'avanzado'].map(lvl => (
+                        <button
+                          key={lvl}
+                          onClick={() => updatePatient({ componentLevels: { ...patient.componentLevels, [comp.key]: lvl } })}
+                          style={{
+                            flex: 1, padding: '8px 4px', borderRadius: '10px', cursor: 'pointer',
+                            border: `2px solid ${current === lvl ? comp.color : comp.color + '33'}`,
+                            background: current === lvl ? comp.color : 'white',
+                            fontSize: '12px', fontWeight: '700',
+                            color: current === lvl ? 'white' : comp.color,
+                            transition: 'all 0.15s', textTransform: 'capitalize',
+                          }}
+                        >
+                          {lvl.charAt(0).toUpperCase() + lvl.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* ── Sección 3: Vista previa de ejercicios ── */}
           {(() => {
             const pl = LEVELS[previewLevelId]
             if (!pl) return null
             const semTotal = (pl.semantica?.opposites?.length ?? 0) + (pl.semantica?.definitions?.length ?? 0)
-            const items = [
-              { id: 'minimal-pairs', label: 'Pares mínimos',  available: pl.fonologia?.minimalPairs?.length ?? 0 },
-              { id: 'build-word',    label: 'Armar palabras', available: pl.fonologia?.buildWords?.length ?? 0 },
-              { id: 'listen',        label: 'Escucha',        available: pl.semantica?.listen?.length ?? 0 },
-              { id: 'syntax',        label: 'Conectores',     available: pl.morfosintaxis?.connectors?.length ?? 0 },
-              { id: 'semantic',      label: 'Semántica',      available: semTotal },
-              { id: 'narrative',     label: 'Narrativa',      available: pl.morfosintaxis?.narrativeSequence?.length ?? 0 },
-              { id: 'pragmatic',     label: 'Inferencias',    available: pl.pragmatica?.inferences?.length ?? 0 },
-            ].filter(i => i.available > 0)
+            const groups = [
+              {
+                compName: 'Fonético-Fonológico', color: '#4aab8a',
+                items: [
+                  { id: 'minimal-pairs', label: 'Pares mínimos',  available: pl.fonologia?.minimalPairs?.length ?? 0 },
+                  { id: 'build-word',    label: 'Armar palabras', available: pl.fonologia?.buildWords?.length ?? 0 },
+                ],
+              },
+              {
+                compName: 'Léxico-Semántico', color: '#7c6bb0',
+                items: [
+                  { id: 'listen',   label: 'Escucha',   available: pl.semantica?.listen?.length ?? 0 },
+                  { id: 'semantic', label: 'Semántica', available: semTotal },
+                ],
+              },
+              {
+                compName: 'Morfosintáctico', color: '#e07a5f',
+                items: [
+                  { id: 'syntax',    label: 'Conectores', available: pl.morfosintaxis?.connectors?.length ?? 0 },
+                  { id: 'narrative', label: 'Narrativa',  available: pl.morfosintaxis?.narrativeSequence?.length ?? 0 },
+                ],
+              },
+              {
+                compName: 'Pragmático', color: '#e8a020',
+                items: [
+                  { id: 'pragmatic', label: 'Inferencias', available: pl.pragmatica?.inferences?.length ?? 0 },
+                ],
+              },
+            ]
 
             return (
-              <div style={{ background: '#f4faf8', borderRadius: '14px', padding: '14px 16px', border: '1px solid #d0ede4' }}>
-                <p style={{ fontSize: '11px', fontWeight: '700', color: '#2d7a62', marginBottom: '12px', letterSpacing: '0.05em' }}>
-                  VISTA PREVIA · {pl.label} · {pl.ageRange}
+              <div>
+                <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', marginBottom: '10px', letterSpacing: '0.05em' }}>
+                  EJERCICIOS POR ACTIVIDAD · {pl.label} · {pl.ageRange}
                 </p>
-                {items.length === 0 ? (
-                  <p style={{ fontSize: '12px', color: '#aaa', fontStyle: 'italic' }}>Sin contenido disponible</p>
-                ) : (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    {items.map(i => {
-                      const current = estimulusSettings.exerciseCount?.[i.id] ?? 12
-                      return (
-                        <div key={i.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', background: 'white', borderRadius: '12px', padding: '10px 12px', border: '1px solid #c8e8de', minWidth: '80px' }}>
-                          <span style={{ fontSize: '11px', color: '#666', fontWeight: '600', textAlign: 'center', lineHeight: '1.2' }}>{i.label}</span>
-                          <input
-                            type="number"
-                            min={8}
-                            max={20}
-                            step={1}
-                            value={current}
-                            onChange={e => {
-                              let v = Number(e.target.value)
-                              if (v < 8) v = 8
-                              if (v > 20) v = 20
-                              updateStimulusSettings('exerciseCount', { ...estimulusSettings.exerciseCount, [i.id]: v })
-                            }}
-                            style={{ width: '60px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#2d7a62', border: '2px solid #c8e8de', borderRadius: '10px', padding: '6px 4px', background: 'white', outline: 'none' }}
-                          />
-                          <span style={{ fontSize: '10px', color: '#aaa' }}>máx {i.available}</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {groups.map(g => {
+                    const available = g.items.filter(i => i.available > 0)
+                    if (available.length === 0) return null
+                    return (
+                      <div key={g.compName} style={{ background: 'white', borderRadius: '12px', border: `1.5px solid ${g.color}33`, padding: '10px 12px' }}>
+                        <p style={{ fontSize: '11px', fontWeight: '700', color: g.color, marginBottom: '8px' }}>{g.compName}</p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                          {available.map(i => {
+                            const val = estimulusSettings.exerciseCount?.[i.id] ?? 12
+                            return (
+                              <div key={i.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '76px' }}>
+                                <span style={{ fontSize: '11px', color: '#666', fontWeight: '600', textAlign: 'center' }}>{i.label}</span>
+                                <input
+                                  type="number" min={8} max={20} step={1} value={val}
+                                  onChange={e => {
+                                    let v = Number(e.target.value)
+                                    if (v < 8) v = 8
+                                    if (v > 20) v = 20
+                                    updateStimulusSettings('exerciseCount', { ...estimulusSettings.exerciseCount, [i.id]: v })
+                                  }}
+                                  style={{ width: '60px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: g.color, border: `2px solid ${g.color}44`, borderRadius: '10px', padding: '6px 4px', background: 'white', outline: 'none' }}
+                                />
+                                <span style={{ fontSize: '10px', color: '#bbb' }}>máx {i.available}</span>
+                              </div>
+                            )
+                          })}
                         </div>
-                      )
-                    })}
-                  </div>
-                )}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             )
           })()}

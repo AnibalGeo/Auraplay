@@ -6,10 +6,10 @@ import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
 // ── Constantes ────────────────────────────────────────────────────────────────
 
 const AXES = [
-  { name: 'Fonología',    ids: ['minimal-pairs', 'build-word'], color: '#4aab8a' },
-  { name: 'Semántica',    ids: ['semantic', 'listen'],          color: '#7c6be8' },
-  { name: 'Morfosintaxis',ids: ['syntax'],                      color: '#e07a5f' },
-  { name: 'Pragmática',   ids: ['pragmatic'],                   color: '#e8a020' },
+  { name: 'Fonético-Fonológico', ids: ['minimal-pairs', 'build-word'],  color: '#4aab8a', compKey: 'fonologico' },
+  { name: 'Léxico-Semántico',    ids: ['semantic', 'listen'],           color: '#7c6bb0', compKey: 'lexico' },
+  { name: 'Morfosintáctico',     ids: ['syntax', 'narrative'],          color: '#e07a5f', compKey: 'morfosintactico' },
+  { name: 'Pragmático',          ids: ['pragmatic'],                    color: '#e8a020', compKey: 'pragmatico' },
 ]
 
 function axisColor(activityId) {
@@ -212,21 +212,29 @@ function ProgressScreen({ onBack }) {
         )}
 
         {/* ── Progreso por eje lingüístico ── */}
-        <Section title="PROGRESO POR EJE LINGÜÍSTICO">
+        <Section title="PROGRESO POR COMPONENTE LINGÜÍSTICO">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {axisStats.map(({ name, pct, count, color }) => (
-              <div key={name}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#3a3a3a' }}>{name}</span>
-                  <span style={{ fontSize: '12px', color: '#999' }}>
-                    {count > 0 ? `${pct}% · ${count} actividad${count !== 1 ? 'es' : ''}` : 'Sin datos'}
-                  </span>
+            {axisStats.map(({ name, pct, count, color, compKey }) => {
+              const compLevel = fullPatient.componentLevels?.[compKey] ?? 'inicial'
+              return (
+                <div key={name}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '13px', fontWeight: '600', color: '#3a3a3a' }}>{name}</span>
+                      <span style={{ fontSize: '10px', fontWeight: '700', color: 'white', background: color, borderRadius: '20px', padding: '1px 7px', textTransform: 'capitalize' }}>
+                        {compLevel}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '12px', color: '#999' }}>
+                      {count > 0 ? `${pct}% · ${count} actividad${count !== 1 ? 'es' : ''}` : 'Sin datos'}
+                    </span>
+                  </div>
+                  <div style={{ background: '#f0f0f0', borderRadius: '8px', height: '10px', overflow: 'hidden' }}>
+                    <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: '8px', minWidth: count > 0 ? '4px' : 0 }} />
+                  </div>
                 </div>
-                <div style={{ background: '#f0f0f0', borderRadius: '8px', height: '10px', overflow: 'hidden' }}>
-                  <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: '8px', minWidth: count > 0 ? '4px' : 0 }} />
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </Section>
 

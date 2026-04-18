@@ -48,6 +48,12 @@ export function savePatient(patient) {
     stars: 0,
     sessionsCompleted: 0,
     sessionHistory: [],
+    componentLevels: {
+      fonologico: 'inicial',
+      lexico: 'inicial',
+      morfosintactico: 'inicial',
+      pragmatico: 'inicial',
+    },
     updatedAt: now,
     ...patient,
     createdAt: patient.createdAt || now,

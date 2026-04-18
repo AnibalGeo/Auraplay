@@ -20,6 +20,12 @@ const DEFAULT_PATIENT = {
   sessionsCompleted: 0,
   sessionHistory: [],
   profilePhoto: null,
+  componentLevels: {
+    fonologico: 'inicial',
+    lexico: 'inicial',
+    morfosintactico: 'inicial',
+    pragmatico: 'inicial',
+  },
   createdAt: null,
   updatedAt: null,
 }

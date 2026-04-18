@@ -244,7 +244,7 @@ function ConfirmCard({ p, onConfirm, onCancel }) {
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
           {[
             { label: 'Nivel actual', value: level ? `${level.label}` : '—' },
             { label: 'Sesiones', value: sessionsCount },
@@ -256,6 +256,23 @@ function ConfirmCard({ p, onConfirm, onCancel }) {
               <p style={{ fontSize: '14px', fontWeight: '700', color: '#2d2d2d' }}>{value}</p>
             </div>
           ))}
+        </div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+          {[
+            { key: 'fonologico',      label: 'Fonético',   color: '#4aab8a' },
+            { key: 'lexico',          label: 'Léxico',     color: '#7c6bb0' },
+            { key: 'morfosintactico', label: 'Morfosint.', color: '#e07a5f' },
+            { key: 'pragmatico',      label: 'Pragmático', color: '#e8a020' },
+          ].map(comp => {
+            const lvl = p.componentLevels?.[comp.key] ?? 'inicial'
+            return (
+              <div key={comp.key} style={{ background: comp.color + '18', border: `1px solid ${comp.color}44`, borderRadius: '8px', padding: '4px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1px' }}>
+                <span style={{ fontSize: '9px', color: comp.color, fontWeight: '700' }}>{comp.label.toUpperCase()}</span>
+                <span style={{ fontSize: '11px', fontWeight: '700', color: '#3a3a3a', textTransform: 'capitalize' }}>{lvl}</span>
+              </div>
+            )
+          })}
         </div>
 
         <button
