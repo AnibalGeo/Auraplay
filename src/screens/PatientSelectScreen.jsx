@@ -158,7 +158,7 @@ function NewPatientForm({ onSaved, onBack }) {
           />
           {errors.birthDate && <p style={{ fontSize: '12px', color: '#e07a5f', marginTop: '4px' }}>{errors.birthDate}</p>}
           {form.birthDate && !errors.birthDate && (
-            <p style={{ fontSize: '12px', color: '#4aab8a', marginTop: '4px' }}>{ageMonths} meses de edad</p>
+            <p style={{ fontSize: '12px', color: '#4aab8a', marginTop: '4px' }}>{Math.floor(ageMonths / 12)},{ageMonths % 12} años ({ageMonths} meses)</p>
           )}
         </div>
 

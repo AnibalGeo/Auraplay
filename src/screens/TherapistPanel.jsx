@@ -193,7 +193,7 @@ function NewPatientForm({ onBack, onSaved }) {
         {errors.birthDate && <p style={errorStyle}>{errors.birthDate}</p>}
         {form.birthDate && !errors.birthDate && (
           <p style={{ fontSize: '11px', color: '#4aab8a', marginTop: '4px' }}>
-            {ageMonths} meses ({Math.floor(ageMonths / 12)} años {ageMonths % 12} meses)
+            {Math.floor(ageMonths / 12)},{ageMonths % 12} años ({ageMonths} meses)
           </p>
         )}
       </div>
@@ -966,6 +966,23 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
       {activeTab === 'patient' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '72px', height: '72px', borderRadius: '50%', overflow: 'hidden', background: '#e8f5f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', border: '2px solid #c8e8dc' }}>
+              {patient.profilePhoto
+                ? <img src={patient.profilePhoto} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : '🧒'}
+            </div>
+            <label style={{ padding: '6px 14px', background: '#e8f5f0', borderRadius: '10px', fontSize: '12px', fontWeight: '700', color: '#2d7a62', cursor: 'pointer', border: '2px solid #c8e8dc' }}>
+              Cambiar foto
+              <input type="file" accept="image/jpg,image/jpeg,image/png" style={{ display: 'none' }} onChange={e => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                const reader = new FileReader()
+                reader.onload = ev => updatePatient({ profilePhoto: ev.target.result })
+                reader.readAsDataURL(file)
+              }} />
+            </label>
+          </div>
           <div>
             <label style={labelStyle}>NOMBRE DEL PACIENTE</label>
             <input value={patient.name} onChange={e => updatePatient({ name: e.target.value })} style={inputStyle} />
@@ -1070,35 +1087,49 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
           {(() => {
             const pl = LEVELS[previewLevelId]
             if (!pl) return null
+            const semTotal = (pl.semantica?.opposites?.length ?? 0) + (pl.semantica?.definitions?.length ?? 0)
             const items = [
-              { label: 'Pares mínimos',  count: pl.fonologia?.minimalPairs?.length ?? 0 },
-              { label: 'Armar palabras', count: pl.fonologia?.buildWords?.length ?? 0 },
-              { label: 'Escucha',        count: pl.semantica?.listen?.length ?? 0 },
-              { label: 'Conectores',     count: pl.morfosintaxis?.connectors?.length ?? 0 },
-              { label: 'Opuestos',       count: pl.semantica?.opposites?.length ?? 0 },
-              { label: 'Definiciones',   count: pl.semantica?.definitions?.length ?? 0 },
-              { label: 'Narrativa',      count: pl.morfosintaxis?.narrativeSequence?.length ?? 0 },
-              { label: 'Inferencias',    count: pl.pragmatica?.inferences?.length ?? 0 },
-            ].filter(i => i.count > 0)
+              { id: 'minimal-pairs', label: 'Pares mínimos',  available: pl.fonologia?.minimalPairs?.length ?? 0 },
+              { id: 'build-word',    label: 'Armar palabras', available: pl.fonologia?.buildWords?.length ?? 0 },
+              { id: 'listen',        label: 'Escucha',        available: pl.semantica?.listen?.length ?? 0 },
+              { id: 'syntax',        label: 'Conectores',     available: pl.morfosintaxis?.connectors?.length ?? 0 },
+              { id: 'semantic',      label: 'Semántica',      available: semTotal },
+              { id: 'narrative',     label: 'Narrativa',      available: pl.morfosintaxis?.narrativeSequence?.length ?? 0 },
+              { id: 'pragmatic',     label: 'Inferencias',    available: pl.pragmatica?.inferences?.length ?? 0 },
+            ].filter(i => i.available > 0)
 
             return (
               <div style={{ background: '#f4faf8', borderRadius: '14px', padding: '14px 16px', border: '1px solid #d0ede4' }}>
-                <p style={{ fontSize: '11px', fontWeight: '700', color: '#2d7a62', marginBottom: '10px', letterSpacing: '0.05em' }}>
+                <p style={{ fontSize: '11px', fontWeight: '700', color: '#2d7a62', marginBottom: '12px', letterSpacing: '0.05em' }}>
                   VISTA PREVIA · {pl.label} · {pl.ageRange}
                 </p>
                 {items.length === 0 ? (
                   <p style={{ fontSize: '12px', color: '#aaa', fontStyle: 'italic' }}>Sin contenido disponible</p>
                 ) : (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {items.map(i => (
-                      <span key={i.label} style={{
-                        fontSize: '12px', background: 'white', color: '#3a3a3a',
-                        border: '1px solid #c8e8de', borderRadius: '8px',
-                        padding: '4px 10px', fontWeight: '600',
-                      }}>
-                        {i.label}: <span style={{ color: '#2d7a62' }}>{i.count}</span>
-                      </span>
-                    ))}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                    {items.map(i => {
+                      const current = estimulusSettings.exerciseCount?.[i.id] ?? 12
+                      return (
+                        <div key={i.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', background: 'white', borderRadius: '12px', padding: '10px 12px', border: '1px solid #c8e8de', minWidth: '80px' }}>
+                          <span style={{ fontSize: '11px', color: '#666', fontWeight: '600', textAlign: 'center', lineHeight: '1.2' }}>{i.label}</span>
+                          <input
+                            type="number"
+                            min={8}
+                            max={20}
+                            step={1}
+                            value={current}
+                            onChange={e => {
+                              let v = Number(e.target.value)
+                              if (v < 8) v = 8
+                              if (v > 20) v = 20
+                              updateStimulusSettings('exerciseCount', { ...estimulusSettings.exerciseCount, [i.id]: v })
+                            }}
+                            style={{ width: '60px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#2d7a62', border: '2px solid #c8e8de', borderRadius: '10px', padding: '6px 4px', background: 'white', outline: 'none' }}
+                          />
+                          <span style={{ fontSize: '10px', color: '#aaa' }}>máx {i.available}</span>
+                        </div>
+                      )
+                    })}
                   </div>
                 )}
               </div>

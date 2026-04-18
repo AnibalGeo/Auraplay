@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import ProgressBar from '../components/ProgressBar'
 import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82) {
@@ -16,7 +15,9 @@ function speak(text, rate = 0.82) {
 
 function BuildWordScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const words = getContent(patient.levelId).buildWords ?? []
+  const _words = getContent(patient.levelId).buildWords ?? []
+  const n = estimulusSettings.exerciseCount?.['build-word'] ?? 12
+  const words = _words.slice(0, n)
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
@@ -24,6 +25,8 @@ function BuildWordScreen({ onFinish, onBack }) {
   const [options, setOptions] = useState([])
   const [feedback, setFeedback] = useState(null)
   const [answered, setAnswered] = useState(false)
+  const [showNext, setShowNext] = useState(false)
+  const nextAction = useRef(null)
 
   const current = words[idx]
 
@@ -31,6 +34,7 @@ function BuildWordScreen({ onFinish, onBack }) {
     setSelected([])
     setFeedback(null)
     setAnswered(false)
+    setShowNext(false)
     const shuffled = [...current.syllables]
       .map((syl, i) => ({ syl, id: i }))
       .sort(() => Math.random() - 0.5)
@@ -61,19 +65,17 @@ function BuildWordScreen({ onFinish, onBack }) {
     const attempt = selected.map(s => s.syl).join('')
     const correct = current.syllables.join('')
     const isCorrect = attempt === correct
+    nextAction.current = () => {
+      if (idx + 1 >= words.length) onFinish(isCorrect ? 1 : 0, words.length)
+      else setIdx(i => i + 1)
+    }
     playFeedback(isCorrect ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
       setFeedback({
         type: isCorrect ? 'correct' : 'wrong',
         text: isCorrect ? '¡Perfecto! 🎉' : `Era: ${current.syllables.join(' · ')}`,
       })
-      setTimeout(() => {
-        if (idx + 1 >= words.length) {
-          onFinish(isCorrect ? 1 : 0, words.length)
-        } else {
-          setIdx(i => i + 1)
-        }
-      }, exposureMs)
+      setTimeout(() => setShowNext(true), 800)
     }, 1000)
   }
 
@@ -104,10 +106,13 @@ function BuildWordScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <ProgressBar current={idx + 1} total={words.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Armar Palabras</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
+          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {words.length}</span>
+        </div>
       </div>
 
       <div className="game-area" style={{ gap: '14px' }}>
@@ -177,9 +182,10 @@ function BuildWordScreen({ onFinish, onBack }) {
           <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
         )}
 
-        <div style={{ fontSize: '11px', color: 'var(--text2)', textAlign: 'center' }}>
-          {level.label} · {level.ageRange}
-        </div>
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
       </div>
     </div>
   )

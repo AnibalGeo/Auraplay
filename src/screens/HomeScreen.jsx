@@ -44,7 +44,11 @@ function HomeScreen({ onNavigate }) {
 
       <div className="home-content">
         <div className="patient-card">
-          <div className="avatar">🧒</div>
+          <div className="avatar" style={patient.profilePhoto ? { overflow: 'hidden', padding: 0 } : undefined}>
+            {patient.profilePhoto
+              ? <img src={patient.profilePhoto} alt="avatar" style={{ width: '52px', height: '52px', objectFit: 'cover', borderRadius: '50%', display: 'block' }} />
+              : '🧒'}
+          </div>
           <div className="patient-info">
             <h2>Hola, {patient.name} 👋</h2>
             <p>{level.label} · {level.ageRange}</p>

@@ -19,6 +19,7 @@ const DEFAULT_PATIENT = {
   stars: 0,
   sessionsCompleted: 0,
   sessionHistory: [],
+  profilePhoto: null,
   createdAt: null,
   updatedAt: null,
 }

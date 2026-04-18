@@ -421,7 +421,7 @@ export const LEVELS = {
 // Diagnósticos — etiqueta, descripción, color y configuración de estímulos por defecto
 export const STIMULUS_CONFIG = {
   tel: {
-    label: 'TEL',
+    label: 'TEL/TDL',
     color: '#4aab8a',
     description: 'Trastorno Específico del Lenguaje',
     simultaneousAudioVisual: true,
@@ -486,6 +486,15 @@ export const DEFAULT_STIMULUS_SETTINGS = {
   simplifiedInstructions: false,
   wordSpeakDelay: 1000,
   slideTransitionDelay: 1500,
+  exerciseCount: {
+    'minimal-pairs': 12,
+    'build-word': 12,
+    'listen': 12,
+    'syntax': 12,
+    'semantic': 12,
+    'narrative': 12,
+    'pragmatic': 12,
+  },
 }
 
 export const LEVEL_IDS = Object.keys(LEVELS)

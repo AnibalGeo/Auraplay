@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import ProgressBar from '../components/ProgressBar'
 import { playFeedback } from '../utils/audioFeedback'
 
 function SyntaxScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const exercises = getContent(patient.levelId).connectors ?? []
+  const _exercises = getContent(patient.levelId).connectors ?? []
+  const n = estimulusSettings.exerciseCount?.['syntax'] ?? 12
+  const exercises = _exercises.slice(0, n)
 
   const [idx, setIdx] = useState(0)
   const [selected, setSelected] = useState(null)
@@ -14,6 +15,8 @@ function SyntaxScreen({ onFinish, onBack }) {
   const [answered, setAnswered] = useState(false)
   const [score, setScore] = useState(0)
   const [shuffledOptions, setShuffledOptions] = useState([])
+  const [showNext, setShowNext] = useState(false)
+  const nextAction = useRef(null)
 
   const current = exercises[idx]
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
@@ -23,6 +26,7 @@ function SyntaxScreen({ onFinish, onBack }) {
     setSelected(null)
     setFeedback(null)
     setAnswered(false)
+    setShowNext(false)
     setShuffledOptions([...current.options].sort(() => Math.random() - 0.5))
   }, [idx])
 
@@ -33,6 +37,10 @@ function SyntaxScreen({ onFinish, onBack }) {
     const correct = option === current.correct
     const newScore = correct ? score + 1 : score
     if (correct) setScore(newScore)
+    nextAction.current = () => {
+      if (idx + 1 >= exercises.length) onFinish(newScore, exercises.length)
+      else setIdx(i => i + 1)
+    }
     playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
       setFeedback({
@@ -41,13 +49,7 @@ function SyntaxScreen({ onFinish, onBack }) {
           ? `¡Correcto! ✨ ${current.explanation}`
           : `La respuesta era "${current.correct}". ${current.explanation}`,
       })
-      setTimeout(() => {
-        if (idx + 1 >= exercises.length) {
-          onFinish(newScore, exercises.length)
-        } else {
-          setIdx(i => i + 1)
-        }
-      }, exposureMs)
+      setTimeout(() => setShowNext(true), 800)
     }, 1000)
   }
 
@@ -82,10 +84,13 @@ function SyntaxScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <ProgressBar current={idx + 1} total={exercises.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Completar Frases</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
+          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {exercises.length}</span>
+        </div>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>
@@ -134,9 +139,10 @@ function SyntaxScreen({ onFinish, onBack }) {
           </div>
         )}
 
-        <div style={{ fontSize: '11px', color: 'var(--text2)', textAlign: 'center' }}>
-          {level.label} · {level.ageRange}
-        </div>
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
       </div>
     </div>
   )

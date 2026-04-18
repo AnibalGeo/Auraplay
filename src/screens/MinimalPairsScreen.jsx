@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import ProgressBar from '../components/ProgressBar'
 import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82, pitch = 1.05) {
@@ -16,7 +15,9 @@ function speak(text, rate = 0.82, pitch = 1.05) {
 
 function MinimalPairsScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const pairs = getContent(patient.levelId).minimalPairs ?? []
+  const _pairs = getContent(patient.levelId).minimalPairs ?? []
+  const n = estimulusSettings.exerciseCount?.['minimal-pairs'] ?? 12
+  const pairs = _pairs.slice(0, n)
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
@@ -25,6 +26,8 @@ function MinimalPairsScreen({ onFinish, onBack }) {
   const [selected, setSelected] = useState(null)
   const [feedback, setFeedback] = useState(null)
   const [choices, setChoices] = useState([])
+  const [showNext, setShowNext] = useState(false)
+  const nextAction = useRef(null)
 
   const current = pairs[idx]
 
@@ -32,6 +35,7 @@ function MinimalPairsScreen({ onFinish, onBack }) {
     setAnswered(false)
     setSelected(null)
     setFeedback(null)
+    setShowNext(false)
     // MinimalPairs siempre son 2 opciones — reducedOptions no cambia nada aquí
     const shuffled = [pairs[idx], pairs[idx].distractor].sort(() => Math.random() - 0.5)
     setChoices(shuffled)
@@ -49,19 +53,17 @@ function MinimalPairsScreen({ onFinish, onBack }) {
     const correct = word === current.word
     const newScore = correct ? score + 1 : score
     if (correct) setScore(newScore)
+    nextAction.current = () => {
+      if (idx + 1 >= pairs.length) onFinish(newScore, pairs.length)
+      else setIdx(i => i + 1)
+    }
     playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
       setFeedback({
         type: correct ? 'correct' : 'wrong',
         text: correct ? '¡Muy bien! ✨' : `La palabra era: ${current.word}`,
       })
-      setTimeout(() => {
-        if (idx + 1 >= pairs.length) {
-          onFinish(newScore, pairs.length)
-        } else {
-          setIdx(i => i + 1)
-        }
-      }, exposureMs)
+      setTimeout(() => setShowNext(true), 800)
     }, 1000)
   }
 
@@ -86,10 +88,13 @@ function MinimalPairsScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <ProgressBar current={idx + 1} total={pairs.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Palabras Similares</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
+          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {pairs.length}</span>
+        </div>
       </div>
 
       <div className="game-area">
@@ -126,9 +131,10 @@ function MinimalPairsScreen({ onFinish, onBack }) {
           </div>
         )}
 
-        <div style={{ fontSize: '11px', color: 'var(--text2)', textAlign: 'center', marginTop: '8px' }}>
-          {level.label} · {level.ageRange}
-        </div>
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
       </div>
     </div>
   )

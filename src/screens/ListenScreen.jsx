@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import ProgressBar from '../components/ProgressBar'
 import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82) {
@@ -16,7 +15,9 @@ function speak(text, rate = 0.82) {
 
 function ListenScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const rounds = getContent(patient.levelId).listenRounds ?? []
+  const _rounds = getContent(patient.levelId).listenRounds ?? []
+  const n = estimulusSettings.exerciseCount?.['listen'] ?? 12
+  const rounds = _rounds.slice(0, n)
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
@@ -27,6 +28,8 @@ function ListenScreen({ onFinish, onBack }) {
   const [audioEnabled, setAudioEnabled] = useState(true)
   const [score, setScore] = useState(0)
   const [choices, setChoices] = useState([])
+  const [showNext, setShowNext] = useState(false)
+  const nextAction = useRef(null)
 
   const current = rounds[idx]
 
@@ -35,6 +38,7 @@ function ListenScreen({ onFinish, onBack }) {
     setSelected(null)
     setFeedback(null)
     setPlaying(false)
+    setShowNext(false)
 
     // Construir opciones (max 2 si reducedOptions)
     const all = [...current.options].sort(() => Math.random() - 0.5)
@@ -77,19 +81,17 @@ function ListenScreen({ onFinish, onBack }) {
     const correct = option.e === current.correct
     const newScore = correct ? score + 1 : score
     if (correct) setScore(newScore)
+    nextAction.current = () => {
+      if (idx + 1 >= rounds.length) onFinish(newScore, rounds.length)
+      else setIdx(i => i + 1)
+    }
     playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
       setFeedback({
         type: correct ? 'correct' : 'wrong',
         text: correct ? '¡Muy bien! ✨' : `Era: ${current.label}`,
       })
-      setTimeout(() => {
-        if (idx + 1 >= rounds.length) {
-          onFinish(newScore, rounds.length)
-        } else {
-          setIdx(i => i + 1)
-        }
-      }, exposureMs)
+      setTimeout(() => setShowNext(true), 800)
     }, 1000)
   }
 
@@ -115,10 +117,13 @@ function ListenScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <ProgressBar current={idx + 1} total={rounds.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Escucha Atento</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
+          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {rounds.length}</span>
+        </div>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>
@@ -190,9 +195,10 @@ function ListenScreen({ onFinish, onBack }) {
           <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
         )}
 
-        <div style={{ fontSize: '11px', color: 'var(--text2)', textAlign: 'center' }}>
-          {level.label} · {level.ageRange}
-        </div>
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
       </div>
     </div>
   )

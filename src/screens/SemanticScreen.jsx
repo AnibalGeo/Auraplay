@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import ProgressBar from '../components/ProgressBar'
 import { playFeedback } from '../utils/audioFeedback'
 
 function speak(text, rate = 0.82) {
@@ -21,10 +20,12 @@ function SemanticScreen({ onFinish, onBack }) {
   const opposites = content.opposites ?? []
   const definitions = content.definitions ?? []
 
-  const allExercises = [
+  const _allExercises = [
     ...opposites.map(o => ({ type: 'opposite', data: o })),
     ...definitions.map(d => ({ type: 'definition', data: d })),
   ]
+  const n = estimulusSettings.exerciseCount?.['semantic'] ?? 12
+  const allExercises = _allExercises.slice(0, n)
 
   const [idx, setIdx] = useState(0)
   const [selected, setSelected] = useState(null)
@@ -32,6 +33,8 @@ function SemanticScreen({ onFinish, onBack }) {
   const [answered, setAnswered] = useState(false)
   const [score, setScore] = useState(0)
   const [options, setOptions] = useState([])
+  const [showNext, setShowNext] = useState(false)
+  const nextAction = useRef(null)
 
   const current = allExercises[idx]
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
@@ -41,6 +44,7 @@ function SemanticScreen({ onFinish, onBack }) {
     setSelected(null)
     setFeedback(null)
     setAnswered(false)
+    setShowNext(false)
 
     if (current.type === 'opposite') {
       const correct = { word: current.data.opposite, emoji: current.data.oppositeEmoji }
@@ -77,19 +81,17 @@ function SemanticScreen({ onFinish, onBack }) {
     const newScore = correct ? score + 1 : score
     if (correct) setScore(newScore)
     const correctWord = current.type === 'opposite' ? current.data.opposite : current.data.correct
+    nextAction.current = () => {
+      if (idx + 1 >= allExercises.length) onFinish(newScore, allExercises.length)
+      else setIdx(i => i + 1)
+    }
     playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
       setFeedback({
         type: correct ? 'correct' : 'wrong',
         text: correct ? '¡Muy bien! ✨' : `Era: ${correctWord}`,
       })
-      setTimeout(() => {
-        if (idx + 1 >= allExercises.length) {
-          onFinish(newScore, allExercises.length)
-        } else {
-          setIdx(i => i + 1)
-        }
-      }, exposureMs)
+      setTimeout(() => setShowNext(true), 800)
     }, 1000)
   }
 
@@ -115,10 +117,13 @@ function SemanticScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <ProgressBar current={idx + 1} total={allExercises.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Semántica</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
+          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {allExercises.length}</span>
+        </div>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>
@@ -205,9 +210,10 @@ function SemanticScreen({ onFinish, onBack }) {
           <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
         )}
 
-        <div style={{ fontSize: '11px', color: 'var(--text2)', textAlign: 'center' }}>
-          {level.label} · {level.ageRange}
-        </div>
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
       </div>
     </div>
   )

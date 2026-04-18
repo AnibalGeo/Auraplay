@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import ProgressBar from '../components/ProgressBar'
 import { playFeedback } from '../utils/audioFeedback'
 
 function NarrativeScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const stories = getContent(patient.levelId).narrativeSequences ?? []
+  const _stories = getContent(patient.levelId).narrativeSequences ?? []
+  const n = estimulusSettings.exerciseCount?.['narrative'] ?? 12
+  const stories = _stories.slice(0, n)
 
   const [idx, setIdx] = useState(0)
   const [cards, setCards] = useState([])
@@ -14,6 +15,8 @@ function NarrativeScreen({ onFinish, onBack }) {
   const [feedback, setFeedback] = useState(null)
   const [answered, setAnswered] = useState(false)
   const [score, setScore] = useState(0)
+  const [showNext, setShowNext] = useState(false)
+  const nextAction = useRef(null)
 
   const story = stories[idx]
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
@@ -27,6 +30,7 @@ function NarrativeScreen({ onFinish, onBack }) {
     setSelected(null)
     setFeedback(null)
     setAnswered(false)
+    setShowNext(false)
   }, [idx])
 
   if (!story) {
@@ -69,19 +73,18 @@ function NarrativeScreen({ onFinish, onBack }) {
     const isCorrect = cards.every((card, i) => card.originalIndex === story.correctOrder[i])
     setAnswered(true)
     if (isCorrect) setScore(s => s + 1)
+    const finalScore = isCorrect ? score + 1 : score
+    nextAction.current = () => {
+      if (idx + 1 >= stories.length) onFinish(finalScore, stories.length)
+      else setIdx(i => i + 1)
+    }
     playFeedback(isCorrect ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
     setTimeout(() => {
       setFeedback({
         type: isCorrect ? 'correct' : 'wrong',
         text: isCorrect ? '¡Muy bien! Ordenaste la historia 🎉' : 'Casi... el orden correcto era diferente.',
       })
-      setTimeout(() => {
-        if (idx + 1 >= stories.length) {
-          onFinish(isCorrect ? score + 1 : score, stories.length)
-        } else {
-          setIdx(i => i + 1)
-        }
-      }, exposureMs)
+      setTimeout(() => setShowNext(true), 800)
     }, 1000)
   }
 
@@ -100,10 +103,13 @@ function NarrativeScreen({ onFinish, onBack }) {
 
   return (
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <ProgressBar current={idx + 1} total={stories.length} />
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
         <span className="activity-title">Ordenar Historia</span>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
+          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {stories.length}</span>
+        </div>
       </div>
 
       <div className="game-area" style={{ gap: '14px' }}>
@@ -183,9 +189,10 @@ function NarrativeScreen({ onFinish, onBack }) {
           <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
         )}
 
-        <div style={{ fontSize: '11px', color: 'var(--text2)', textAlign: 'center' }}>
-          {level.label} · {level.ageRange}
-        </div>
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
       </div>
     </div>
   )
