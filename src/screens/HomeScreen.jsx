@@ -105,6 +105,9 @@ function calcWeekProgress(sessionHistory, groupId) {
 export default function HomeScreen({ onNavigate }) {
   const { patient, stimulusConfig } = usePatient()
   const [showPanel, setShowPanel] = useState(false)
+  const [expanded, setExpanded] = useState({
+    fonetico: true, lexico: true, morfosintactico: true, pragmatico: true
+  })
   const level = LEVELS[patient.levelId]
 
   const diagColors = {
@@ -160,11 +163,16 @@ export default function HomeScreen({ onNavigate }) {
 
         {ACTIVITY_GROUPS.map(group => (
           <div key={group.id} className="activity-group">
-            <div className="group-header">
+            <div
+              className="group-header"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setExpanded(p => ({...p, [group.id]: !p[group.id]}))}
+            >
               <div className="group-dot" style={{ background: group.color }} />
               <span className="group-name">{group.name}</span>
+              <span style={{marginLeft:'auto', fontSize:13, color:'#ccc', transition:'transform 0.2s', transform: expanded[group.id] ? 'rotate(90deg)' : 'rotate(0deg)'}}>›</span>
             </div>
-            {group.activities.map(act => {
+            {expanded[group.id] && group.activities.map(act => {
               const available = isActivityAvailable(act.id, level)
               return (
                 <div
