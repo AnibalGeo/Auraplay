@@ -1,0 +1,433 @@
+================================================================================
+AURAPLAY — ESTADO COMPLETO DEL PROYECTO
+Generado: 2026-04-18
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+1. STACK Y CONFIGURACIÓN
+────────────────────────────────────────────────────────────────────────────────
+
+React           19.2.4
+React DOM       19.2.4
+Vite            8.0.4
+@vitejs/plugin-react  6.0.1
+ESLint          9.39.4
+
+- Sin router (navegación por estado `screen` en App.jsx)
+- Sin CSS framework (estilos inline + clases globales en CSS)
+- Sin librería de testing
+- Sin backend — todo en localStorage
+- Sin audio externo — usa window.speechSynthesis (TTS nativo del navegador)
+- Persistencia: localStorage 'auraplay_patient' (activo) + 'auraplay_patients' (roster)
+
+
+────────────────────────────────────────────────────────────────────────────────
+2. ESTRUCTURA DE ARCHIVOS
+────────────────────────────────────────────────────────────────────────────────
+
+src/
+├── App.jsx                          # Navegación central + WelcomeScreen inline
+├── main.jsx
+├── context/
+│   └── PatientContext.jsx           # Estado global del paciente + estimulusSettings
+├── data/
+│   ├── levels.js                    # Definición de N1–N7 + STIMULUS_CONFIG
+│   ├── patients.js                  # CRUD roster en localStorage
+│   ├── getContent.js                # Accessor para JSONs de contenido
+│   └── content/
+│       ├── N1.json                  # 18–24 meses
+│       ├── N2.json                  # 2–2,11 años
+│       ├── N3.json                  # 3–3,11 años
+│       ├── N4.json                  # 4–4,11 años
+│       ├── N5.json                  # 5–5,11 años
+│       ├── N6.json                  # 6–6,11 años
+│       └── N7.json                  # 7–12 años
+├── screens/
+│   ├── HomeScreen.jsx
+│   ├── TherapistPanel.jsx           # Panel terapeuta (PIN + 4 tabs)
+│   ├── PatientSelectScreen.jsx
+│   ├── ProgressScreen.jsx
+│   ├── SessionHistoryScreen.jsx
+│   ├── ResultsScreen.jsx
+│   ├── MinimalPairsScreen.jsx
+│   ├── BuildWordScreen.jsx
+│   ├── ListenScreen.jsx
+│   ├── SemanticScreen.jsx
+│   ├── SyntaxScreen.jsx
+│   ├── NarrativeScreen.jsx
+│   └── PragmaticScreen.jsx
+├── components/
+│   └── ProgressBar.jsx
+└── utils/
+    ├── textAnalyzer.js              # Análisis lingüístico de notas clínicas
+    ├── componentMap.js              # Mapeo actividad → dificultad según componentLevels
+    └── audioFeedback.js
+
+
+────────────────────────────────────────────────────────────────────────────────
+3. NIVELES DEL LENGUAJE
+────────────────────────────────────────────────────────────────────────────────
+
+ID   Rango            Descripción
+N1   18–24 meses      Holofrase y primeras combinaciones
+N2   2–2,11 años      Estructura S+V, habla telegráfica
+N3   3–3,11 años      Oraciones 3-4 palabras, causa-efecto
+N4   4–4,11 años      Verbos auxiliares, causales
+N5   5–5,11 años      Dominio gramatical básico, narrativa
+N6   6–6,11 años      Subordinadas, conectores adversativos
+N7   7–12 años        Lenguaje figurado, metáforas
+
+
+────────────────────────────────────────────────────────────────────────────────
+4. DIAGNÓSTICOS
+────────────────────────────────────────────────────────────────────────────────
+
+Key              Label                    Color
+tel              TEL/TDL                  #4aab8a (verde)
+tl_tea           TL asociado a TEA        #7c6bb0 (púrpura)
+tl_tdah          TL asociado a TDAH       #e8a020 (naranja)
+tl_tea_tdah      TL asociado a TEA+TDAH   #e07a5f (coral)
+
+Cada diagnóstico tiene un perfil de estimulación por defecto con 8 parámetros.
+
+
+────────────────────────────────────────────────────────────────────────────────
+5. ACTIVIDADES TERAPÉUTICAS (7 tipos)
+────────────────────────────────────────────────────────────────────────────────
+
+Key              Nombre                  Componente lingüístico
+minimal-pairs    Palabras Similares      Fonético-Fonológico
+build-word       Armar Palabras          Fonético-Fonológico
+listen           Escucha Atento          Léxico-Semántico
+semantic         Semántica               Léxico-Semántico
+syntax           Completar Frases        Morfosintáctico
+narrative        Ordenar Historia        Morfosintáctico
+pragmatic        Inferencias             Pragmático
+
+Cada actividad usa componentLevels para elegir dificultad (inicial/intermedio/avanzado):
+- fonologico  → minimal-pairs, build-word
+- lexico      → listen, semantic
+- morfosintactico → syntax, narrative
+- pragmatico  → pragmatic
+
+
+────────────────────────────────────────────────────────────────────────────────
+6. STIMULUS SETTINGS (configuración de estímulo por sesión)
+────────────────────────────────────────────────────────────────────────────────
+
+Campo                       Tipo      Descripción
+simultaneousAudioVisual     boolean   Presenta audio + visual al mismo tiempo
+animationsEnabled           boolean   Activa animaciones CSS
+backgroundElements          boolean   Fondo con elementos decorativos
+reducedOptions              boolean   Reduce número de opciones en respuestas
+largerText                  boolean   Texto más grande
+sequentialStimulus          boolean   Presenta ítems de forma secuencial
+extendedExposureTime        boolean   Más tiempo de exposición por ítem
+simplifiedInstructions      boolean   Instrucciones más cortas
+wordSpeakDelay              number    Delay antes de hablar (ms)
+slideTransitionDelay        number    Delay entre slides (ms)
+exerciseCount               object    { [activityKey]: number (8-20) }
+
+Almacenado en: localStorage('auraplay_stimulus_settings')
+Separado del perfil del paciente para poder cambiar por sesión sin afectar el perfil.
+
+
+────────────────────────────────────────────────────────────────────────────────
+7. CAMPOS DEL PACIENTE (PatientContext)
+────────────────────────────────────────────────────────────────────────────────
+
+Campo            Tipo           Descripción
+id               string|null    ID único (timestamp al crear)
+rut              string         RUT chileno formateado
+name             string         Nombre del paciente
+birthDate        string         ISO date
+ageMonths        number         Edad en meses
+phone            string         Teléfono (opcional)
+guardianName     string         Nombre del tutor
+diagnosis        string         'tel'|'tl_tea'|'tl_tdah'|'tl_tea_tdah'
+levelId          string         'N1'…'N7'
+initialLevelId   string         Nivel al momento de creación
+stars            number         Estrellas acumuladas (gamificación)
+sessionsCompleted number        Contador de sesiones
+sessionHistory   array          Entradas de actividad y notas clínicas
+profilePhoto     string|null    Base64 de foto de perfil
+componentLevels  object         { fonologico, lexico, morfosintactico, pragmatico }
+                                Cada uno: 'inicial'|'intermedio'|'avanzado'
+milestones       object         { [id]: estado } hitos del desarrollo por nivel
+createdAt        string         ISO timestamp
+updatedAt        string         ISO timestamp
+
+Acciones del contexto:
+updatePatient, advanceLevel, decreaseLevel, addStars, setDiagnosis,
+setLevelById, setLevelByAge, loadPatient, addSessionEntry, resetPatient,
+updateStimulusSettings, loadStimulusSettings
+
+
+────────────────────────────────────────────────────────────────────────────────
+8. HISTORIAL DE SESIÓN (sessionHistory entries)
+────────────────────────────────────────────────────────────────────────────────
+
+Tipo: activity
+  id, type:'activity', date, activityId, activityLabel,
+  score, total, earned (1-3 estrellas), levelId, levelLabel,
+  duration (segundos), stimulusSettings (snapshot)
+
+Tipo: nota_clinica (guardada desde TherapistPanel)
+  id, type:'nota_clinica', date, text, analysis (resultado textAnalyzer),
+  levelId, levelLabel
+
+
+────────────────────────────────────────────────────────────────────────────────
+9. CONTENIDO JSON DISPONIBLE POR NIVEL
+────────────────────────────────────────────────────────────────────────────────
+
+Formato: { inicial: [...], intermedio: [...], avanzado: [...] }
+Números = cantidad de ítems por dificultad
+[0] = sección vacía (actividad no disponible en ese nivel/dificultad)
+
+--- minimalPairs ---
+Nivel   inicial  intermedio  avanzado
+N1        6          6          5
+N2        6          5          5
+N3        5          5          5
+N4        4          4          4
+N5        4          4          4
+N6        4          4          4
+N7        4          4          4
+
+--- buildWords ---
+Nivel   inicial  intermedio  avanzado
+N1       16          2         [0]   ← avanzado vacío
+N2       11          5         [0]   ← avanzado vacío
+N3        5          8          3
+N4        2          7          3
+N5        4          5          3
+N6       [0]         1         11    ← inicial vacío
+N7        4          4          4
+
+--- listenRounds ---
+Nivel   inicial  intermedio  avanzado
+N1        6          6          6
+N2        6          5          5
+N3        5          5          5
+N4        5          5          5
+N5        5          5          5
+N6        4          4          4
+N7        4          4          4
+
+--- connectors (Sintaxis) ---
+Nivel   inicial  intermedio  avanzado
+N1       [0]        [0]        [0]   ← TODO: añadir contenido
+N2        5          5          5
+N3        5          5          5
+N4        4          4          4
+N5        5          5          5
+N6        5          5          5
+N7        5          5          5
+
+--- opposites (Semántica) ---
+Nivel   inicial  intermedio  avanzado
+N1       [0]        [0]        [0]   ← TODO: añadir contenido
+N2       [0]        [0]        [0]   ← TODO: añadir contenido
+N3        5          5          5
+N4        4          4          4
+N5        5          5          5
+N6        4          4          4
+N7        4          4          4
+
+--- definitions (Semántica) ---
+Nivel   inicial  intermedio  avanzado
+N1       [0]        [0]        [0]   ← TODO: añadir contenido
+N2       [0]        [0]        [0]   ← TODO: añadir contenido
+N3        4          4          4
+N4       [0]        [0]        [0]   ← TODO: añadir contenido
+N5        4          4          4
+N6        4          4          4
+N7        4          4          4
+
+--- narrativeSequences (Narrativa) ---
+Nivel   inicial  intermedio  avanzado
+N1       [0]        [0]        [0]   ← TODO: añadir contenido
+N2       [0]        [0]        [0]   ← TODO: añadir contenido
+N3        4          4          4
+N4       [0]        [0]        [0]   ← TODO: añadir contenido
+N5        4          3          3
+N6        4          3          3
+N7        4          3          3
+
+--- inferences (Pragmática) ---
+Nivel   inicial  intermedio  avanzado
+N1       [0]        [0]        [0]   ← TODO: añadir contenido
+N2       [0]        [0]        [0]   ← TODO: añadir contenido
+N3        4          4          4
+N4        4          4          4
+N5        4          4          4
+N6        4          4          4
+N7        4          4          4
+
+
+────────────────────────────────────────────────────────────────────────────────
+10. BUGS CORREGIDOS EN ESTA SESIÓN (2026-04-18)
+────────────────────────────────────────────────────────────────────────────────
+
+BUG 1 — BuildWordScreen: score acumulado
+  Archivo: src/screens/BuildWordScreen.jsx
+  Problema: onFinish(isCorrect ? 1 : 0, words.length)
+            Pasaba 0 o 1 como score total sin importar cuántas respuestas correctas.
+  Fix: Añadido estado score con useState(0). Se acumula en handleCheck y se
+       pasa el valor acumulado en onFinish(newScore, words.length).
+
+BUG 2 — ProgressScreen: filtro de tipo de nota
+  Archivo: src/screens/ProgressScreen.jsx
+  Problema: history.filter(e => e.type === 'note')
+            TherapistPanel guarda con type:'nota_clinica', no 'note'.
+            El conteo de sesiones y las notas recientes siempre mostraban 0.
+  Fix: history.filter(e => e.type === 'nota_clinica' || e.type === 'note')
+
+BUG 3 — ProgressScreen: contador de sesiones
+  Archivo: src/screens/ProgressScreen.jsx
+  Problema: El card "Sesiones Completadas" usaba noteEntries.length en vez
+            del total real de entradas.
+  Fix: patient.sessionHistory?.length ?? 0
+
+BUG 4 — TherapistPanel: estimulusSettings fuera de scope
+  Archivo: src/screens/TherapistPanel.jsx
+  Problema: handleSaveSession referenciaba estimulusSettings pero no estaba
+            desestructurado en el scope del componente TherapistPanel.
+  Fix: Añadido estimulusSettings al usePatient() del componente principal.
+
+BUG 5 — Diagnosis default inválido ('tdl')
+  Archivos: src/App.jsx, src/screens/TherapistPanel.jsx,
+            src/screens/PatientSelectScreen.jsx
+  Problema: 'tdl' no es un diagnóstico válido; los válidos son
+            tel, tl_tea, tl_tdah, tl_tea_tdah.
+            El formulario no mostraba ningún botón seleccionado al inicio.
+  Fix: Cambiado a 'tel' en los 3 lugares.
+
+BUG 6 — HomeScreen: todas las actividades mostraban "No disponible"
+  Archivo: src/screens/HomeScreen.jsx
+  Problema CRÍTICO: isActivityAvailable() llamaba .length sobre objetos del tipo
+            { inicial: [...], intermedio: [...], avanzado: [...] }
+            .length en un objeto retorna undefined, por lo que todas las
+            actividades se marcaban como no disponibles en TODOS los niveles.
+  Fix: Añadida función hasContent(obj) que maneja tanto arrays planos como
+       objetos de dificultades:
+         function hasContent(obj) {
+           if (!obj) return false
+           if (Array.isArray(obj)) return obj.length > 0
+           return Object.values(obj).some(v => Array.isArray(v) && v.length > 0)
+         }
+
+BUG 7 — TherapistPanel: preview de ítems siempre mostraba 0
+  Archivo: src/screens/TherapistPanel.jsx (tab Nivel)
+  Problema: available: pl.fonologia?.minimalPairs?.length ?? 0
+            Mismo problema que Bug 6 — .length en objeto = undefined.
+  Fix: Añadida función countItems(obj):
+         function countItems(obj) {
+           if (!obj) return 0
+           if (Array.isArray(obj)) return obj.length
+           return Object.values(obj).reduce((s, v) =>
+             s + (Array.isArray(v) ? v.length : 0), 0)
+         }
+
+
+────────────────────────────────────────────────────────────────────────────────
+11. PENDIENTES / TODO
+────────────────────────────────────────────────────────────────────────────────
+
+PRIORIDAD ALTA
+  [ ] Añadir contenido a N1: connectors, opposites, definitions,
+      narrativeSequences, inferences (todas las dificultades vacías)
+  [ ] Añadir contenido a N2: opposites, definitions, narrativeSequences,
+      inferences (todas las dificultades vacías)
+  [ ] Añadir contenido a N4: definitions, narrativeSequences (vacías)
+  [ ] Progreso semanal en HomeScreen: reemplazar valores hardcodeados
+      (72, 60, 40, 55) con cálculo real desde sessionHistory
+
+PRIORIDAD MEDIA
+  [ ] PIN configurable en TherapistPanel (actualmente fijo: '1234')
+  [ ] exposureMs declarado pero no usado en 7 pantallas de actividad
+      (MinimalPairs, BuildWord, Listen, Semantic, Syntax, Narrative, Pragmatic)
+      — implementar delay entre ejercicios o eliminar la variable
+
+PRIORIDAD BAJA
+  [ ] N1/avanzado buildWords: 0 ítems
+  [ ] N2/avanzado buildWords: 0 ítems
+  [ ] N6/inicial buildWords: 0 ítems
+  [ ] Agregar librería de testing (Vitest + Testing Library)
+  [ ] Considerar persistencia en servidor para multi-dispositivo
+
+
+────────────────────────────────────────────────────────────────────────────────
+12. LO QUE YA FUNCIONA
+────────────────────────────────────────────────────────────────────────────────
+
+✓ Flujo completo: selección/creación de paciente → sesión → resultado → historial
+✓ 7 actividades terapéuticas con feedback visual y TTS
+✓ 7 niveles (N1–N7) con 3 dificultades por actividad según componentLevels
+✓ 4 diagnósticos con perfiles de estímulo independientes y configurables
+✓ Panel del terapeuta con PIN, registro de notas clínicas con análisis lingüístico
+✓ Exportación de informe (.txt) y historial al portapapeles
+✓ Persistencia dual: contexto activo + roster de pacientes en localStorage
+✓ Hitos del desarrollo por nivel con estados (no iniciado / en proceso / logrado)
+✓ Configuración de estímulos (8 toggles + 2 sliders + conteo de ejercicios)
+✓ Migración de datos al cambiar diagnósticos
+✓ Score acumulado correcto en todas las actividades (post-fix)
+✓ Actividades disponibles se muestran correctamente en HomeScreen (post-fix)
+✓ Notas clínicas del panel aparecen en ProgressScreen (post-fix)
+
+
+────────────────────────────────────────────────────────────────────────────────
+13. ARQUITECTURA DE NAVEGACIÓN
+────────────────────────────────────────────────────────────────────────────────
+
+App.jsx controla un único estado `screen` (string).
+No hay react-router. Transiciones:
+
+home
+  → minimal-pairs → results → home
+  → build-word    → results → home
+  → listen        → results → home
+  → semantic      → results → home
+  → syntax        → results → home
+  → narrative     → results → home
+  → pragmatic     → results → home
+  → progress      → home
+  → session-history → home
+
+TherapistPanel es un overlay (modal) sobre home, no una pantalla separada.
+PatientSelectScreen aparece antes de home si hay pacientes en el roster.
+WelcomeScreen aparece antes de home solo en el primer uso.
+
+
+────────────────────────────────────────────────────────────────────────────────
+14. ANÁLISIS LINGÜÍSTICO DE NOTAS (textAnalyzer.js)
+────────────────────────────────────────────────────────────────────────────────
+
+Verifica en tiempo real mientras el terapeuta escribe la nota clínica:
+  - Concordancia de género y número (ej: "niño alta" = error)
+  - Concordancia verbal sujeto-verbo
+  - Uso correcto de conectores
+  - Términos clínicos reconocidos (TEL, TDL, fonología, pragmática, etc.)
+  - Longitud y estructura de la nota
+
+Resultado devuelto: { score, warnings: [], suggestions: [], terms: [] }
+
+
+────────────────────────────────────────────────────────────────────────────────
+15. NOTAS TÉCNICAS ADICIONALES
+────────────────────────────────────────────────────────────────────────────────
+
+- El build producido por `npm run build` va a /dist (Vite default)
+- TTS: window.speechSynthesis, idioma 'es-ES', rate 0.82, pitch 1.05
+  Cancelación previa: synth.cancel() antes de cada speak()
+- Estrellas ganadas por actividad: score==total → 3, score>=60% → 2, else → 1
+- Duración de actividad: medida con Date.now() desde que se navega a la pantalla
+- getContent(levelId): retorna el JSON completo del nivel; la actividad
+  selecciona la dificultad con getDifficultyForActivity(activityKey, componentLevels)
+- Foto de perfil: almacenada como base64 en el objeto paciente (puede ser grande)
+
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================

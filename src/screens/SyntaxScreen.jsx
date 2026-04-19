@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback } from '../utils/audioFeedback'
+import { getDifficultyForActivity } from '../utils/componentMap'
 
 function SyntaxScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const _exercises = getContent(patient.levelId).connectors ?? []
+  const contentData = getContent(patient.levelId)
+  const difficulty = getDifficultyForActivity('syntax', patient.componentLevels)
+  const _exercises = contentData.connectors?.[difficulty] ?? contentData.connectors?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['syntax'] ?? 12
   const exercises = _exercises.slice(0, n)
 
@@ -19,7 +22,6 @@ function SyntaxScreen({ onFinish, onBack }) {
   const nextAction = useRef(null)
 
   const current = exercises[idx]
-  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   useEffect(() => {
     if (!current) return

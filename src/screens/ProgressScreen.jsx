@@ -102,7 +102,7 @@ function ProgressScreen({ onBack }) {
 
   const history       = fullPatient.sessionHistory ?? []
   const activityEntries = history.filter(e => e.type === 'activity')
-  const noteEntries     = history.filter(e => e.type === 'note')
+  const noteEntries     = history.filter(e => e.type === 'nota_clinica' || e.type === 'note')
 
   const cfg          = STIMULUS_CONFIG[fullPatient.diagnosis]
   const initialLevel = LEVELS[fullPatient.initialLevelId] ?? null
@@ -155,7 +155,7 @@ function ProgressScreen({ onBack }) {
 
         {/* ── Tarjetas 2×2 ── */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          <Card label="SESIONES COMPLETADAS" value={noteEntries.length} />
+          <Card label="SESIONES COMPLETADAS" value={patient.sessionHistory?.length ?? 0} />
           <Card label="ESTRELLAS ACUMULADAS" value={`⭐ ${fullPatient.stars ?? 0}`} />
           <Card
             label="NIVEL INICIAL → ACTUAL"

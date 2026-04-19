@@ -111,7 +111,7 @@ function NewPatientForm({ onBack, onSaved }) {
   const { loadPatient, setLevelById } = usePatient()
   const [form, setForm] = useState({
     rut: '', name: '', birthDate: '', phone: '', guardianName: '',
-    diagnosis: 'tdl', levelId: 'N4',
+    diagnosis: 'tel', levelId: 'N4',
   })
   const [errors, setErrors] = useState({})
 
@@ -1135,33 +1135,43 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
           {(() => {
             const pl = LEVELS[previewLevelId]
             if (!pl) return null
-            const semTotal = (pl.semantica?.opposites?.length ?? 0) + (pl.semantica?.definitions?.length ?? 0)
+            function countItems(obj) {
+              if (!obj) return 0
+              if (Array.isArray(obj)) return obj.length
+              return Object.values(obj).reduce((s, v) => s + (Array.isArray(v) ? v.length : 0), 0)
+            }
+            const semTotal = countItems(pl.semantica?.opposites) + countItems(pl.semantica?.definitions)
             const groups = [
               {
                 compName: 'Fonético-Fonológico', color: '#4aab8a',
                 items: [
-                  { id: 'minimal-pairs', label: 'Pares mínimos',  available: pl.fonologia?.minimalPairs?.length ?? 0 },
-                  { id: 'build-word',    label: 'Armar palabras', available: pl.fonologia?.buildWords?.length ?? 0 },
+                  { id: 'minimal-pairs', label: 'Pares mínimos',  available: countItems(pl.fonologia?.minimalPairs) },
+                  { id: 'build-word',    label: 'Armar palabras', available: countItems(pl.fonologia?.buildWords) },
+                  { id: 'rhyme',         label: 'Rimas',          available: countItems(pl.rhymes) },
                 ],
               },
               {
                 compName: 'Léxico-Semántico', color: '#7c6bb0',
                 items: [
-                  { id: 'listen',   label: 'Escucha',   available: pl.semantica?.listen?.length ?? 0 },
-                  { id: 'semantic', label: 'Semántica', available: semTotal },
+                  { id: 'listen',       label: 'Escucha',           available: countItems(pl.semantica?.listen) },
+                  { id: 'semantic',     label: 'Semántica',         available: semTotal },
+                  { id: 'point-image',  label: 'Señala imagen',     available: countItems(pl.pointImages) },
+                  { id: 'category',     label: '¿Cuál no pertenece?', available: countItems(pl.categories) },
                 ],
               },
               {
                 compName: 'Morfosintáctico', color: '#e07a5f',
                 items: [
-                  { id: 'syntax',    label: 'Conectores', available: pl.morfosintaxis?.connectors?.length ?? 0 },
-                  { id: 'narrative', label: 'Narrativa',  available: pl.morfosintaxis?.narrativeSequence?.length ?? 0 },
+                  { id: 'syntax',              label: 'Conectores',         available: countItems(pl.morfosintaxis?.connectors) },
+                  { id: 'narrative',           label: 'Narrativa',          available: countItems(pl.morfosintaxis?.narrativeSequence) },
+                  { id: 'follow-instruction',  label: 'Sigue instrucción',  available: countItems(pl.instructions) },
                 ],
               },
               {
                 compName: 'Pragmático', color: '#e8a020',
                 items: [
-                  { id: 'pragmatic', label: 'Inferencias', available: pl.pragmatica?.inferences?.length ?? 0 },
+                  { id: 'pragmatic',            label: 'Inferencias',      available: countItems(pl.pragmatica?.inferences) },
+                  { id: 'communicative-intent', label: '¿Para qué sirve?', available: countItems(pl.communicativeIntents) },
                 ],
               },
             ]
@@ -1300,7 +1310,7 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 function TherapistPanel({ onClose, onViewProgress, onViewHistory }) {
-  const { patient, level, loadPatient, setLevelById } = usePatient()
+  const { patient, level, loadPatient, setLevelById, estimulusSettings } = usePatient()
   const [unlocked, setUnlocked] = useState(false)
   const [view, setView] = useState('menu') // 'menu' | 'new' | 'search' | 'config'
   const [savedMsg, setSavedMsg] = useState(false)

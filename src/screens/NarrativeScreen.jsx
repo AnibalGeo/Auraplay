@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback } from '../utils/audioFeedback'
+import { getDifficultyForActivity } from '../utils/componentMap'
 
 function NarrativeScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const _stories = getContent(patient.levelId).narrativeSequences ?? []
+  const contentData = getContent(patient.levelId)
+  const difficulty = getDifficultyForActivity('narrative', patient.componentLevels)
+  const _stories = contentData.narrativeSequences?.[difficulty] ?? contentData.narrativeSequences?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['narrative'] ?? 12
   const stories = _stories.slice(0, n)
 

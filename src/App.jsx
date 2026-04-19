@@ -10,6 +10,11 @@ import ResultsScreen from './screens/ResultsScreen'
 import SemanticScreen from './screens/SemanticScreen'
 import PragmaticScreen from './screens/PragmaticScreen'
 import NarrativeScreen from './screens/NarrativeScreen'
+import RhymeScreen from './screens/RhymeScreen'
+import PointImageScreen from './screens/PointImageScreen'
+import CategoryScreen from './screens/CategoryScreen'
+import FollowInstructionScreen from './screens/FollowInstructionScreen'
+import CommunicativeIntentScreen from './screens/CommunicativeIntentScreen'
 import ProgressScreen from './screens/ProgressScreen'
 import PatientSelectScreen from './screens/PatientSelectScreen'
 import SessionHistoryScreen from './screens/SessionHistoryScreen'
@@ -23,9 +28,14 @@ const ACTIVITY_LABELS = {
   'semantic': 'Semántica',
   'narrative': 'Ordenar Historia',
   'pragmatic': 'Inferencias',
+  'rhyme': 'Rimas',
+  'point-image': 'Señala la Imagen',
+  'category': '¿Cuál no pertenece?',
+  'follow-instruction': 'Sigue la Instrucción',
+  'communicative-intent': '¿Para qué sirve?',
 }
 
-const ACTIVITY_SCREENS = new Set(['minimal-pairs', 'build-word', 'listen', 'syntax', 'semantic', 'narrative', 'pragmatic'])
+const ACTIVITY_SCREENS = new Set(['minimal-pairs', 'build-word', 'listen', 'syntax', 'semantic', 'narrative', 'pragmatic', 'rhyme', 'point-image', 'category', 'follow-instruction', 'communicative-intent'])
 
 // Mostrar selector si ya hay pacientes guardados; si no, directo al formulario de nuevo paciente
 const hasPatients = getAllPatients().length > 0
@@ -35,7 +45,7 @@ function WelcomeScreen({ onDone }) {
   const { loadPatient, setLevelByAge } = usePatient()
   const [name, setName] = useState('')
   const [ageMonths, setAgeMonths] = useState('')
-  const [diagnosis, setDiagnosis] = useState('tdl')
+  const [diagnosis, setDiagnosis] = useState('tel')
   const [error, setError] = useState('')
 
   function handleConfirm() {
@@ -293,6 +303,21 @@ function App() {
           onFinish={(s, t) => finishActivity(s, t, 'narrative')}
           onBack={() => goTo('home')}
         />
+      )}
+      {screen === 'rhyme' && (
+        <RhymeScreen onFinish={(s, t) => finishActivity(s, t, 'rhyme')} />
+      )}
+      {screen === 'point-image' && (
+        <PointImageScreen onFinish={(s, t) => finishActivity(s, t, 'point-image')} />
+      )}
+      {screen === 'category' && (
+        <CategoryScreen onFinish={(s, t) => finishActivity(s, t, 'category')} />
+      )}
+      {screen === 'follow-instruction' && (
+        <FollowInstructionScreen onFinish={(s, t) => finishActivity(s, t, 'follow-instruction')} />
+      )}
+      {screen === 'communicative-intent' && (
+        <CommunicativeIntentScreen onFinish={(s, t) => finishActivity(s, t, 'communicative-intent')} />
       )}
       {screen === 'progress' && (
         <ProgressScreen onBack={() => goTo('home')} />

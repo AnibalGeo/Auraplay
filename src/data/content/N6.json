@@ -1,212 +1,1882 @@
 {
-  "minimalPairs": [
-    { "word": "CAZA", "emoji": "🎯", "distractor": { "word": "CASA", "emoji": "🏠" } },
-    { "word": "PECES", "emoji": "🐟", "distractor": { "word": "VECES", "emoji": "🔢" } },
-    { "word": "COSER", "emoji": "🧵", "distractor": { "word": "COCER", "emoji": "🍳" } },
-    { "word": "TUBO", "emoji": "🚿", "distractor": { "word": "TUVO", "emoji": "✅" } },
-    { "word": "BARÓN", "emoji": "🎖️", "distractor": { "word": "VARÓN", "emoji": "👦" } },
-    { "word": "SABIA", "emoji": "🦉", "distractor": { "word": "SAVIA", "emoji": "🌿" } },
-    { "word": "HOLA", "emoji": "👋", "distractor": { "word": "OLA", "emoji": "🌊" } },
-    { "word": "BELLO", "emoji": "🌸", "distractor": { "word": "VELLO", "emoji": "🦶" } },
-    { "word": "REBELAR", "emoji": "✊", "distractor": { "word": "REVELAR", "emoji": "📷" } },
-    { "word": "HONDA", "emoji": "🎯", "distractor": { "word": "ONDA", "emoji": "〰️" } },
-    { "word": "HABER", "emoji": "📌", "distractor": { "word": "ABER", "emoji": "🚪" } },
-    { "word": "HIERBA", "emoji": "🌿", "distractor": { "word": "YERBA", "emoji": "🍵" } }
-  ],
-  "buildWords": [
-    { "word": "HELICÓPTERO", "emoji": "🚁", "syllables": ["HE", "LI", "CÓP", "TE", "RO"], "hint": "5 sílabas" },
-    { "word": "DINOSAURIO", "emoji": "🦕", "syllables": ["DI", "NO", "SAU", "RIO"], "hint": "4 sílabas" },
-    { "word": "BIBLIOTECA", "emoji": "📚", "syllables": ["BI", "BLIO", "TE", "CA"], "hint": "4 sílabas" },
-    { "word": "COMPUTADOR", "emoji": "💻", "syllables": ["COM", "PU", "TA", "DOR"], "hint": "4 sílabas" },
-    { "word": "ELECTRICIDAD", "emoji": "⚡", "syllables": ["E", "LEC", "TRI", "CI", "DAD"], "hint": "5 sílabas" },
-    { "word": "TEMPERATURA", "emoji": "🌡️", "syllables": ["TEM", "PE", "RA", "TU", "RA"], "hint": "5 sílabas" },
-    { "word": "PRIVILEGIO", "emoji": "⭐", "syllables": ["PRI", "VI", "LE", "GIO"], "hint": "4 sílabas" },
-    { "word": "CONTINENTE", "emoji": "🗺️", "syllables": ["CON", "TI", "NEN", "TE"], "hint": "4 sílabas" },
-    { "word": "EXPEDICIÓN", "emoji": "🧭", "syllables": ["EX", "PE", "DI", "CIÓN"], "hint": "4 sílabas" },
-    { "word": "EXPLORADOR", "emoji": "🔭", "syllables": ["EX", "PLO", "RA", "DOR"], "hint": "4 sílabas" },
-    { "word": "BIENVENIDA", "emoji": "👋", "syllables": ["BIEN", "VE", "NI", "DA"], "hint": "4 sílabas" },
-    { "word": "TRANSFORMAR", "emoji": "🔄", "syllables": ["TRANS", "FOR", "MAR"], "hint": "3 sílabas" }
-  ],
-  "listenRounds": [
-    { "sound": "HELICÓPTERO", "correct": "🚁", "label": "Helicóptero", "options": [{ "e": "🚁", "l": "Helicóptero" }, { "e": "✈️", "l": "Avión" }, { "e": "🚀", "l": "Cohete" }] },
-    { "sound": "BIBLIOTECA", "correct": "📚", "label": "Biblioteca", "options": [{ "e": "📚", "l": "Biblioteca" }, { "e": "🏫", "l": "Escuela" }, { "e": "🏥", "l": "Hospital" }] },
-    { "sound": "COMPUTADOR", "correct": "💻", "label": "Computador", "options": [{ "e": "💻", "l": "Computador" }, { "e": "📱", "l": "Teléfono" }, { "e": "📺", "l": "Televisor" }] },
-    { "sound": "ELECTRICIDAD", "correct": "⚡", "label": "Electricidad", "options": [{ "e": "⚡", "l": "Electricidad" }, { "e": "🔥", "l": "Fuego" }, { "e": "💧", "l": "Agua" }] },
-    { "sound": "TEMPERATURA", "correct": "🌡️", "label": "Temperatura", "options": [{ "e": "🌡️", "l": "Temperatura" }, { "e": "☀️", "l": "Sol" }, { "e": "❄️", "l": "Frío" }] },
-    { "sound": "EXPLORADOR", "correct": "🔭", "label": "Explorador", "options": [{ "e": "🔭", "l": "Explorador" }, { "e": "👨‍🚀", "l": "Astronauta" }, { "e": "👨‍⚕️", "l": "Doctor" }] },
-    { "sound": "CONTINENTE", "correct": "🗺️", "label": "Continente", "options": [{ "e": "🗺️", "l": "Continente" }, { "e": "🏝️", "l": "Isla" }, { "e": "🏔️", "l": "Montaña" }] },
-    { "sound": "DINOSAURIO", "correct": "🦕", "label": "Dinosaurio", "options": [{ "e": "🦕", "l": "Dinosaurio" }, { "e": "🐊", "l": "Cocodrilo" }, { "e": "🦎", "l": "Lagartija" }] },
-    { "sound": "EXPEDICIÓN", "correct": "🧭", "label": "Expedición", "options": [{ "e": "🧭", "l": "Expedición" }, { "e": "🏕️", "l": "Campamento" }, { "e": "🗺️", "l": "Mapa" }] },
-    { "sound": "TRANSFORMAR", "correct": "🔄", "label": "Transformar", "options": [{ "e": "🔄", "l": "Transformar" }, { "e": "✨", "l": "Brillar" }, { "e": "🔧", "l": "Reparar" }] },
-    { "sound": "PRIVILEGIO", "correct": "⭐", "label": "Privilegio", "options": [{ "e": "⭐", "l": "Privilegio" }, { "e": "🏆", "l": "Premio" }, { "e": "🎁", "l": "Regalo" }] },
-    { "sound": "BIENVENIDA", "correct": "👋", "label": "Bienvenida", "options": [{ "e": "👋", "l": "Bienvenida" }, { "e": "🤝", "l": "Saludo" }, { "e": "🎉", "l": "Fiesta" }] }
-  ],
-  "connectors": [
-    { "sentence": "Estudié mucho ___ saqué mala nota.", "options": ["sin embargo", "porque", "cuando"], "correct": "sin embargo", "explanation": "\"Sin embargo\" introduce una idea contraria a lo esperado.", "level": "adversativo_complejo" },
-    { "sentence": "___ estar cansado, terminó su tarea.", "options": ["A pesar de", "Porque", "Entonces"], "correct": "A pesar de", "explanation": "\"A pesar de\" indica que algo ocurre aunque hay un obstáculo.", "level": "concesivo_complejo" },
-    { "sentence": "El perro ladra ___ el gato maúlla.", "options": ["mientras que", "porque", "entonces"], "correct": "mientras que", "explanation": "\"Mientras que\" compara dos situaciones simultáneas.", "level": "comparativo" },
-    { "sentence": "No vino a la fiesta; ___, mandó un regalo.", "options": ["sin embargo", "porque", "mientras"], "correct": "sin embargo", "explanation": "\"Sin embargo\" introduce la compensación.", "level": "adversativo_complejo" },
-    { "sentence": "___ sus dificultades, logró terminar el maratón.", "options": ["A pesar de", "Porque", "Entonces"], "correct": "A pesar de", "explanation": "\"A pesar de\" señala el esfuerzo ante obstáculos.", "level": "concesivo_complejo" },
-    { "sentence": "Ella canta ___ su hermano toca guitarra.", "options": ["mientras que", "aunque", "porque"], "correct": "mientras que", "explanation": "\"Mientras que\" indica simultaneidad o contraste.", "level": "comparativo" },
-    { "sentence": "Era tarde; ___, siguió estudiando.", "options": ["sin embargo", "cuando", "porque"], "correct": "sin embargo", "explanation": "\"Sin embargo\" indica persistencia contra lo esperado.", "level": "adversativo_complejo" },
-    { "sentence": "___ haber perdido, el equipo celebró su esfuerzo.", "options": ["A pesar de", "Aunque", "Porque"], "correct": "A pesar de", "explanation": "\"A pesar de\" introduce la concesión.", "level": "concesivo_complejo" },
-    { "sentence": "Unos prefieren el campo ___ otros prefieren la ciudad.", "options": ["mientras que", "sin embargo", "a pesar de"], "correct": "mientras que", "explanation": "\"Mientras que\" establece el contraste entre dos grupos.", "level": "comparativo" },
-    { "sentence": "Tenía mucho miedo; ___, entró al cuarto oscuro.", "options": ["sin embargo", "porque", "entonces"], "correct": "sin embargo", "explanation": "\"Sin embargo\" muestra valentía ante el miedo.", "level": "adversativo_complejo" },
-    { "sentence": "___ ser el menor del grupo, ganó la competencia.", "options": ["A pesar de", "Aunque", "Porque"], "correct": "A pesar de", "explanation": "\"A pesar de\" resalta el logro ante la desventaja.", "level": "concesivo_complejo" },
-    { "sentence": "Los pájaros cantan ___ los peces nadan en silencio.", "options": ["mientras que", "sin embargo", "porque"], "correct": "mientras que", "explanation": "\"Mientras que\" contrasta dos comportamientos diferentes.", "level": "comparativo" }
-  ],
-  "opposites": [
-    { "word": "CONTENTO", "emoji": "😊", "opposite": "MELANCÓLICO", "oppositeEmoji": "😔" },
-    { "word": "ABUNDANTE", "emoji": "🍇", "opposite": "ESCASO", "oppositeEmoji": "🌵" },
-    { "word": "VALIENTE", "emoji": "🦁", "opposite": "COBARDE", "oppositeEmoji": "🐭" },
-    { "word": "GENEROSO", "emoji": "🤲", "opposite": "EGOÍSTA", "oppositeEmoji": "🙈" },
-    { "word": "BRILLANTE", "emoji": "✨", "opposite": "OPACO", "oppositeEmoji": "🌑" },
-    { "word": "TEMPRANO", "emoji": "🌅", "opposite": "TARDE", "oppositeEmoji": "🌆" },
-    { "word": "RECORDAR", "emoji": "💭", "opposite": "OLVIDAR", "oppositeEmoji": "🕳️" },
-    { "word": "COMENZAR", "emoji": "▶️", "opposite": "TERMINAR", "oppositeEmoji": "⏹️" },
-    { "word": "UNIR", "emoji": "🔗", "opposite": "SEPARAR", "oppositeEmoji": "✂️" },
-    { "word": "ÉXITO", "emoji": "🏆", "opposite": "FRACASO", "oppositeEmoji": "❌" },
-    { "word": "CULPABLE", "emoji": "😔", "opposite": "INOCENTE", "oppositeEmoji": "😇" },
-    { "word": "INTERIOR", "emoji": "🏠", "opposite": "EXTERIOR", "oppositeEmoji": "🌳" }
-  ],
-  "definitions": [
-    { "definition": "Es un lugar donde hay muchos libros y puedes ir a leer o pedir prestados", "options": [{ "word": "BIBLIOTECA", "emoji": "📚" }, { "word": "HOSPITAL", "emoji": "🏥" }, { "word": "MERCADO", "emoji": "🏪" }], "correct": "BIBLIOTECA" },
-    { "definition": "Es lo que usamos para cortar el pan, tiene un mango y un filo", "options": [{ "word": "CUCHILLO", "emoji": "🔪" }, { "word": "TENEDOR", "emoji": "🍴" }, { "word": "CUCHARA", "emoji": "🥄" }], "correct": "CUCHILLO" },
-    { "definition": "Es cuando alguien cuenta algo que no es verdad a propósito", "options": [{ "word": "MENTIRA", "emoji": "🤥" }, { "word": "ERROR", "emoji": "❌" }, { "word": "SECRETO", "emoji": "🤫" }], "correct": "MENTIRA" },
-    { "definition": "Es la máquina que usamos para viajar muy alto en el cielo, tiene dos alas", "options": [{ "word": "AVIÓN", "emoji": "✈️" }, { "word": "HELICÓPTERO", "emoji": "🚁" }, { "word": "GLOBO", "emoji": "🎈" }], "correct": "AVIÓN" },
-    { "definition": "Es cuando el cielo se llena de nubes y cae agua desde arriba", "options": [{ "word": "LLUVIA", "emoji": "🌧️" }, { "word": "NIEVE", "emoji": "❄️" }, { "word": "TORMENTA", "emoji": "⛈️" }], "correct": "LLUVIA" },
-    { "definition": "Es la persona que construye casas y edificios", "options": [{ "word": "ALBAÑIL", "emoji": "👷" }, { "word": "MÉDICO", "emoji": "👨‍⚕️" }, { "word": "PILOTO", "emoji": "👨‍✈️" }], "correct": "ALBAÑIL" },
-    { "definition": "Es lo contrario de comprar, es cuando le das algo a alguien a cambio de dinero", "options": [{ "word": "VENDER", "emoji": "💰" }, { "word": "REGALAR", "emoji": "🎁" }, { "word": "PRESTAR", "emoji": "🤝" }], "correct": "VENDER" },
-    { "definition": "Es el animal marino que tiene 8 tentáculos y puede cambiar de color", "options": [{ "word": "PULPO", "emoji": "🐙" }, { "word": "CALAMAR", "emoji": "🦑" }, { "word": "CANGREJO", "emoji": "🦀" }], "correct": "PULPO" },
-    { "definition": "Es cuando dos equipos compiten para ver quién gana un premio o trofeo", "options": [{ "word": "COMPETENCIA", "emoji": "🏆" }, { "word": "CELEBRACIÓN", "emoji": "🎉" }, { "word": "REUNIÓN", "emoji": "👥" }], "correct": "COMPETENCIA" },
-    { "definition": "Es un instrumento musical que se toca con los dedos y tiene cuerdas", "options": [{ "word": "GUITARRA", "emoji": "🎸" }, { "word": "FLAUTA", "emoji": "🎵" }, { "word": "TAMBOR", "emoji": "🥁" }], "correct": "GUITARRA" },
-    { "definition": "Es el nombre que usamos para los idiomas que habla la gente, como el español o el inglés", "options": [{ "word": "LENGUA", "emoji": "🗣️" }, { "word": "SONIDO", "emoji": "🔊" }, { "word": "ESCRITURA", "emoji": "✍️" }], "correct": "LENGUA" },
-    { "definition": "Es cuando el sol desaparece por el horizonte al final del día", "options": [{ "word": "ATARDECER", "emoji": "🌇" }, { "word": "AMANECER", "emoji": "🌅" }, { "word": "MEDIODÍA", "emoji": "☀️" }], "correct": "ATARDECER" }
-  ],
-  "narrativeSequences": [
-    {
-      "title": "La tortuga y la liebre",
-      "frames": [
-        { "emoji": "🐢🐇", "text": "La tortuga y la liebre decidieron hacer una carrera." },
-        { "emoji": "🏃🐇", "text": "La liebre corrió muy rápido y se adelantó mucho." },
-        { "emoji": "😴🐇", "text": "La liebre se durmió porque pensó que ganaría igual." },
-        { "emoji": "🚶🐢", "text": "La tortuga siguió caminando sin parar." },
-        { "emoji": "🏆🐢", "text": "La tortuga llegó primero y ganó la carrera." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El proyecto de ciencias",
-      "frames": [
-        { "emoji": "📋", "text": "La profesora explicó que harían un volcán de bicarbonato." },
-        { "emoji": "🏔️", "text": "Los niños construyeron la forma del volcán con arcilla." },
-        { "emoji": "🧪", "text": "Echaron vinagre y bicarbonato dentro." },
-        { "emoji": "🌋", "text": "El volcán hizo efervescencia y todos aplaudieron." },
-        { "emoji": "😄", "text": "La profesora felicitó al grupo por su trabajo." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El viaje al zoológico",
-      "frames": [
-        { "emoji": "🚌", "text": "Los alumnos subieron al bus del colegio con mucha emoción." },
-        { "emoji": "🦁", "text": "Primero vieron los leones en sus jaulas grandes." },
-        { "emoji": "🐘", "text": "Luego visitaron a los elefantes y les dieron fruta." },
-        { "emoji": "📸", "text": "Al final todos se sacaron fotos juntos." },
-        { "emoji": "🏫", "text": "Regresaron al colegio cansados pero muy contentos." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El perro perdido",
-      "frames": [
-        { "emoji": "🐕", "text": "Bruno, el perro de la familia, desapareció un martes." },
-        { "emoji": "📢", "text": "La familia buscó por el barrio y puso carteles en los postes." },
-        { "emoji": "📞", "text": "Al día siguiente, un vecino llamó diciendo que lo había encontrado." },
-        { "emoji": "🏠", "text": "Fueron a buscar a Bruno y lo trajeron a casa." },
-        { "emoji": "🎉", "text": "Toda la familia celebró el regreso de Bruno con un festín." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "La obra de teatro",
-      "frames": [
-        { "emoji": "📝", "text": "La profesora anunció que harían una obra de teatro." },
-        { "emoji": "🎭", "text": "Cada niño eligió un personaje y aprendió su texto." },
-        { "emoji": "👗", "text": "El día del evento se vistieron con sus disfraces." },
-        { "emoji": "🎤", "text": "Actuaron frente a los padres en el gimnasio del colegio." },
-        { "emoji": "👏", "text": "El público aplaudió de pie al finalizar la obra." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El río contaminado",
-      "frames": [
-        { "emoji": "🏭", "text": "Una fábrica tiraba basura al río del pueblo." },
-        { "emoji": "🐟", "text": "Los peces empezaron a morir y el agua se volvió turbia." },
-        { "emoji": "📢", "text": "Los vecinos se organizaron y protestaron ante las autoridades." },
-        { "emoji": "👮", "text": "Las autoridades obligaron a la fábrica a limpiar el río." },
-        { "emoji": "🌊", "text": "Poco a poco el río volvió a estar limpio." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "La nueva mascota",
-      "frames": [
-        { "emoji": "🐾", "text": "Los padres de Valentina le prometieron una mascota por su cumpleaños." },
-        { "emoji": "🏪", "text": "Fueron juntos a la tienda de animales a elegir." },
-        { "emoji": "🐹", "text": "Valentina eligió un hámster marrón muy peludo." },
-        { "emoji": "🏠", "text": "En casa prepararon la jaula con agua y comida." },
-        { "emoji": "😊", "text": "Valentina nombró a su mascota 'Canela' y la cuidó cada día." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El invierno sin luz",
-      "frames": [
-        { "emoji": "⛈️", "text": "Una tormenta muy fuerte cortó la electricidad del barrio." },
-        { "emoji": "🕯️", "text": "La familia sacó velas y linternas para iluminar la casa." },
-        { "emoji": "🎲", "text": "Sin pantallas, todos jugaron juegos de mesa." },
-        { "emoji": "💡", "text": "Horas después, la luz volvió y todos aplaudieron." },
-        { "emoji": "💭", "text": "La familia decidió que los apagones eran una buena excusa para jugar juntos." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El campeonato de fútbol",
-      "frames": [
-        { "emoji": "⚽", "text": "El equipo de Rodrigo llegó a la final del campeonato." },
-        { "emoji": "🏋️", "text": "Entrenaron durante semanas para prepararse." },
-        { "emoji": "🆚", "text": "El día del partido, ambos equipos jugaron muy bien." },
-        { "emoji": "⚽🥅", "text": "En el último minuto, Rodrigo metió el gol del triunfo." },
-        { "emoji": "🏆", "text": "El equipo levantó el trofeo y todos celebraron." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El árbol del patio",
-      "frames": [
-        { "emoji": "🍂", "text": "En otoño, el árbol del patio perdió todas sus hojas." },
-        { "emoji": "❄️", "text": "En invierno se quedó sin hojas y con ramas peladas." },
-        { "emoji": "🌱", "text": "En primavera empezaron a brotar pequeños brotes verdes." },
-        { "emoji": "🌿", "text": "En verano el árbol estaba lleno de hojas y daba sombra." },
-        { "emoji": "🍂", "text": "Y en otoño volvió a perder sus hojas una vez más." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    }
-  ],
-  "inferences": [
-    { "situation": "Paula dice: \"Estoy tan cansada que me caigo de sueño\".", "question": "¿Qué quiere decir Paula realmente?", "options": ["Que tiene mucho sueño", "Que se va a caer", "Que está enferma"], "correct": "Que tiene mucho sueño", "emoji": "😴", "type": "lenguaje_figurado" },
-    { "situation": "Tomás llega tarde a clases. La profesora lo mira y dice: \"¡Qué puntual eres, Tomás!\"", "question": "¿Qué quiso decir realmente la profesora?", "options": ["Que llegó tarde", "Que es muy puntual", "Que llegó temprano"], "correct": "Que llegó tarde", "emoji": "⏰", "type": "ironia_basica" },
-    { "situation": "Martina siempre ayuda a sus compañeros con las tareas difíciles.", "question": "¿Cómo se puede describir a Martina?", "options": ["Es generosa y colaboradora", "Es egoísta", "Es perezosa"], "correct": "Es generosa y colaboradora", "emoji": "🤝", "type": "inferencia_caracter" },
-    { "situation": "El abuelo José guarda todas sus monedas en una lata bajo la cama.", "question": "¿Por qué crees que el abuelo hace eso?", "options": ["Para guardar sus ahorros con seguridad", "Para jugar con las monedas", "Porque le gusta el ruido"], "correct": "Para guardar sus ahorros con seguridad", "emoji": "💰", "type": "inferencia_intencion" },
-    { "situation": "Ana ve a su amiga sola en el recreo, con la cabeza baja y sin hablar.", "question": "¿Qué le puede estar pasando a su amiga?", "options": ["Está triste o preocupada", "Está muy emocionada", "Está jugando"], "correct": "Está triste o preocupada", "emoji": "😔", "type": "empatia" },
-    { "situation": "El equipo perdió el partido pero el capitán dice: \"Aprendimos mucho hoy\".", "question": "¿Qué actitud tiene el capitán?", "options": ["Positiva, ve la derrota como aprendizaje", "Está enojado", "Quiere rendirse"], "correct": "Positiva, ve la derrota como aprendizaje", "emoji": "🏅", "type": "inferencia_actitud" },
-    { "situation": "El niño tiene los ojos brillantes y las mejillas rosadas. Tocó su frente y está caliente.", "question": "¿Qué le pasa al niño?", "options": ["Tiene fiebre", "Tiene frío", "Está muy contento"], "correct": "Tiene fiebre", "emoji": "🤒", "type": "inferencia_estado" },
-    { "situation": "Carmen llegó muy tarde a su clase de piano. La profesora no dijo nada pero tampoco la saludó.", "question": "¿Cómo se siente la profesora?", "options": ["Molesta o decepcionada", "Muy contenta", "Indiferente"], "correct": "Molesta o decepcionada", "emoji": "😐", "type": "inferencia_emocion_otro" },
-    { "situation": "Alguien deja la puerta del refrigerador abierta toda la noche.", "question": "¿Qué puede pasar con la comida?", "options": ["Puede echarse a perder", "Puede mejorar", "No pasa nada"], "correct": "Puede echarse a perder", "emoji": "🥗", "type": "consecuencia" },
-    { "situation": "El hermano mayor siempre ayuda a su hermana pequeña a cruzar la calle.", "question": "¿Por qué hace eso?", "options": ["Porque la cuida y la protege", "Porque le da miedo estar solo", "Porque la quiere asustar"], "correct": "Porque la cuida y la protege", "emoji": "👧👦", "type": "inferencia_motivo" },
-    { "situation": "Diego no durmió bien por tres noches. Tiene exámenes muy difíciles.", "question": "¿Por qué no puede dormir Diego?", "options": ["Está nervioso o preocupado por los exámenes", "Le gusta trasnochar", "No tiene cama"], "correct": "Está nervioso o preocupado por los exámenes", "emoji": "📖", "type": "causal" },
-    { "situation": "La vecina siempre cuida el jardín, poda las rosas y riega las plantas.", "question": "¿Qué se puede concluir de la vecina?", "options": ["Le gustan mucho las plantas", "Tiene miedo del jardín", "Quiere vender la casa"], "correct": "Le gustan mucho las plantas", "emoji": "🌹", "type": "inferencia_caracter" }
-  ]
+  "minimalPairs": {
+    "inicial": [
+      {
+        "word": "CAZA",
+        "emoji": "🎯",
+        "distractor": {
+          "word": "CASA",
+          "emoji": "🏠"
+        }
+      },
+      {
+        "word": "PECES",
+        "emoji": "🐟",
+        "distractor": {
+          "word": "VECES",
+          "emoji": "🔢"
+        }
+      },
+      {
+        "word": "COSER",
+        "emoji": "🧵",
+        "distractor": {
+          "word": "COCER",
+          "emoji": "🍳"
+        }
+      },
+      {
+        "word": "TUBO",
+        "emoji": "🚿",
+        "distractor": {
+          "word": "TUVO",
+          "emoji": "✅"
+        }
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "BARÓN",
+        "emoji": "🎖️",
+        "distractor": {
+          "word": "VARÓN",
+          "emoji": "👦"
+        }
+      },
+      {
+        "word": "SABIA",
+        "emoji": "🦉",
+        "distractor": {
+          "word": "SAVIA",
+          "emoji": "🌿"
+        }
+      },
+      {
+        "word": "HOLA",
+        "emoji": "👋",
+        "distractor": {
+          "word": "OLA",
+          "emoji": "🌊"
+        }
+      },
+      {
+        "word": "BELLO",
+        "emoji": "🌸",
+        "distractor": {
+          "word": "VELLO",
+          "emoji": "🦶"
+        }
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "REBELAR",
+        "emoji": "✊",
+        "distractor": {
+          "word": "REVELAR",
+          "emoji": "📷"
+        }
+      },
+      {
+        "word": "HONDA",
+        "emoji": "🎯",
+        "distractor": {
+          "word": "ONDA",
+          "emoji": "〰️"
+        }
+      },
+      {
+        "word": "HABER",
+        "emoji": "📌",
+        "distractor": {
+          "word": "ABER",
+          "emoji": "🚪"
+        }
+      },
+      {
+        "word": "HIERBA",
+        "emoji": "🌿",
+        "distractor": {
+          "word": "YERBA",
+          "emoji": "🍵"
+        }
+      }
+    ]
+  },
+  "buildWords": {
+    "inicial": [],
+    "intermedio": [
+      {
+        "word": "TRANSFORMAR",
+        "emoji": "🔄",
+        "syllables": [
+          "TRANS",
+          "FOR",
+          "MAR"
+        ],
+        "hint": "3 sílabas"
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "HELICÓPTERO",
+        "emoji": "🚁",
+        "syllables": [
+          "HE",
+          "LI",
+          "CÓP",
+          "TE",
+          "RO"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "DINOSAURIO",
+        "emoji": "🦕",
+        "syllables": [
+          "DI",
+          "NO",
+          "SAU",
+          "RIO"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "BIBLIOTECA",
+        "emoji": "📚",
+        "syllables": [
+          "BI",
+          "BLIO",
+          "TE",
+          "CA"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "COMPUTADOR",
+        "emoji": "💻",
+        "syllables": [
+          "COM",
+          "PU",
+          "TA",
+          "DOR"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "ELECTRICIDAD",
+        "emoji": "⚡",
+        "syllables": [
+          "E",
+          "LEC",
+          "TRI",
+          "CI",
+          "DAD"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "TEMPERATURA",
+        "emoji": "🌡️",
+        "syllables": [
+          "TEM",
+          "PE",
+          "RA",
+          "TU",
+          "RA"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "PRIVILEGIO",
+        "emoji": "⭐",
+        "syllables": [
+          "PRI",
+          "VI",
+          "LE",
+          "GIO"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "CONTINENTE",
+        "emoji": "🗺️",
+        "syllables": [
+          "CON",
+          "TI",
+          "NEN",
+          "TE"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "EXPEDICIÓN",
+        "emoji": "🧭",
+        "syllables": [
+          "EX",
+          "PE",
+          "DI",
+          "CIÓN"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "EXPLORADOR",
+        "emoji": "🔭",
+        "syllables": [
+          "EX",
+          "PLO",
+          "RA",
+          "DOR"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "BIENVENIDA",
+        "emoji": "👋",
+        "syllables": [
+          "BIEN",
+          "VE",
+          "NI",
+          "DA"
+        ],
+        "hint": "4 sílabas"
+      }
+    ]
+  },
+  "listenRounds": {
+    "inicial": [
+      {
+        "sound": "HELICÓPTERO",
+        "correct": "🚁",
+        "label": "Helicóptero",
+        "options": [
+          {
+            "e": "🚁",
+            "l": "Helicóptero"
+          },
+          {
+            "e": "✈️",
+            "l": "Avión"
+          },
+          {
+            "e": "🚀",
+            "l": "Cohete"
+          }
+        ]
+      },
+      {
+        "sound": "BIBLIOTECA",
+        "correct": "📚",
+        "label": "Biblioteca",
+        "options": [
+          {
+            "e": "📚",
+            "l": "Biblioteca"
+          },
+          {
+            "e": "🏫",
+            "l": "Escuela"
+          },
+          {
+            "e": "🏥",
+            "l": "Hospital"
+          }
+        ]
+      },
+      {
+        "sound": "COMPUTADOR",
+        "correct": "💻",
+        "label": "Computador",
+        "options": [
+          {
+            "e": "💻",
+            "l": "Computador"
+          },
+          {
+            "e": "📱",
+            "l": "Teléfono"
+          },
+          {
+            "e": "📺",
+            "l": "Televisor"
+          }
+        ]
+      },
+      {
+        "sound": "ELECTRICIDAD",
+        "correct": "⚡",
+        "label": "Electricidad",
+        "options": [
+          {
+            "e": "⚡",
+            "l": "Electricidad"
+          },
+          {
+            "e": "🔥",
+            "l": "Fuego"
+          },
+          {
+            "e": "💧",
+            "l": "Agua"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "sound": "TEMPERATURA",
+        "correct": "🌡️",
+        "label": "Temperatura",
+        "options": [
+          {
+            "e": "🌡️",
+            "l": "Temperatura"
+          },
+          {
+            "e": "☀️",
+            "l": "Sol"
+          },
+          {
+            "e": "❄️",
+            "l": "Frío"
+          }
+        ]
+      },
+      {
+        "sound": "EXPLORADOR",
+        "correct": "🔭",
+        "label": "Explorador",
+        "options": [
+          {
+            "e": "🔭",
+            "l": "Explorador"
+          },
+          {
+            "e": "👨‍🚀",
+            "l": "Astronauta"
+          },
+          {
+            "e": "👨‍⚕️",
+            "l": "Doctor"
+          }
+        ]
+      },
+      {
+        "sound": "CONTINENTE",
+        "correct": "🗺️",
+        "label": "Continente",
+        "options": [
+          {
+            "e": "🗺️",
+            "l": "Continente"
+          },
+          {
+            "e": "🏝️",
+            "l": "Isla"
+          },
+          {
+            "e": "🏔️",
+            "l": "Montaña"
+          }
+        ]
+      },
+      {
+        "sound": "DINOSAURIO",
+        "correct": "🦕",
+        "label": "Dinosaurio",
+        "options": [
+          {
+            "e": "🦕",
+            "l": "Dinosaurio"
+          },
+          {
+            "e": "🐊",
+            "l": "Cocodrilo"
+          },
+          {
+            "e": "🦎",
+            "l": "Lagartija"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "sound": "EXPEDICIÓN",
+        "correct": "🧭",
+        "label": "Expedición",
+        "options": [
+          {
+            "e": "🧭",
+            "l": "Expedición"
+          },
+          {
+            "e": "🏕️",
+            "l": "Campamento"
+          },
+          {
+            "e": "🗺️",
+            "l": "Mapa"
+          }
+        ]
+      },
+      {
+        "sound": "TRANSFORMAR",
+        "correct": "🔄",
+        "label": "Transformar",
+        "options": [
+          {
+            "e": "🔄",
+            "l": "Transformar"
+          },
+          {
+            "e": "✨",
+            "l": "Brillar"
+          },
+          {
+            "e": "🔧",
+            "l": "Reparar"
+          }
+        ]
+      },
+      {
+        "sound": "PRIVILEGIO",
+        "correct": "⭐",
+        "label": "Privilegio",
+        "options": [
+          {
+            "e": "⭐",
+            "l": "Privilegio"
+          },
+          {
+            "e": "🏆",
+            "l": "Premio"
+          },
+          {
+            "e": "🎁",
+            "l": "Regalo"
+          }
+        ]
+      },
+      {
+        "sound": "BIENVENIDA",
+        "correct": "👋",
+        "label": "Bienvenida",
+        "options": [
+          {
+            "e": "👋",
+            "l": "Bienvenida"
+          },
+          {
+            "e": "🤝",
+            "l": "Saludo"
+          },
+          {
+            "e": "🎉",
+            "l": "Fiesta"
+          }
+        ]
+      }
+    ]
+  },
+  "connectors": {
+    "inicial": [
+      {
+        "sentence": "Estudié mucho ___ saqué mala nota.",
+        "options": [
+          "sin embargo",
+          "porque",
+          "cuando"
+        ],
+        "correct": "sin embargo",
+        "explanation": "\"Sin embargo\" introduce una idea contraria a lo esperado.",
+        "level": "adversativo_complejo"
+      },
+      {
+        "sentence": "___ estar cansado, terminó su tarea.",
+        "options": [
+          "A pesar de",
+          "Porque",
+          "Entonces"
+        ],
+        "correct": "A pesar de",
+        "explanation": "\"A pesar de\" indica que algo ocurre aunque hay un obstáculo.",
+        "level": "concesivo_complejo"
+      },
+      {
+        "sentence": "El perro ladra ___ el gato maúlla.",
+        "options": [
+          "mientras que",
+          "porque",
+          "entonces"
+        ],
+        "correct": "mientras que",
+        "explanation": "\"Mientras que\" compara dos situaciones simultáneas.",
+        "level": "comparativo"
+      },
+      {
+        "sentence": "No vino a la fiesta; ___, mandó un regalo.",
+        "options": [
+          "sin embargo",
+          "porque",
+          "mientras"
+        ],
+        "correct": "sin embargo",
+        "explanation": "\"Sin embargo\" introduce la compensación.",
+        "level": "adversativo_complejo"
+      }
+    ],
+    "intermedio": [
+      {
+        "sentence": "___ sus dificultades, logró terminar el maratón.",
+        "options": [
+          "A pesar de",
+          "Porque",
+          "Entonces"
+        ],
+        "correct": "A pesar de",
+        "explanation": "\"A pesar de\" señala el esfuerzo ante obstáculos.",
+        "level": "concesivo_complejo"
+      },
+      {
+        "sentence": "Ella canta ___ su hermano toca guitarra.",
+        "options": [
+          "mientras que",
+          "aunque",
+          "porque"
+        ],
+        "correct": "mientras que",
+        "explanation": "\"Mientras que\" indica simultaneidad o contraste.",
+        "level": "comparativo"
+      },
+      {
+        "sentence": "Era tarde; ___, siguió estudiando.",
+        "options": [
+          "sin embargo",
+          "cuando",
+          "porque"
+        ],
+        "correct": "sin embargo",
+        "explanation": "\"Sin embargo\" indica persistencia contra lo esperado.",
+        "level": "adversativo_complejo"
+      },
+      {
+        "sentence": "___ haber perdido, el equipo celebró su esfuerzo.",
+        "options": [
+          "A pesar de",
+          "Aunque",
+          "Porque"
+        ],
+        "correct": "A pesar de",
+        "explanation": "\"A pesar de\" introduce la concesión.",
+        "level": "concesivo_complejo"
+      }
+    ],
+    "avanzado": [
+      {
+        "sentence": "Unos prefieren el campo ___ otros prefieren la ciudad.",
+        "options": [
+          "mientras que",
+          "sin embargo",
+          "a pesar de"
+        ],
+        "correct": "mientras que",
+        "explanation": "\"Mientras que\" establece el contraste entre dos grupos.",
+        "level": "comparativo"
+      },
+      {
+        "sentence": "Tenía mucho miedo; ___, entró al cuarto oscuro.",
+        "options": [
+          "sin embargo",
+          "porque",
+          "entonces"
+        ],
+        "correct": "sin embargo",
+        "explanation": "\"Sin embargo\" muestra valentía ante el miedo.",
+        "level": "adversativo_complejo"
+      },
+      {
+        "sentence": "___ ser el menor del grupo, ganó la competencia.",
+        "options": [
+          "A pesar de",
+          "Aunque",
+          "Porque"
+        ],
+        "correct": "A pesar de",
+        "explanation": "\"A pesar de\" resalta el logro ante la desventaja.",
+        "level": "concesivo_complejo"
+      },
+      {
+        "sentence": "Los pájaros cantan ___ los peces nadan en silencio.",
+        "options": [
+          "mientras que",
+          "sin embargo",
+          "porque"
+        ],
+        "correct": "mientras que",
+        "explanation": "\"Mientras que\" contrasta dos comportamientos diferentes.",
+        "level": "comparativo"
+      }
+    ]
+  },
+  "opposites": {
+    "inicial": [
+      {
+        "word": "CONTENTO",
+        "emoji": "😊",
+        "opposite": "MELANCÓLICO",
+        "oppositeEmoji": "😔"
+      },
+      {
+        "word": "ABUNDANTE",
+        "emoji": "🍇",
+        "opposite": "ESCASO",
+        "oppositeEmoji": "🌵"
+      },
+      {
+        "word": "VALIENTE",
+        "emoji": "🦁",
+        "opposite": "COBARDE",
+        "oppositeEmoji": "🐭"
+      },
+      {
+        "word": "GENEROSO",
+        "emoji": "🤲",
+        "opposite": "EGOÍSTA",
+        "oppositeEmoji": "🙈"
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "BRILLANTE",
+        "emoji": "✨",
+        "opposite": "OPACO",
+        "oppositeEmoji": "🌑"
+      },
+      {
+        "word": "TEMPRANO",
+        "emoji": "🌅",
+        "opposite": "TARDE",
+        "oppositeEmoji": "🌆"
+      },
+      {
+        "word": "RECORDAR",
+        "emoji": "💭",
+        "opposite": "OLVIDAR",
+        "oppositeEmoji": "🕳️"
+      },
+      {
+        "word": "COMENZAR",
+        "emoji": "▶️",
+        "opposite": "TERMINAR",
+        "oppositeEmoji": "⏹️"
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "UNIR",
+        "emoji": "🔗",
+        "opposite": "SEPARAR",
+        "oppositeEmoji": "✂️"
+      },
+      {
+        "word": "ÉXITO",
+        "emoji": "🏆",
+        "opposite": "FRACASO",
+        "oppositeEmoji": "❌"
+      },
+      {
+        "word": "CULPABLE",
+        "emoji": "😔",
+        "opposite": "INOCENTE",
+        "oppositeEmoji": "😇"
+      },
+      {
+        "word": "INTERIOR",
+        "emoji": "🏠",
+        "opposite": "EXTERIOR",
+        "oppositeEmoji": "🌳"
+      }
+    ]
+  },
+  "definitions": {
+    "inicial": [
+      {
+        "definition": "Es un lugar donde hay muchos libros y puedes ir a leer o pedir prestados",
+        "options": [
+          {
+            "word": "BIBLIOTECA",
+            "emoji": "📚"
+          },
+          {
+            "word": "HOSPITAL",
+            "emoji": "🏥"
+          },
+          {
+            "word": "MERCADO",
+            "emoji": "🏪"
+          }
+        ],
+        "correct": "BIBLIOTECA"
+      },
+      {
+        "definition": "Es lo que usamos para cortar el pan, tiene un mango y un filo",
+        "options": [
+          {
+            "word": "CUCHILLO",
+            "emoji": "🔪"
+          },
+          {
+            "word": "TENEDOR",
+            "emoji": "🍴"
+          },
+          {
+            "word": "CUCHARA",
+            "emoji": "🥄"
+          }
+        ],
+        "correct": "CUCHILLO"
+      },
+      {
+        "definition": "Es cuando alguien cuenta algo que no es verdad a propósito",
+        "options": [
+          {
+            "word": "MENTIRA",
+            "emoji": "🤥"
+          },
+          {
+            "word": "ERROR",
+            "emoji": "❌"
+          },
+          {
+            "word": "SECRETO",
+            "emoji": "🤫"
+          }
+        ],
+        "correct": "MENTIRA"
+      },
+      {
+        "definition": "Es la máquina que usamos para viajar muy alto en el cielo, tiene dos alas",
+        "options": [
+          {
+            "word": "AVIÓN",
+            "emoji": "✈️"
+          },
+          {
+            "word": "HELICÓPTERO",
+            "emoji": "🚁"
+          },
+          {
+            "word": "GLOBO",
+            "emoji": "🎈"
+          }
+        ],
+        "correct": "AVIÓN"
+      }
+    ],
+    "intermedio": [
+      {
+        "definition": "Es cuando el cielo se llena de nubes y cae agua desde arriba",
+        "options": [
+          {
+            "word": "LLUVIA",
+            "emoji": "🌧️"
+          },
+          {
+            "word": "NIEVE",
+            "emoji": "❄️"
+          },
+          {
+            "word": "TORMENTA",
+            "emoji": "⛈️"
+          }
+        ],
+        "correct": "LLUVIA"
+      },
+      {
+        "definition": "Es la persona que construye casas y edificios",
+        "options": [
+          {
+            "word": "ALBAÑIL",
+            "emoji": "👷"
+          },
+          {
+            "word": "MÉDICO",
+            "emoji": "👨‍⚕️"
+          },
+          {
+            "word": "PILOTO",
+            "emoji": "👨‍✈️"
+          }
+        ],
+        "correct": "ALBAÑIL"
+      },
+      {
+        "definition": "Es lo contrario de comprar, es cuando le das algo a alguien a cambio de dinero",
+        "options": [
+          {
+            "word": "VENDER",
+            "emoji": "💰"
+          },
+          {
+            "word": "REGALAR",
+            "emoji": "🎁"
+          },
+          {
+            "word": "PRESTAR",
+            "emoji": "🤝"
+          }
+        ],
+        "correct": "VENDER"
+      },
+      {
+        "definition": "Es el animal marino que tiene 8 tentáculos y puede cambiar de color",
+        "options": [
+          {
+            "word": "PULPO",
+            "emoji": "🐙"
+          },
+          {
+            "word": "CALAMAR",
+            "emoji": "🦑"
+          },
+          {
+            "word": "CANGREJO",
+            "emoji": "🦀"
+          }
+        ],
+        "correct": "PULPO"
+      }
+    ],
+    "avanzado": [
+      {
+        "definition": "Es cuando dos equipos compiten para ver quién gana un premio o trofeo",
+        "options": [
+          {
+            "word": "COMPETENCIA",
+            "emoji": "🏆"
+          },
+          {
+            "word": "CELEBRACIÓN",
+            "emoji": "🎉"
+          },
+          {
+            "word": "REUNIÓN",
+            "emoji": "👥"
+          }
+        ],
+        "correct": "COMPETENCIA"
+      },
+      {
+        "definition": "Es un instrumento musical que se toca con los dedos y tiene cuerdas",
+        "options": [
+          {
+            "word": "GUITARRA",
+            "emoji": "🎸"
+          },
+          {
+            "word": "FLAUTA",
+            "emoji": "🎵"
+          },
+          {
+            "word": "TAMBOR",
+            "emoji": "🥁"
+          }
+        ],
+        "correct": "GUITARRA"
+      },
+      {
+        "definition": "Es el nombre que usamos para los idiomas que habla la gente, como el español o el inglés",
+        "options": [
+          {
+            "word": "LENGUA",
+            "emoji": "🗣️"
+          },
+          {
+            "word": "SONIDO",
+            "emoji": "🔊"
+          },
+          {
+            "word": "ESCRITURA",
+            "emoji": "✍️"
+          }
+        ],
+        "correct": "LENGUA"
+      },
+      {
+        "definition": "Es cuando el sol desaparece por el horizonte al final del día",
+        "options": [
+          {
+            "word": "ATARDECER",
+            "emoji": "🌇"
+          },
+          {
+            "word": "AMANECER",
+            "emoji": "🌅"
+          },
+          {
+            "word": "MEDIODÍA",
+            "emoji": "☀️"
+          }
+        ],
+        "correct": "ATARDECER"
+      }
+    ]
+  },
+  "narrativeSequences": {
+    "inicial": [
+      {
+        "title": "La tortuga y la liebre",
+        "frames": [
+          {
+            "emoji": "🐢🐇",
+            "text": "La tortuga y la liebre decidieron hacer una carrera."
+          },
+          {
+            "emoji": "🏃🐇",
+            "text": "La liebre corrió muy rápido y se adelantó mucho."
+          },
+          {
+            "emoji": "😴🐇",
+            "text": "La liebre se durmió porque pensó que ganaría igual."
+          },
+          {
+            "emoji": "🚶🐢",
+            "text": "La tortuga siguió caminando sin parar."
+          },
+          {
+            "emoji": "🏆🐢",
+            "text": "La tortuga llegó primero y ganó la carrera."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El proyecto de ciencias",
+        "frames": [
+          {
+            "emoji": "📋",
+            "text": "La profesora explicó que harían un volcán de bicarbonato."
+          },
+          {
+            "emoji": "🏔️",
+            "text": "Los niños construyeron la forma del volcán con arcilla."
+          },
+          {
+            "emoji": "🧪",
+            "text": "Echaron vinagre y bicarbonato dentro."
+          },
+          {
+            "emoji": "🌋",
+            "text": "El volcán hizo efervescencia y todos aplaudieron."
+          },
+          {
+            "emoji": "😄",
+            "text": "La profesora felicitó al grupo por su trabajo."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El viaje al zoológico",
+        "frames": [
+          {
+            "emoji": "🚌",
+            "text": "Los alumnos subieron al bus del colegio con mucha emoción."
+          },
+          {
+            "emoji": "🦁",
+            "text": "Primero vieron los leones en sus jaulas grandes."
+          },
+          {
+            "emoji": "🐘",
+            "text": "Luego visitaron a los elefantes y les dieron fruta."
+          },
+          {
+            "emoji": "📸",
+            "text": "Al final todos se sacaron fotos juntos."
+          },
+          {
+            "emoji": "🏫",
+            "text": "Regresaron al colegio cansados pero muy contentos."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El perro perdido",
+        "frames": [
+          {
+            "emoji": "🐕",
+            "text": "Bruno, el perro de la familia, desapareció un martes."
+          },
+          {
+            "emoji": "📢",
+            "text": "La familia buscó por el barrio y puso carteles en los postes."
+          },
+          {
+            "emoji": "📞",
+            "text": "Al día siguiente, un vecino llamó diciendo que lo había encontrado."
+          },
+          {
+            "emoji": "🏠",
+            "text": "Fueron a buscar a Bruno y lo trajeron a casa."
+          },
+          {
+            "emoji": "🎉",
+            "text": "Toda la familia celebró el regreso de Bruno con un festín."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "title": "La obra de teatro",
+        "frames": [
+          {
+            "emoji": "📝",
+            "text": "La profesora anunció que harían una obra de teatro."
+          },
+          {
+            "emoji": "🎭",
+            "text": "Cada niño eligió un personaje y aprendió su texto."
+          },
+          {
+            "emoji": "👗",
+            "text": "El día del evento se vistieron con sus disfraces."
+          },
+          {
+            "emoji": "🎤",
+            "text": "Actuaron frente a los padres en el gimnasio del colegio."
+          },
+          {
+            "emoji": "👏",
+            "text": "El público aplaudió de pie al finalizar la obra."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El río contaminado",
+        "frames": [
+          {
+            "emoji": "🏭",
+            "text": "Una fábrica tiraba basura al río del pueblo."
+          },
+          {
+            "emoji": "🐟",
+            "text": "Los peces empezaron a morir y el agua se volvió turbia."
+          },
+          {
+            "emoji": "📢",
+            "text": "Los vecinos se organizaron y protestaron ante las autoridades."
+          },
+          {
+            "emoji": "👮",
+            "text": "Las autoridades obligaron a la fábrica a limpiar el río."
+          },
+          {
+            "emoji": "🌊",
+            "text": "Poco a poco el río volvió a estar limpio."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "La nueva mascota",
+        "frames": [
+          {
+            "emoji": "🐾",
+            "text": "Los padres de Valentina le prometieron una mascota por su cumpleaños."
+          },
+          {
+            "emoji": "🏪",
+            "text": "Fueron juntos a la tienda de animales a elegir."
+          },
+          {
+            "emoji": "🐹",
+            "text": "Valentina eligió un hámster marrón muy peludo."
+          },
+          {
+            "emoji": "🏠",
+            "text": "En casa prepararon la jaula con agua y comida."
+          },
+          {
+            "emoji": "😊",
+            "text": "Valentina nombró a su mascota 'Canela' y la cuidó cada día."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "title": "El invierno sin luz",
+        "frames": [
+          {
+            "emoji": "⛈️",
+            "text": "Una tormenta muy fuerte cortó la electricidad del barrio."
+          },
+          {
+            "emoji": "🕯️",
+            "text": "La familia sacó velas y linternas para iluminar la casa."
+          },
+          {
+            "emoji": "🎲",
+            "text": "Sin pantallas, todos jugaron juegos de mesa."
+          },
+          {
+            "emoji": "💡",
+            "text": "Horas después, la luz volvió y todos aplaudieron."
+          },
+          {
+            "emoji": "💭",
+            "text": "La familia decidió que los apagones eran una buena excusa para jugar juntos."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El campeonato de fútbol",
+        "frames": [
+          {
+            "emoji": "⚽",
+            "text": "El equipo de Rodrigo llegó a la final del campeonato."
+          },
+          {
+            "emoji": "🏋️",
+            "text": "Entrenaron durante semanas para prepararse."
+          },
+          {
+            "emoji": "🆚",
+            "text": "El día del partido, ambos equipos jugaron muy bien."
+          },
+          {
+            "emoji": "⚽🥅",
+            "text": "En el último minuto, Rodrigo metió el gol del triunfo."
+          },
+          {
+            "emoji": "🏆",
+            "text": "El equipo levantó el trofeo y todos celebraron."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El árbol del patio",
+        "frames": [
+          {
+            "emoji": "🍂",
+            "text": "En otoño, el árbol del patio perdió todas sus hojas."
+          },
+          {
+            "emoji": "❄️",
+            "text": "En invierno se quedó sin hojas y con ramas peladas."
+          },
+          {
+            "emoji": "🌱",
+            "text": "En primavera empezaron a brotar pequeños brotes verdes."
+          },
+          {
+            "emoji": "🌿",
+            "text": "En verano el árbol estaba lleno de hojas y daba sombra."
+          },
+          {
+            "emoji": "🍂",
+            "text": "Y en otoño volvió a perder sus hojas una vez más."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "inferences": {
+    "inicial": [
+      {
+        "situation": "Paula dice: \"Estoy tan cansada que me caigo de sueño\".",
+        "question": "¿Qué quiere decir Paula realmente?",
+        "options": [
+          "Que tiene mucho sueño",
+          "Que se va a caer",
+          "Que está enferma"
+        ],
+        "correct": "Que tiene mucho sueño",
+        "emoji": "😴",
+        "type": "lenguaje_figurado"
+      },
+      {
+        "situation": "Tomás llega tarde a clases. La profesora lo mira y dice: \"¡Qué puntual eres, Tomás!\"",
+        "question": "¿Qué quiso decir realmente la profesora?",
+        "options": [
+          "Que llegó tarde",
+          "Que es muy puntual",
+          "Que llegó temprano"
+        ],
+        "correct": "Que llegó tarde",
+        "emoji": "⏰",
+        "type": "ironia_basica"
+      },
+      {
+        "situation": "Martina siempre ayuda a sus compañeros con las tareas difíciles.",
+        "question": "¿Cómo se puede describir a Martina?",
+        "options": [
+          "Es generosa y colaboradora",
+          "Es egoísta",
+          "Es perezosa"
+        ],
+        "correct": "Es generosa y colaboradora",
+        "emoji": "🤝",
+        "type": "inferencia_caracter"
+      },
+      {
+        "situation": "El abuelo José guarda todas sus monedas en una lata bajo la cama.",
+        "question": "¿Por qué crees que el abuelo hace eso?",
+        "options": [
+          "Para guardar sus ahorros con seguridad",
+          "Para jugar con las monedas",
+          "Porque le gusta el ruido"
+        ],
+        "correct": "Para guardar sus ahorros con seguridad",
+        "emoji": "💰",
+        "type": "inferencia_intencion"
+      }
+    ],
+    "intermedio": [
+      {
+        "situation": "Ana ve a su amiga sola en el recreo, con la cabeza baja y sin hablar.",
+        "question": "¿Qué le puede estar pasando a su amiga?",
+        "options": [
+          "Está triste o preocupada",
+          "Está muy emocionada",
+          "Está jugando"
+        ],
+        "correct": "Está triste o preocupada",
+        "emoji": "😔",
+        "type": "empatia"
+      },
+      {
+        "situation": "El equipo perdió el partido pero el capitán dice: \"Aprendimos mucho hoy\".",
+        "question": "¿Qué actitud tiene el capitán?",
+        "options": [
+          "Positiva, ve la derrota como aprendizaje",
+          "Está enojado",
+          "Quiere rendirse"
+        ],
+        "correct": "Positiva, ve la derrota como aprendizaje",
+        "emoji": "🏅",
+        "type": "inferencia_actitud"
+      },
+      {
+        "situation": "El niño tiene los ojos brillantes y las mejillas rosadas. Tocó su frente y está caliente.",
+        "question": "¿Qué le pasa al niño?",
+        "options": [
+          "Tiene fiebre",
+          "Tiene frío",
+          "Está muy contento"
+        ],
+        "correct": "Tiene fiebre",
+        "emoji": "🤒",
+        "type": "inferencia_estado"
+      },
+      {
+        "situation": "Carmen llegó muy tarde a su clase de piano. La profesora no dijo nada pero tampoco la saludó.",
+        "question": "¿Cómo se siente la profesora?",
+        "options": [
+          "Molesta o decepcionada",
+          "Muy contenta",
+          "Indiferente"
+        ],
+        "correct": "Molesta o decepcionada",
+        "emoji": "😐",
+        "type": "inferencia_emocion_otro"
+      }
+    ],
+    "avanzado": [
+      {
+        "situation": "Alguien deja la puerta del refrigerador abierta toda la noche.",
+        "question": "¿Qué puede pasar con la comida?",
+        "options": [
+          "Puede echarse a perder",
+          "Puede mejorar",
+          "No pasa nada"
+        ],
+        "correct": "Puede echarse a perder",
+        "emoji": "🥗",
+        "type": "consecuencia"
+      },
+      {
+        "situation": "El hermano mayor siempre ayuda a su hermana pequeña a cruzar la calle.",
+        "question": "¿Por qué hace eso?",
+        "options": [
+          "Porque la cuida y la protege",
+          "Porque le da miedo estar solo",
+          "Porque la quiere asustar"
+        ],
+        "correct": "Porque la cuida y la protege",
+        "emoji": "👧👦",
+        "type": "inferencia_motivo"
+      },
+      {
+        "situation": "Diego no durmió bien por tres noches. Tiene exámenes muy difíciles.",
+        "question": "¿Por qué no puede dormir Diego?",
+        "options": [
+          "Está nervioso o preocupado por los exámenes",
+          "Le gusta trasnochar",
+          "No tiene cama"
+        ],
+        "correct": "Está nervioso o preocupado por los exámenes",
+        "emoji": "📖",
+        "type": "causal"
+      },
+      {
+        "situation": "La vecina siempre cuida el jardín, poda las rosas y riega las plantas.",
+        "question": "¿Qué se puede concluir de la vecina?",
+        "options": [
+          "Le gustan mucho las plantas",
+          "Tiene miedo del jardín",
+          "Quiere vender la casa"
+        ],
+        "correct": "Le gustan mucho las plantas",
+        "emoji": "🌹",
+        "type": "inferencia_caracter"
+      }
+    ]
+  },
+  "rhymes": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "pointImages": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "categories": {
+    "inicial": [
+      {
+        "category": "Mamíferos marinos",
+        "intruder": {
+          "word": "PÁJARO",
+          "emoji": "🐦"
+        },
+        "options": [
+          {
+            "word": "DELFÍN",
+            "emoji": "🐬"
+          },
+          {
+            "word": "BALLENA",
+            "emoji": "🐋"
+          },
+          {
+            "word": "FOCA",
+            "emoji": "🦭"
+          },
+          {
+            "word": "PÁJARO",
+            "emoji": "🐦"
+          }
+        ]
+      },
+      {
+        "category": "Deportes de equipo",
+        "intruder": {
+          "word": "TENIS",
+          "emoji": "🎾"
+        },
+        "options": [
+          {
+            "word": "FÚTBOL",
+            "emoji": "⚽"
+          },
+          {
+            "word": "BALONCESTO",
+            "emoji": "🏀"
+          },
+          {
+            "word": "VOLEIBOL",
+            "emoji": "🏐"
+          },
+          {
+            "word": "TENIS",
+            "emoji": "🎾"
+          }
+        ]
+      },
+      {
+        "category": "Partes del cuerpo interno",
+        "intruder": {
+          "word": "NARIZ",
+          "emoji": "👃"
+        },
+        "options": [
+          {
+            "word": "CORAZÓN",
+            "emoji": "❤️"
+          },
+          {
+            "word": "PULMÓN",
+            "emoji": "🫁"
+          },
+          {
+            "word": "HÍGADO",
+            "emoji": "🩺"
+          },
+          {
+            "word": "NARIZ",
+            "emoji": "👃"
+          }
+        ]
+      },
+      {
+        "category": "Figuras geométricas 3D",
+        "intruder": {
+          "word": "CÍRCULO",
+          "emoji": "⭕"
+        },
+        "options": [
+          {
+            "word": "CUBO",
+            "emoji": "🧊"
+          },
+          {
+            "word": "ESFERA",
+            "emoji": "🔴"
+          },
+          {
+            "word": "PIRÁMIDE",
+            "emoji": "🔺"
+          },
+          {
+            "word": "CÍRCULO",
+            "emoji": "⭕"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "category": "Elementos del tiempo atmosférico",
+        "intruder": {
+          "word": "MONTAÑA",
+          "emoji": "⛰️"
+        },
+        "options": [
+          {
+            "word": "TORMENTA",
+            "emoji": "⛈️"
+          },
+          {
+            "word": "NIEBLA",
+            "emoji": "🌫️"
+          },
+          {
+            "word": "GRANIZO",
+            "emoji": "🌨️"
+          },
+          {
+            "word": "MONTAÑA",
+            "emoji": "⛰️"
+          }
+        ]
+      },
+      {
+        "category": "Sinónimos de 'decir'",
+        "intruder": {
+          "word": "SALTAR",
+          "emoji": "🦘"
+        },
+        "options": [
+          {
+            "word": "AFIRMAR",
+            "emoji": "✅"
+          },
+          {
+            "word": "MENCIONAR",
+            "emoji": "💬"
+          },
+          {
+            "word": "RELATAR",
+            "emoji": "📖"
+          },
+          {
+            "word": "SALTAR",
+            "emoji": "🦘"
+          }
+        ]
+      },
+      {
+        "category": "Animales en peligro de extinción",
+        "intruder": {
+          "word": "PALOMA",
+          "emoji": "🕊️"
+        },
+        "options": [
+          {
+            "word": "PANDA",
+            "emoji": "🐼"
+          },
+          {
+            "word": "RINOCERONTE",
+            "emoji": "🦏"
+          },
+          {
+            "word": "GORILA",
+            "emoji": "🦍"
+          },
+          {
+            "word": "PALOMA",
+            "emoji": "🕊️"
+          }
+        ]
+      },
+      {
+        "category": "Tipos de energía",
+        "intruder": {
+          "word": "DINERO",
+          "emoji": "💰"
+        },
+        "options": [
+          {
+            "word": "SOLAR",
+            "emoji": "☀️"
+          },
+          {
+            "word": "EÓLICA",
+            "emoji": "💨"
+          },
+          {
+            "word": "HIDRÁULICA",
+            "emoji": "💧"
+          },
+          {
+            "word": "DINERO",
+            "emoji": "💰"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "category": "Ramas de la ciencia",
+        "intruder": {
+          "word": "PINTURA",
+          "emoji": "🖼️"
+        },
+        "options": [
+          {
+            "word": "BIOLOGÍA",
+            "emoji": "🔬"
+          },
+          {
+            "word": "QUÍMICA",
+            "emoji": "⚗️"
+          },
+          {
+            "word": "FÍSICA",
+            "emoji": "⚛️"
+          },
+          {
+            "word": "PINTURA",
+            "emoji": "🖼️"
+          }
+        ]
+      },
+      {
+        "category": "Verbos en subjuntivo",
+        "intruder": {
+          "word": "CORRO",
+          "emoji": "🏃"
+        },
+        "options": [
+          {
+            "word": "CORRA",
+            "emoji": "🏃"
+          },
+          {
+            "word": "HABLE",
+            "emoji": "💬"
+          },
+          {
+            "word": "PIENSE",
+            "emoji": "🤔"
+          },
+          {
+            "word": "CORRO",
+            "emoji": "🏃"
+          }
+        ]
+      },
+      {
+        "category": "Sistemas del cuerpo humano",
+        "intruder": {
+          "word": "MONTAÑA",
+          "emoji": "⛰️"
+        },
+        "options": [
+          {
+            "word": "DIGESTIVO",
+            "emoji": "🫀"
+          },
+          {
+            "word": "NERVIOSO",
+            "emoji": "🧠"
+          },
+          {
+            "word": "RESPIRATORIO",
+            "emoji": "🫁"
+          },
+          {
+            "word": "MONTAÑA",
+            "emoji": "⛰️"
+          }
+        ]
+      },
+      {
+        "category": "Ecosistemas",
+        "intruder": {
+          "word": "MESA",
+          "emoji": "🪑"
+        },
+        "options": [
+          {
+            "word": "SELVA",
+            "emoji": "🌿"
+          },
+          {
+            "word": "DESIERTO",
+            "emoji": "🏜️"
+          },
+          {
+            "word": "OCÉANO",
+            "emoji": "🌊"
+          },
+          {
+            "word": "MESA",
+            "emoji": "🪑"
+          }
+        ]
+      }
+    ]
+  },
+  "instructions": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "communicativeIntents": {
+    "inicial": [
+      {
+        "scenario": "Un cliente en un restaurante dice: «Este filete está un poco crudo»",
+        "emoji": "🥩",
+        "question": "¿Qué intenta conseguir el cliente?",
+        "correct": "Quejarse",
+        "options": [
+          "Quejarse",
+          "Informar",
+          "Pedir",
+          "Protestar"
+        ]
+      },
+      {
+        "scenario": "Una persona mayor dice: «¡En mis tiempos los jóvenes eran más respetuosos!»",
+        "emoji": "👴",
+        "question": "¿Cuál es la intención?",
+        "correct": "Reprochar",
+        "options": [
+          "Reprochar",
+          "Informar",
+          "Quejarse",
+          "Protestar"
+        ]
+      },
+      {
+        "scenario": "Un político dice: «Trabajaremos por el bienestar de todos los ciudadanos»",
+        "emoji": "🏛️",
+        "question": "¿Cuál es la intención comunicativa?",
+        "correct": "Proponer",
+        "options": [
+          "Proponer",
+          "Informar",
+          "Animar",
+          "Pedir"
+        ]
+      },
+      {
+        "scenario": "Una persona dice: «¡Vaya, qué oportuno que llegues justo cuando acabamos de fregar!»",
+        "emoji": "😒",
+        "question": "¿Qué intención tiene realmente?",
+        "correct": "Reprochar",
+        "options": [
+          "Reprochar",
+          "Saludar",
+          "Informar",
+          "Felicitar"
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "scenario": "El jefe dice: «Cuando puedas, me mandas ese informe»",
+        "emoji": "📊",
+        "question": "¿Qué intención tiene realmente el jefe?",
+        "correct": "Ordenar",
+        "options": [
+          "Ordenar",
+          "Pedir",
+          "Proponer",
+          "Informar"
+        ]
+      },
+      {
+        "scenario": "Una amiga dice: «Tu nuevo corte de pelo es… diferente»",
+        "emoji": "✂️",
+        "question": "¿Qué intenta comunicar sin decirlo directamente?",
+        "correct": "Quejarse",
+        "options": [
+          "Quejarse",
+          "Felicitar",
+          "Informar",
+          "Reprochar"
+        ]
+      },
+      {
+        "scenario": "Alguien pregunta: «¿No crees que deberías pedir perdón?»",
+        "emoji": "🤨",
+        "question": "¿Qué intención hay detrás de la pregunta?",
+        "correct": "Ordenar",
+        "options": [
+          "Ordenar",
+          "Preguntar",
+          "Advertir",
+          "Reprochar"
+        ]
+      },
+      {
+        "scenario": "Un médico dice: «Los resultados son normales, no hay nada de qué preocuparse»",
+        "emoji": "🩺",
+        "question": "¿Para qué sirve lo que dice el médico?",
+        "correct": "Consolar",
+        "options": [
+          "Consolar",
+          "Informar",
+          "Animar",
+          "Advertir"
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "scenario": "Un abogado dice: «Mi cliente no recuerda haber estado en ese lugar»",
+        "emoji": "⚖️",
+        "question": "¿Cuál es la intención comunicativa real?",
+        "correct": "Negarse",
+        "options": [
+          "Negarse",
+          "Informar",
+          "Advertir",
+          "Proponer"
+        ]
+      },
+      {
+        "scenario": "Un periodista pregunta: «¿No le parece que el gobierno podría haber actuado antes?»",
+        "emoji": "🎙️",
+        "question": "¿Qué intención tiene la pregunta?",
+        "correct": "Reprochar",
+        "options": [
+          "Reprochar",
+          "Preguntar",
+          "Informar",
+          "Protestar"
+        ]
+      },
+      {
+        "scenario": "Alguien dice: «Sí, claro, faltaría más» con cara de fastidio",
+        "emoji": "😑",
+        "question": "¿Qué intención tiene realmente?",
+        "correct": "Protestar",
+        "options": [
+          "Protestar",
+          "Agradecer",
+          "Negarse",
+          "Informar"
+        ]
+      },
+      {
+        "scenario": "Un profesor dice: «Interesante respuesta... aunque quizás podríamos pensarlo mejor»",
+        "emoji": "🤔",
+        "question": "¿Cuál es la intención del profesor?",
+        "correct": "Reprochar",
+        "options": [
+          "Reprochar",
+          "Animar",
+          "Proponer",
+          "Informar"
+        ]
+      }
+    ]
+  }
 }

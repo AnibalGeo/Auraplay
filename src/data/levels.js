@@ -61,6 +61,11 @@ export const LEVELS = {
       description: 'Función declarativa. Reconocimiento de rutinas cotidianas.',
       inferences: n1.inferences,
     },
+    rhymes: n1.rhymes,
+    pointImages: n1.pointImages,
+    categories: n1.categories,
+    instructions: n1.instructions,
+    communicativeIntents: n1.communicativeIntents,
   },
 
   N2: {
@@ -115,6 +120,11 @@ export const LEVELS = {
       description: 'Mantención de tópico. Deícticos. Función heurística.',
       inferences: n2.inferences,
     },
+    rhymes: n2.rhymes,
+    pointImages: n2.pointImages,
+    categories: n2.categories,
+    instructions: n2.instructions,
+    communicativeIntents: n2.communicativeIntents,
   },
 
   N3: {
@@ -163,6 +173,11 @@ export const LEVELS = {
       description: 'Función reguladora. Comprensión de relaciones causa-efecto simples.',
       inferences: n3.inferences,
     },
+    rhymes: n3.rhymes,
+    pointImages: n3.pointImages,
+    categories: n3.categories,
+    instructions: n3.instructions,
+    communicativeIntents: n3.communicativeIntents,
   },
 
   N4: {
@@ -219,6 +234,11 @@ export const LEVELS = {
       description: 'Toma de turnos básica. Resolución de problemas simples.',
       inferences: n4.inferences,
     },
+    rhymes: n4.rhymes,
+    pointImages: n4.pointImages,
+    categories: n4.categories,
+    instructions: n4.instructions,
+    communicativeIntents: n4.communicativeIntents,
   },
 
   N5: {
@@ -281,6 +301,11 @@ export const LEVELS = {
       description: 'Función interaccional. Comprensión de contexto.',
       inferences: n5.inferences,
     },
+    rhymes: n5.rhymes,
+    pointImages: n5.pointImages,
+    categories: n5.categories,
+    instructions: n5.instructions,
+    communicativeIntents: n5.communicativeIntents,
   },
 
   N6: {
@@ -348,6 +373,11 @@ export const LEVELS = {
       description: 'Comprensión de lenguaje no literal básico. Adecuación al contexto.',
       inferences: n6.inferences,
     },
+    rhymes: n6.rhymes,
+    pointImages: n6.pointImages,
+    categories: n6.categories,
+    instructions: n6.instructions,
+    communicativeIntents: n6.communicativeIntents,
   },
 
   N7: {
@@ -415,6 +445,11 @@ export const LEVELS = {
       description: 'Lenguaje figurado. Ironía. Metáforas. Adecuación a distintos interlocutores.',
       inferences: n7.inferences,
     },
+    rhymes: n7.rhymes,
+    pointImages: n7.pointImages,
+    categories: n7.categories,
+    instructions: n7.instructions,
+    communicativeIntents: n7.communicativeIntents,
   },
 }
 

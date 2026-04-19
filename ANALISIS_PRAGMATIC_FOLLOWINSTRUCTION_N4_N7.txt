@@ -1,0 +1,236 @@
+ANÁLISIS: PragmaticScreen, FollowInstructionScreen, N4.json, N7.json
+Fecha: 2026-04-18
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. BUGS ENCONTRADOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BUG 1 — PragmaticScreen.jsx línea 25: código muerto (igual que SemanticScreen/SyntaxScreen)
+  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
+  → La variable nunca se usa. Eliminar.
+
+BUG 2 — N7.json categories.avanzado[2].options[2].word: "ABSTRAE R"
+  Hay un espacio erróneo. Debe ser "ABSTRAER".
+  Ruta: categories.avanzado[2] ("Procesos cognitivos superiores") → options[2].word
+
+BUG 3 — N4.json buildWords.inicial: solo 2 ítems (DORMIR, DRAGÓN)
+  Todos los otros niveles tienen 3-5 ítems en inicial. N4 queda muy escaso.
+  Baja prioridad (no causa crash), pero puede hacer la actividad muy corta.
+
+BUG 4 — N4.json minimalPairs.avanzado: "RARDO" no es una palabra real
+  { word: "DARDO", distractor: { word: "RARDO" } }
+  El distractor inventado puede confundir al niño. Candidato: TARDO o BARDO.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. PRAGMATICSCREEN.JSX — ANÁLISIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Datos que lee:
+  contentData.inferences?.[difficulty]  (array de strings options, not {word,emoji})
+  N4: 4+4+4 ítems ✓   N7: 4+4+4 ítems ✓
+
+Flujo:
+  1. idx cambia → shuffle options con Math.random()
+  2. handleAnswer(option: string) → playFeedback + setTimeout(1000) → feedback banner
+  3. Después 800ms más → showNext = true → botón "Siguiente →"
+  4. nextAction.current guarda la función de avance (fin o idx+1)
+
+reducedOptions:
+  Correcto: usa find() para garantizar que la opción correcta quede incluida:
+    const wrong = shuffledOptions.find(o => o !== current?.correct)
+    return shuffledOptions.filter(o => o === current?.correct || o === wrong)
+  → No tiene el bug de slice(0,2). ✓
+
+Props recibidos: onFinish, onBack
+  - Estado vacío usa onBack (no onFinish). Consistente con patrón de otras pantallas.
+  - Al terminar usa onFinish(newScore, exercises.length). ✓
+
+Diferencias vs SemanticScreen/SyntaxScreen:
+  - No tiene `level` en cálculo de datos (usa getContent directamente). ✓
+  - Usa playFeedback() de audioFeedback.js (SemanticScreen también lo usa).
+  - El estado de feedback se muestra con banner + botón "Siguiente", no auto-avance.
+    SyntaxScreen/SemanticScreen también usan este patrón. Consistente. ✓
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. FOLLOWINSTRUCTIONSCREEN.JSX — ANÁLISIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Datos que lee:
+  getContent(patient.levelId)?.instructions?.[difficulty]
+  Cada ítem: { instruction, simplified, elements(1|2|3), correct: string, options: [{word,emoji}] }
+  N4: 4+4+4 ítems ✓   N7: vacío [] → muestra "No hay ejercicios" ✓ (by design)
+
+Flujo secuencial (sequentialStimulus=true):
+  1. index cambia → revealed=false → audio fires (audioDelay 400-800ms)
+  2. Tras 1800ms → revealed=true → options aparecen con opacity transition
+  3. handleSelect solo actúa si revealed=true (bloqueo de clics prematuros)
+  4. Auto-avance: setTimeout(1400) → siguiente ítem o onFinish
+
+Flujo simultáneo (sequentialStimulus=false):
+  1. index cambia → revealed=true inmediatamente (junto con el audio)
+
+extendedExposureTime:
+  TTS rate = 0.70 (extendedExposureTime=true) vs 0.80 (false)
+  → Más lento para TEA/TDAH. No afecta el tiempo de revealed (siempre 1800ms).
+
+simplifiedInstructions:
+  - Instrucción mostrada: current.simplified ?? current.instruction
+  - Opciones: se oculta opt.word, solo se muestra opt.emoji (imagen pura)
+  → Reduce carga textual para TEA.
+
+reducedOptions:
+  Correcto: usa find() dos veces:
+    current.options.find(o => o.word === current.correct)   → la correcta
+    current.options.find(o => o.word !== current.correct)   → una incorrecta
+  Filtra con .filter(Boolean) por si una no existe. ✓
+
+Diferencias clave vs PragmaticScreen:
+  - options: [{word,emoji}] vs strings → feedback visual usa emoji grande (52px)
+  - No usa playFeedback() — solo TTS (más apropiado: la pantalla ya es visual)
+  - Auto-avance en 1400ms (sin botón "Siguiente") → flujo más fluido para niños pequeños
+  - Color de feedback correcto: naranja/ámbar (#fff3e0) no teal, coherente con el
+    color de morfosintáctico (#e07a5f) aunque la actividad es morfosintáctica. ✓
+  - No tiene prop onBack (solo onFinish). El botón ← llama onFinish(score, items.length).
+  - Muestra badge de complejidad: 'Simple' | 'Dos pasos' | 'Tres pasos' según elements.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. N4.JSON — ANÁLISIS DE CONTENIDO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Nivel clínico: 4-5 años. Fonema /d/, /r/. Verbos auxiliares, causales.
+
+minimalPairs:
+  inicial:  4 pares /d/ vs /r/ — perro/pero, carro/caro, rosa/roca, dedo/sedo ✓
+  avanzado: "RARDO" no es palabra real (ver BUG 4 arriba)
+
+buildWords:
+  inicial:  solo 2 ítems (DORMIR, DRAGÓN) — escaso (ver BUG 3)
+  intermedio: 7 ítems ✓ (DOMINÓ, PAREDÓN, CORAZÓN, RODILLA, DINERO, DIBUJAR, DERECHO)
+  avanzado:  3 ítems ✓
+
+listenRounds:
+  Vocabulario apropiado para 4-5 años: ELEFANTE, MARIPOSA, CORAZÓN, DRAGÓN (4+4+4) ✓
+
+connectors:
+  Foco en "porque/entonces/pero/y" — correcto para nivel causal-consecutivo 4-5 años ✓
+  Todos los ítems usan solo 3 opciones (no 4), uniforme ✓
+
+opposites:
+  RÁPIDO/LENTO, LARGO/CORTO, GORDO/DELGADO, ALTO/BAJO (inicial) — apropiados ✓
+  FUERTE/DÉBIL, CLARO/OSCURO... (intermedio/avanzado) ✓
+
+definitions:  todas vacías → SemanticScreen no presentará tipo "definition" en N4
+  Esto es correcto: las definiciones formales empiezan en N6-N7.
+
+narrativeSequences: todas vacías → NarrativeScreen no disponible en N4
+  isActivityAvailable('narrative', level) → false. HomeScreen lo oculta. ✓
+
+inferences:  4+4+4 ítems ✓. Tipos: situacional, objeto, acción, lugar, intención, emoción.
+  Apropiados para 4-5 años (inferencias concretas). ✓
+
+rhymes:  4+4+4 ítems ✓ (casa/masa, pollo/rollo, etc.)
+
+pointImages: todas vacías → no disponible en N4. Por diseño (actividad para N2-N3).
+  isActivityAvailable('point-image', level) → false. ✓
+
+categories:  4+4+4 (nuestros datos). Apropiados: animales domésticos, frutas, útiles,
+  animales nocturnos, electricidad, flotan. ✓
+
+instructions: 4+4+4 (nuestros datos). Negación ("NO es un animal"), comparativo
+  ("más pequeño"), secuencia ("primero/luego"). Correcto para 4-5 años. ✓
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. N7.JSON — ANÁLISIS DE CONTENIDO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Nivel clínico: 7-12 años. Metafonología avanzada. Lenguaje figurado. Discurso.
+
+minimalPairs:
+  Todos son pares ortográficos/homófonos: coser/cocer, tubo/tuvo, echo/hecho,
+  bello/vello, cima/sima, rallado/rayado, rebelar/revelar, honda/onda,
+  ciento/siento, hierba/yerba, grabar/gravar.
+  → Correcto para N7: trabaja conciencia ortográfica y homofonía, no fonética. ✓
+
+buildWords:
+  METEOROLOGÍA (7 sílabas), RESPONSABILIDAD (6), TRANSFORMACIÓN (4),
+  BIODIVERSIDAD (5), ORGANIZACIÓN (5), EXTRAORDINARIO (6)...
+  → Polisílabos abstractos, correcto para N7. ✓
+
+listenRounds:
+  TRANSFORMACIÓN, RESPONSABILIDAD, BIODIVERSIDAD, COMUNICACIÓN (4 en cada nivel)
+  → Vocabulario científico/académico apropiado para 7-12 años. ✓
+
+connectors:
+  dado que, aunque, sin embargo, sino que, aun así, finalmente
+  Ítems avanzados con dos conectores: "dado que ... sin embargo"
+  → Registro formal complejo. Correcto para N7. ✓
+
+opposites:
+  ABSTRACTO/CONCRETO, VOLUNTARIO/OBLIGATORIO, LITERAL/FIGURADO,
+  EXPLÍCITO/IMPLÍCITO... → Vocabulario metalingüístico. Correcto para N7. ✓
+
+definitions:
+  metáfora, ironía, meteorología, personalidad, polisemia, empatía,
+  ambigüedad, modismo, creatividad, registro.
+  → Definiciones de conceptos abstractos y figuras retóricas. Muy apropiado. ✓
+
+narrativeSequences:
+  3 historias en inicial (5 frames c/u): El niño y el lobo, El experimento, La decisión
+  3 en intermedio: El puente roto, La carta de cumpleaños, El concurso de debate
+  3 en avanzado: El libro perdido, La huerta escolar, El volcán despierto
+  → Todas con 5 frames y valores explícitos (honestidad, responsabilidad). ✓
+  → Temáticas más maduras (experimento científico, concurso de debate). ✓
+
+inferences:
+  Tipos avanzados: metafora, ironia_compleja, adecuacion_interlocutor,
+  lenguaje_politico, inferencia_literaria, abstraccion, pensamiento_critico,
+  simbolismo, coherencia_discursiva.
+  → Excelente progresión desde N4 (inferencia_situacional) hasta N7 (pensamiento_critico). ✓
+
+rhymes:   vacías [] → por diseño (rimas son actividad de N2-N5). ✓
+pointImages: vacías [] → por diseño. ✓
+instructions: vacías [] → por diseño (instrucciones son actividad de N2-N5). ✓
+
+categories: 4+4+4 (nuestros datos). Categorías abstractas: figuras retóricas,
+  instituciones democráticas, géneros literarios, valores democráticos,
+  conectores adversativos, tipos de argumento, elementos narrativa,
+  procesos cognitivos, disciplinas filosóficas.
+  → Muy apropiadas para N7. PERO: BUG 2 "ABSTRAE R" en avanzado[2].
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. TABLA DE DISPONIBILIDAD DE ACTIVIDADES POR NIVEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Actividad              N1   N2   N3   N4   N5   N6   N7
+─────────────────────  ───  ───  ───  ───  ───  ───  ───
+minimal-pairs          ✓    ✓    ✓    ✓    ✓    ✓    ✓
+build-word             ✓    ✓    ✓    ✓    ✓    ✓    ✓
+listen                 ?*   ✓    ✓    ✓    ✓    ✓    ✓
+rhyme                  ?*   ✓    ✓    ✓    ✓    ?*   ✗
+point-image            ?*   ✓    ✓    ✗    ✓    ?*   ✗
+semantic               ?*   ?*   ✓    ✓    ✓    ✓    ✓
+syntax                 ?*   ?*   ✓    ✓    ✓    ✓    ✓
+narrative              ?*   ?*   ?*   ✗    ✓    ✓    ✓
+pragmatic              ?*   ?*   ✓    ✓    ✓    ✓    ✓
+category               ✗    ✗    ✓    ✓    ✓    ✓    ✓
+follow-instruction     ✗    ✓    ✓    ✓    ✓    ✗    ✗
+
+✓ = tiene contenido  ✗ = vacío por diseño  ?* = pendiente verificar
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. RESUMEN DE ACCIONES PENDIENTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ALTA PRIORIDAD:
+  [1] PragmaticScreen.jsx línea 25: eliminar `const exposureMs = ...`
+  [2] N7.json categories.avanzado[2].options[2].word: "ABSTRAE R" → "ABSTRAER"
+
+MEDIA PRIORIDAD:
+  [3] N4.json minimalPairs.avanzado: reemplazar "RARDO" por "TARDO" o "BARDO"
+  [4] N4.json buildWords.inicial: agregar 2-3 ítems más con /d/ y /r/
+
+BAJA PRIORIDAD:
+  [5] FollowInstructionScreen: si extendedExposureTime=true, el revealed delay (1800ms)
+      podría ser también más largo para dar más tiempo de escucha antes de ver opciones.
+      Actualmente solo afecta la velocidad del TTS, no el tiempo de espera.

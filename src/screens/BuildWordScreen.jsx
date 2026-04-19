@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback } from '../utils/audioFeedback'
+import { getDifficultyForActivity } from '../utils/componentMap'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -15,12 +16,15 @@ function speak(text, rate = 0.82) {
 
 function BuildWordScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const _words = getContent(patient.levelId).buildWords ?? []
+  const contentData = getContent(patient.levelId)
+  const difficulty = getDifficultyForActivity('build-word', patient.componentLevels)
+  const _words = contentData.buildWords?.[difficulty] ?? contentData.buildWords?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['build-word'] ?? 12
   const words = _words.slice(0, n)
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   const [idx, setIdx] = useState(0)
+  const [score, setScore] = useState(0)
   const [selected, setSelected] = useState([])
   const [options, setOptions] = useState([])
   const [feedback, setFeedback] = useState(null)
@@ -65,8 +69,10 @@ function BuildWordScreen({ onFinish, onBack }) {
     const attempt = selected.map(s => s.syl).join('')
     const correct = current.syllables.join('')
     const isCorrect = attempt === correct
+    const newScore = isCorrect ? score + 1 : score
+    if (isCorrect) setScore(newScore)
     nextAction.current = () => {
-      if (idx + 1 >= words.length) onFinish(isCorrect ? 1 : 0, words.length)
+      if (idx + 1 >= words.length) onFinish(newScore, words.length)
       else setIdx(i => i + 1)
     }
     playFeedback(isCorrect ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)

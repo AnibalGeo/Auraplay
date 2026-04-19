@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback } from '../utils/audioFeedback'
+import { getDifficultyForActivity } from '../utils/componentMap'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -15,7 +16,9 @@ function speak(text, rate = 0.82) {
 
 function ListenScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const _rounds = getContent(patient.levelId).listenRounds ?? []
+  const contentData = getContent(patient.levelId)
+  const difficulty = getDifficultyForActivity('listen', patient.componentLevels)
+  const _rounds = contentData.listenRounds?.[difficulty] ?? contentData.listenRounds?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['listen'] ?? 12
   const rounds = _rounds.slice(0, n)
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500

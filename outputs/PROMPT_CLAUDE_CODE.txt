@@ -1,0 +1,71 @@
+Lee en paralelo:
+- src/screens/RhymeScreen.jsx
+- src/screens/SemanticScreen.jsx
+- src/screens/SyntaxScreen.jsx
+- src/data/content/N3.json
+- src/data/content/N5.json
+
+Aplica con Edit parcial en este orden:
+
+═══════════════════════════════════════
+BUGS CRÍTICOS (primero)
+═══════════════════════════════════════
+
+1. N3.json — listenRounds.intermedio[1]: cambia "label": "Nube" → "label": "Luna"
+
+2. N5.json — rhymes.avanzado[0].options: cambia "CALENDÁRIO" → "CALENDARIO"
+
+3. N3.json — rhymes.avanzado: estas rimas no funcionan en español
+   - { word:"NIEVE", correct:"NUBE" }  → cambia correct:"NUBE" → correct:"LEVE"
+     y en options reemplaza "NUBE" por "LEVE"
+   - { word:"PIEDRA", correct:"MADERA" } → cambia correct:"MADERA" → correct:"HIEDRA"
+     y en options reemplaza "MADERA" por "HIEDRA"
+
+4. RhymeScreen.jsx — reducedOptions puede excluir la correcta con slice(0,2)
+   Reemplaza:
+     const options = estimulusSettings?.reducedOptions ? current.options.slice(0, 2) : current.options
+   Por:
+     const options = estimulusSettings?.reducedOptions
+       ? [current.correct, current.options.find(o => o !== current.correct)].filter(Boolean)
+       : current.options
+
+5. SemanticScreen.jsx y SyntaxScreen.jsx — elimina la línea "const exposureMs = ..."
+   en cada archivo (dead code, variable declarada y nunca usada)
+
+═══════════════════════════════════════
+NUEVAS ACTIVIDADES
+═══════════════════════════════════════
+
+Copia al proyecto:
+- C:\Users\amata\auraplay\outputs\CategoryScreen.jsx → src/screens/CategoryScreen.jsx
+- C:\Users\amata\auraplay\outputs\FollowInstructionScreen.jsx → src/screens/FollowInstructionScreen.jsx
+
+Luego Edit parcial en:
+
+6. componentMap.js — agrega:
+   'category':           'lexico'
+   'follow-instruction': 'morfosintactico'
+
+7. App.jsx — sigue el patrón exacto de RhymeScreen/PointImageScreen:
+   a) Importa CategoryScreen y FollowInstructionScreen
+   b) Agrega en renderScreen:
+      'category'           → <CategoryScreen onFinish={(s,t) => handleFinish('category','¿Cuál no pertenece?',s,t)} />
+      'follow-instruction' → <FollowInstructionScreen onFinish={(s,t) => handleFinish('follow-instruction','Sigue la Instrucción',s,t)} />
+   c) En el array de actividades:
+      { id:'category',           label:'¿Cuál no pertenece?', icon:'🔍', component:'lexico' }
+      { id:'follow-instruction', label:'Sigue la Instrucción', icon:'👂', component:'morfosintactico' }
+
+8. HomeScreen.jsx — agrega las 2 nuevas con el mismo patrón visual:
+   category           → color purple #7c6bb0 (léxico)
+   follow-instruction → color coral #e07a5f (morfosintáctico)
+
+9. TherapistPanel.jsx — agrega en los grupos:
+   Léxico-Semántico: { id:'category',           label:'¿Cuál no pertenece?',  available: countItems(pl.categories) }
+   Morfosintáctico:  { id:'follow-instruction', label:'Sigue la Instrucción', available: countItems(pl.instructions) }
+
+10. JSONs N1-N7 — inserta contenido desde:
+    C:\Users\amata\auraplay\outputs\contenido_category_instruction.js
+    - category:           N1-N2 vacío, N3-N7 con datos
+    - follow-instruction: N1 vacío, N2-N5 con datos, N6-N7 vacío
+
+npm run build al final.

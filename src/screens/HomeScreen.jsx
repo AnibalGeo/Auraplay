@@ -11,6 +11,7 @@ const LANGUAGE_LEVELS = [
     activities: [
       { key: 'minimal-pairs', icon: '👂', name: 'Palabras Similares', desc: 'Pares mínimos' },
       { key: 'build-word',    icon: '🧩', name: 'Armar Palabras',     desc: 'Une las sílabas' },
+      { key: 'rhyme',         icon: '🎵', name: 'Rimas',              desc: 'Conciencia fonológica' },
     ],
     progressLabel: 'Fonético-Fonológico',
     progressPct: 72,
@@ -21,8 +22,10 @@ const LANGUAGE_LEVELS = [
     emoji: '📚',
     color: '#7c6bb0',
     activities: [
-      { key: 'listen',   icon: '🔊', name: 'Escucha Atento', desc: 'Discriminación auditiva' },
-      { key: 'semantic', icon: '🧠', name: 'Semántica',       desc: 'Opuestos y definiciones' },
+      { key: 'listen',       icon: '🔊', name: 'Escucha Atento',      desc: 'Discriminación auditiva' },
+      { key: 'semantic',     icon: '🧠', name: 'Semántica',            desc: 'Opuestos y definiciones' },
+      { key: 'point-image',  icon: '👆', name: 'Señala la Imagen',     desc: 'Vocabulario receptivo' },
+      { key: 'category',     icon: '🔍', name: '¿Cuál no pertenece?',  desc: 'Categorización semántica' },
     ],
     progressLabel: 'Léxico-Semántico',
     progressPct: 60,
@@ -33,8 +36,9 @@ const LANGUAGE_LEVELS = [
     emoji: '🧩',
     color: '#e07a5f',
     activities: [
-      { key: 'syntax',    icon: '📝', name: 'Completar Frases', desc: 'Conectores' },
-      { key: 'narrative', icon: '📖', name: 'Ordenar Historia', desc: 'Secuencia narrativa' },
+      { key: 'syntax',              icon: '📝', name: 'Completar Frases',    desc: 'Conectores' },
+      { key: 'narrative',           icon: '📖', name: 'Ordenar Historia',    desc: 'Secuencia narrativa' },
+      { key: 'follow-instruction',  icon: '👂', name: 'Sigue la Instrucción', desc: 'Comprensión de instrucciones' },
     ],
     progressLabel: 'Morfosintáctico',
     progressPct: 40,
@@ -45,12 +49,20 @@ const LANGUAGE_LEVELS = [
     emoji: '💬',
     color: '#e8a020',
     activities: [
-      { key: 'pragmatic', icon: '💬', name: 'Inferencias', desc: 'Contexto social' },
+      { key: 'pragmatic',            icon: '💬', name: 'Inferencias',        desc: 'Contexto social' },
+      { key: 'communicative-intent', icon: '🗣️', name: '¿Para qué sirve?', desc: 'Intención comunicativa' },
     ],
     progressLabel: 'Pragmático',
     progressPct: 55,
   },
 ]
+
+// El contenido está estructurado como { inicial: [], intermedio: [], avanzado: [] }
+function hasContent(obj) {
+  if (!obj) return false
+  if (Array.isArray(obj)) return obj.length > 0
+  return Object.values(obj).some(v => Array.isArray(v) && v.length > 0)
+}
 
 function isActivityAvailable(key, level) {
   const f = level.fonologia
@@ -58,14 +70,19 @@ function isActivityAvailable(key, level) {
   const m = level.morfosintaxis
   const p = level.pragmatica
   switch (key) {
-    case 'minimal-pairs': return (f?.minimalPairs?.length ?? 0) > 0
-    case 'build-word':    return (f?.buildWords?.length ?? 0) > 0
-    case 'listen':        return (s?.listen?.length ?? 0) > 0
-    case 'semantic':      return ((s?.opposites?.length ?? 0) + (s?.definitions?.length ?? 0)) > 0
-    case 'syntax':        return (m?.connectors?.length ?? 0) > 0
-    case 'narrative':     return (m?.narrativeSequence?.length ?? 0) > 0
-    case 'pragmatic':     return (p?.inferences?.length ?? 0) > 0
-    default:              return false
+    case 'minimal-pairs': return hasContent(f?.minimalPairs)
+    case 'build-word':    return hasContent(f?.buildWords)
+    case 'listen':        return hasContent(s?.listen)
+    case 'semantic':      return hasContent(s?.opposites) || hasContent(s?.definitions)
+    case 'syntax':        return hasContent(m?.connectors)
+    case 'narrative':     return hasContent(m?.narrativeSequence)
+    case 'pragmatic':     return hasContent(p?.inferences)
+    case 'rhyme':              return hasContent(level.rhymes)
+    case 'point-image':        return hasContent(level.pointImages)
+    case 'category':           return hasContent(level.categories)
+    case 'follow-instruction':     return hasContent(level.instructions)
+    case 'communicative-intent':   return hasContent(level.communicativeIntents)
+    default:                       return false
   }
 }
 

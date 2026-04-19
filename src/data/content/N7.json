@@ -1,212 +1,1897 @@
 {
-  "minimalPairs": [
-    { "word": "COSER", "emoji": "🧵", "distractor": { "word": "COCER", "emoji": "🍳" } },
-    { "word": "TUBO", "emoji": "🚿", "distractor": { "word": "TUVO", "emoji": "✅" } },
-    { "word": "ECHO", "emoji": "📤", "distractor": { "word": "HECHO", "emoji": "✔️" } },
-    { "word": "BELLO", "emoji": "🌸", "distractor": { "word": "VELLO", "emoji": "🦶" } },
-    { "word": "CIMA", "emoji": "🏔️", "distractor": { "word": "SIMA", "emoji": "🕳️" } },
-    { "word": "RALLADO", "emoji": "🧀", "distractor": { "word": "RAYADO", "emoji": "🖊️" } },
-    { "word": "REBELAR", "emoji": "✊", "distractor": { "word": "REVELAR", "emoji": "📷" } },
-    { "word": "HOLA", "emoji": "👋", "distractor": { "word": "OLA", "emoji": "🌊" } },
-    { "word": "HONDA", "emoji": "🎯", "distractor": { "word": "ONDA", "emoji": "〰️" } },
-    { "word": "CIENTO", "emoji": "💯", "distractor": { "word": "SIENTO", "emoji": "😢" } },
-    { "word": "HIERBA", "emoji": "🌿", "distractor": { "word": "YERBA", "emoji": "🍵" } },
-    { "word": "GRABAR", "emoji": "🎙️", "distractor": { "word": "GRAVAR", "emoji": "💸" } }
-  ],
-  "buildWords": [
-    { "word": "METEOROLOGÍA", "emoji": "🌤️", "syllables": ["ME", "TE", "O", "RO", "LO", "GÍ", "A"], "hint": "7 sílabas" },
-    { "word": "ELECTRICIDAD", "emoji": "⚡", "syllables": ["E", "LEC", "TRI", "CI", "DAD"], "hint": "5 sílabas" },
-    { "word": "TRANSFORMACIÓN", "emoji": "🔄", "syllables": ["TRANS", "FOR", "MA", "CIÓN"], "hint": "4 sílabas" },
-    { "word": "RESPONSABILIDAD", "emoji": "⚖️", "syllables": ["RES", "PON", "SA", "BI", "LI", "DAD"], "hint": "6 sílabas" },
-    { "word": "EXTRAORDINARIO", "emoji": "🌟", "syllables": ["EX", "TRA", "OR", "DI", "NA", "RIO"], "hint": "6 sílabas" },
-    { "word": "CONTEMPORÁNEO", "emoji": "🕰️", "syllables": ["CON", "TEM", "PO", "RÁ", "NE", "O"], "hint": "6 sílabas" },
-    { "word": "COMUNICACIÓN", "emoji": "📡", "syllables": ["CO", "MU", "NI", "CA", "CIÓN"], "hint": "5 sílabas" },
-    { "word": "APROXIMACIÓN", "emoji": "📐", "syllables": ["A", "PROX", "I", "MA", "CIÓN"], "hint": "5 sílabas" },
-    { "word": "BIODIVERSIDAD", "emoji": "🌿", "syllables": ["BIO", "DI", "VER", "SI", "DAD"], "hint": "5 sílabas" },
-    { "word": "ORGANIZACIÓN", "emoji": "📋", "syllables": ["OR", "GA", "NI", "ZA", "CIÓN"], "hint": "5 sílabas" },
-    { "word": "PERSONALIDAD", "emoji": "🧠", "syllables": ["PER", "SO", "NA", "LI", "DAD"], "hint": "5 sílabas" },
-    { "word": "GLOBALIZACIÓN", "emoji": "🌍", "syllables": ["GLO", "BA", "LI", "ZA", "CIÓN"], "hint": "5 sílabas" }
-  ],
-  "listenRounds": [
-    { "sound": "TRANSFORMACIÓN", "correct": "🔄", "label": "Transformación", "options": [{ "e": "🔄", "l": "Transformación" }, { "e": "⚡", "l": "Electricidad" }, { "e": "🌤️", "l": "Meteorología" }] },
-    { "sound": "RESPONSABILIDAD", "correct": "⚖️", "label": "Responsabilidad", "options": [{ "e": "⚖️", "l": "Responsabilidad" }, { "e": "🏆", "l": "Logro" }, { "e": "📋", "l": "Organización" }] },
-    { "sound": "BIODIVERSIDAD", "correct": "🌿", "label": "Biodiversidad", "options": [{ "e": "🌿", "l": "Biodiversidad" }, { "e": "🌍", "l": "Globalización" }, { "e": "🧬", "l": "Genética" }] },
-    { "sound": "COMUNICACIÓN", "correct": "📡", "label": "Comunicación", "options": [{ "e": "📡", "l": "Comunicación" }, { "e": "🎤", "l": "Micrófono" }, { "e": "📺", "l": "Televisor" }] },
-    { "sound": "EXTRAORDINARIO", "correct": "🌟", "label": "Extraordinario", "options": [{ "e": "🌟", "l": "Extraordinario" }, { "e": "⭐", "l": "Estrella" }, { "e": "✨", "l": "Brillante" }] },
-    { "sound": "ORGANIZACIÓN", "correct": "📋", "label": "Organización", "options": [{ "e": "📋", "l": "Organización" }, { "e": "📚", "l": "Biblioteca" }, { "e": "💼", "l": "Trabajo" }] },
-    { "sound": "PERSONALIDAD", "correct": "🧠", "label": "Personalidad", "options": [{ "e": "🧠", "l": "Personalidad" }, { "e": "💭", "l": "Pensamiento" }, { "e": "❤️", "l": "Emoción" }] },
-    { "sound": "GLOBALIZACIÓN", "correct": "🌍", "label": "Globalización", "options": [{ "e": "🌍", "l": "Globalización" }, { "e": "🗺️", "l": "Mapa" }, { "e": "✈️", "l": "Viaje" }] },
-    { "sound": "METEOROLOGÍA", "correct": "🌤️", "label": "Meteorología", "options": [{ "e": "🌤️", "l": "Meteorología" }, { "e": "🌧️", "l": "Lluvia" }, { "e": "☀️", "l": "Sol" }] },
-    { "sound": "ELECTRICIDAD", "correct": "⚡", "label": "Electricidad", "options": [{ "e": "⚡", "l": "Electricidad" }, { "e": "🔋", "l": "Batería" }, { "e": "💡", "l": "Bombilla" }] },
-    { "sound": "APROXIMACIÓN", "correct": "📐", "label": "Aproximación", "options": [{ "e": "📐", "l": "Aproximación" }, { "e": "📏", "l": "Medición" }, { "e": "🔭", "l": "Observación" }] },
-    { "sound": "CONTEMPORÁNEO", "correct": "🕰️", "label": "Contemporáneo", "options": [{ "e": "🕰️", "l": "Contemporáneo" }, { "e": "📅", "l": "Calendario" }, { "e": "⏳", "l": "Tiempo" }] }
-  ],
-  "connectors": [
-    { "sentence": "El proyecto fracasó, ___ no habíamos planificado bien.", "options": ["dado que", "aunque", "mientras"], "correct": "dado que", "explanation": "\"Dado que\" introduce una causa formal.", "level": "causal_formal" },
-    { "sentence": "___ los resultados sean negativos, seguiremos intentando.", "options": ["Aunque", "Porque", "Entonces"], "correct": "Aunque", "explanation": "\"Aunque\" introduce una concesión formal.", "level": "concesivo_subjuntivo" },
-    { "sentence": "Estudió mucho; ___, reprobó el examen.", "options": ["sin embargo", "porque", "cuando"], "correct": "sin embargo", "explanation": "\"Sin embargo\" contrasta dos ideas opuestas.", "level": "adversativo_formal" },
-    { "sentence": "No solo llegó tarde, ___ tampoco trajo los materiales.", "options": ["sino que", "porque", "aunque"], "correct": "sino que", "explanation": "\"Sino que\" añade una idea negativa adicional.", "level": "adversativo_exclusivo" },
-    { "sentence": "El informe era incompleto; ___ así, fue aceptado.", "options": ["aun así", "dado que", "sino que"], "correct": "aun así", "explanation": "\"Aun así\" concede a pesar del obstáculo.", "level": "concesivo_formal" },
-    { "sentence": "Se esforzó mucho; ___ lo consiguió.", "options": ["finalmente", "aunque", "dado que"], "correct": "finalmente", "explanation": "\"Finalmente\" señala el resultado luego del esfuerzo.", "level": "consecutivo_formal" },
-    { "sentence": "La ley prohíbe hacerlo; ___, mucha gente lo hace.", "options": ["sin embargo", "dado que", "sino que"], "correct": "sin embargo", "explanation": "\"Sin embargo\" introduce la contradicción social.", "level": "adversativo_formal" },
-    { "sentence": "___ se considere difícil, es el camino correcto.", "options": ["Aunque", "Porque", "Dado que"], "correct": "Aunque", "explanation": "\"Aunque\" concede la dificultad pero mantiene la decisión.", "level": "concesivo_subjuntivo" },
-    { "sentence": "El clima fue adverso; ___, el evento continuó.", "options": ["aun así", "sino que", "dado que"], "correct": "aun así", "explanation": "\"Aun así\" indica que la adversidad no impidió la acción.", "level": "concesivo_formal" },
-    { "sentence": "El estudiante reprobó ___ no estudió suficiente; ___ sus compañeros sí aprobaron.", "options": ["aunque ... sino que", "dado que ... sin embargo", "porque ... sino que"], "correct": "dado que ... sin embargo", "explanation": "\"Dado que\" introduce la causa; \"sin embargo\" contrasta con el resultado de los compañeros.", "level": "multiple_formal" },
-    { "sentence": "___ la distancia era enorme, decidieron intentarlo de todos modos.", "options": ["Aunque", "Dado que", "Finalmente"], "correct": "Aunque", "explanation": "\"Aunque\" abre la concesión que luego contrasta.", "level": "concesivo_subjuntivo" },
-    { "sentence": "No le interesaba el dinero; le importaba, ___, el reconocimiento.", "options": ["sino", "dado que", "aunque"], "correct": "sino", "explanation": "\"Sino\" corrige o sustituye lo que se negó antes.", "level": "adversativo_exclusivo" }
-  ],
-  "opposites": [
-    { "word": "ABSTRACTO", "emoji": "🌀", "opposite": "CONCRETO", "oppositeEmoji": "🧱" },
-    { "word": "VOLUNTARIO", "emoji": "🤝", "opposite": "OBLIGATORIO", "oppositeEmoji": "📋" },
-    { "word": "PARCIAL", "emoji": "🔀", "opposite": "TOTAL", "oppositeEmoji": "💯" },
-    { "word": "COHERENTE", "emoji": "🔗", "opposite": "INCOHERENTE", "oppositeEmoji": "🔀" },
-    { "word": "FORMAL", "emoji": "👔", "opposite": "INFORMAL", "oppositeEmoji": "👕" },
-    { "word": "SUBJETIVO", "emoji": "💭", "opposite": "OBJETIVO", "oppositeEmoji": "⚖️" },
-    { "word": "LITERAL", "emoji": "📖", "opposite": "FIGURADO", "oppositeEmoji": "🎭" },
-    { "word": "CONSCIENTE", "emoji": "🧠", "opposite": "INCONSCIENTE", "oppositeEmoji": "😴" },
-    { "word": "EXPLÍCITO", "emoji": "📢", "opposite": "IMPLÍCITO", "oppositeEmoji": "🤫" },
-    { "word": "GLOBAL", "emoji": "🌍", "opposite": "LOCAL", "oppositeEmoji": "📍" },
-    { "word": "COMPLEJO", "emoji": "🧩", "opposite": "SIMPLE", "oppositeEmoji": "⭕" },
-    { "word": "PERMANENTE", "emoji": "♾️", "opposite": "TEMPORAL", "oppositeEmoji": "⏳" }
-  ],
-  "definitions": [
-    { "definition": "Manera de decir algo de forma indirecta usando una comparación, como 'sus ojos son estrellas'", "options": [{ "word": "METÁFORA", "emoji": "✨" }, { "word": "PREGUNTA", "emoji": "❓" }, { "word": "ORDEN", "emoji": "📢" }], "correct": "METÁFORA" },
-    { "definition": "Cuando alguien dice lo contrario de lo que piensa, generalmente para bromear o criticar", "options": [{ "word": "IRONÍA", "emoji": "😏" }, { "word": "VERDAD", "emoji": "✅" }, { "word": "MENTIRA", "emoji": "🤥" }], "correct": "IRONÍA" },
-    { "definition": "Es el estudio del clima y los fenómenos atmosféricos como la lluvia o el viento", "options": [{ "word": "METEOROLOGÍA", "emoji": "🌤️" }, { "word": "GEOLOGÍA", "emoji": "🪨" }, { "word": "BIOLOGÍA", "emoji": "🔬" }], "correct": "METEOROLOGÍA" },
-    { "definition": "Es cuando una persona, sin querer, revela algo que quería mantener en secreto", "options": [{ "word": "DELATAR", "emoji": "🤭" }, { "word": "ACUSAR", "emoji": "👆" }, { "word": "MENTIR", "emoji": "🤥" }], "correct": "DELATAR" },
-    { "definition": "Es el conjunto de características únicas que hacen que una persona sea diferente a las demás", "options": [{ "word": "PERSONALIDAD", "emoji": "🧠" }, { "word": "APARIENCIA", "emoji": "👗" }, { "word": "OPINIÓN", "emoji": "💬" }], "correct": "PERSONALIDAD" },
-    { "definition": "Es cuando una palabra tiene dos o más significados distintos según el contexto", "options": [{ "word": "POLISEMIA", "emoji": "🔄" }, { "word": "SINÓNIMO", "emoji": "↔️" }, { "word": "ANTÓNIMO", "emoji": "⇔" }], "correct": "POLISEMIA" },
-    { "definition": "Es la capacidad de ponerse en el lugar de otra persona y entender cómo se siente", "options": [{ "word": "EMPATÍA", "emoji": "🤝" }, { "word": "SIMPATÍA", "emoji": "😊" }, { "word": "ANTIPATÍA", "emoji": "😠" }], "correct": "EMPATÍA" },
-    { "definition": "Es el proceso mediante el cual un ser vivo crece y cambia a lo largo del tiempo", "options": [{ "word": "DESARROLLO", "emoji": "📈" }, { "word": "REPRODUCCIÓN", "emoji": "🔄" }, { "word": "ADAPTACIÓN", "emoji": "🦎" }], "correct": "DESARROLLO" },
-    { "definition": "Es cuando una idea o texto puede entenderse de más de una manera", "options": [{ "word": "AMBIGÜEDAD", "emoji": "❓" }, { "word": "CLARIDAD", "emoji": "💡" }, { "word": "PRECISIÓN", "emoji": "🎯" }], "correct": "AMBIGÜEDAD" },
-    { "definition": "Es la frase hecha cuyo significado no puede deducirse de las palabras que la componen, como 'meter la pata'", "options": [{ "word": "MODISMO", "emoji": "🗣️" }, { "word": "REFRÁN", "emoji": "📜" }, { "word": "METÁFORA", "emoji": "✨" }], "correct": "MODISMO" },
-    { "definition": "Es la capacidad de crear algo nuevo o de encontrar soluciones originales a los problemas", "options": [{ "word": "CREATIVIDAD", "emoji": "🎨" }, { "word": "MEMORIA", "emoji": "🧠" }, { "word": "ATENCIÓN", "emoji": "👁️" }], "correct": "CREATIVIDAD" },
-    { "definition": "Es cuando el hablante adapta su forma de hablar según la persona con quien habla o el lugar donde está", "options": [{ "word": "REGISTRO", "emoji": "🎚️" }, { "word": "ACENTO", "emoji": "🔊" }, { "word": "VOCABULARIO", "emoji": "📖" }], "correct": "REGISTRO" }
-  ],
-  "narrativeSequences": [
-    {
-      "title": "El niño y el lobo",
-      "frames": [
-        { "emoji": "👦🐑", "text": "Un pastor cuidaba sus ovejas en el monte." },
-        { "emoji": "😂👦", "text": "Para divertirse, gritó: '¡El lobo, el lobo!' aunque no había ninguno." },
-        { "emoji": "🏃🏃", "text": "Los aldeanos corrieron a ayudarlo, pero no encontraron ningún lobo." },
-        { "emoji": "🐺👦", "text": "Un día llegó un lobo de verdad y el niño pidió ayuda." },
-        { "emoji": "🚫👥", "text": "Nadie le creyó esta vez. Aprendió que mentir trae consecuencias." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El experimento científico",
-      "frames": [
-        { "emoji": "💡", "text": "Elena tuvo una idea: investigar si las plantas crecen más con música." },
-        { "emoji": "🌱🌱", "text": "Plantó dos semillas iguales en macetas idénticas con la misma tierra." },
-        { "emoji": "🎵🌱", "text": "A una le puso música clásica cada día; a la otra, solo silencio." },
-        { "emoji": "📏", "text": "Midió el crecimiento de ambas plantas cada semana durante un mes." },
-        { "emoji": "📊", "text": "La planta con música creció más alto. Elena presentó su investigación en clase." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "La decisión de Miguel",
-      "frames": [
-        { "emoji": "🤔", "text": "Miguel encontró una billetera en el parque con mucho dinero adentro." },
-        { "emoji": "💭", "text": "Pensó en quedársela, pero sabía que era incorrecto." },
-        { "emoji": "👮", "text": "Decidió llevarla a la comisaría del barrio." },
-        { "emoji": "😊", "text": "Al día siguiente, el dueño llamó a sus padres para agradecerle." },
-        { "emoji": "🏅", "text": "Miguel se sintió muy bien consigo mismo por haber actuado honestamente." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "La migración de las aves",
-      "frames": [
-        { "emoji": "🍂", "text": "Al llegar el otoño, las temperaturas comenzaron a bajar." },
-        { "emoji": "🐦🐦", "text": "Miles de aves se reunieron en un lago para preparar el viaje." },
-        { "emoji": "✈️🐦", "text": "Volaron en formación durante miles de kilómetros hacia el sur." },
-        { "emoji": "☀️🌴", "text": "Llegaron a tierras cálidas donde encontraron abundante alimento." },
-        { "emoji": "🌸🐦", "text": "En primavera, emprenderían el regreso a su lugar de origen." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El puente roto",
-      "frames": [
-        { "emoji": "🌊", "text": "Una tormenta dañó el único puente que conectaba dos aldeas." },
-        { "emoji": "😔", "text": "Los aldeanos no podían cruzar el río para ir al mercado ni al hospital." },
-        { "emoji": "🛠️", "text": "Los dos alcaldes se reunieron y acordaron repararlo juntos." },
-        { "emoji": "👷👷", "text": "Ingenieros y vecinos trabajaron durante semanas en la reconstrucción." },
-        { "emoji": "🌉", "text": "El nuevo puente quedó más resistente que el anterior." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "La carta de cumpleaños",
-      "frames": [
-        { "emoji": "📅", "text": "Camila se acordó de que era el cumpleaños de su abuela en otra ciudad." },
-        { "emoji": "✍️", "text": "Decidió escribirle una carta a mano en vez de enviar un mensaje de texto." },
-        { "emoji": "📬", "text": "La metió en un sobre, le pegó una estampilla y la envió por correo." },
-        { "emoji": "📞", "text": "Una semana después, su abuela la llamó emocionada al recibir la carta." },
-        { "emoji": "❤️", "text": "La abuela guardó la carta en un cajón especial como un tesoro." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El concurso de debate",
-      "frames": [
-        { "emoji": "📋", "text": "El colegio organizó un concurso de debate sobre el medio ambiente." },
-        { "emoji": "📚", "text": "Cada equipo investigó su posición durante dos semanas." },
-        { "emoji": "🎤", "text": "El día del concurso, los equipos argumentaron sus ideas ante un jurado." },
-        { "emoji": "⚖️", "text": "El jurado evaluó la claridad, los argumentos y el respeto al turno de hablar." },
-        { "emoji": "🏆", "text": "El equipo de Sofía ganó por presentar los argumentos más sólidos." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El libro perdido",
-      "frames": [
-        { "emoji": "📖", "text": "Andrés pidió prestado un libro muy valioso de la biblioteca." },
-        { "emoji": "🕳️", "text": "Al devolver su mochila, descubrió que el libro había desaparecido." },
-        { "emoji": "😰", "text": "Buscó en todos sus cuadernos, en el bus y en el aula, pero no lo encontró." },
-        { "emoji": "🙋", "text": "Decidió ser honesto y contarle a la bibliotecaria lo sucedido." },
-        { "emoji": "💰📖", "text": "Con sus ahorros compró un ejemplar nuevo para reponerlo." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "La huerta escolar",
-      "frames": [
-        { "emoji": "🌱", "text": "El colegio propuso crear una huerta en el patio trasero." },
-        { "emoji": "🪣", "text": "Los alumnos prepararon la tierra y la dividieron en parcelas." },
-        { "emoji": "🫘", "text": "Cada curso eligió qué sembrar: tomates, lechugas o zanahorias." },
-        { "emoji": "💧", "text": "Durante meses regaron y cuidaron las plantas con responsabilidad." },
-        { "emoji": "🥗", "text": "Al final del año, cosecharon las verduras y cocinaron una ensalada para todos." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    },
-    {
-      "title": "El volcán despierto",
-      "frames": [
-        { "emoji": "🌋", "text": "Los científicos detectaron que un volcán dormido empezaba a activarse." },
-        { "emoji": "📢", "text": "Las autoridades avisaron a los habitantes de los pueblos cercanos." },
-        { "emoji": "🚗🏃", "text": "Miles de familias evacuaron con sus pertenencias más importantes." },
-        { "emoji": "🌋💥", "text": "Días después, el volcán entró en erupción lanzando lava y ceniza." },
-        { "emoji": "✅", "text": "Gracias a la evacuación a tiempo, ninguna persona resultó herida." }
-      ],
-      "correctOrder": [0, 1, 2, 3, 4]
-    }
-  ],
-  "inferences": [
-    { "situation": "Lucas dice: \"Tengo tantas tareas que me estoy ahogando en libros\".", "question": "¿Qué significa eso realmente?", "options": ["Tiene muchísimas tareas", "Cayó dentro de libros", "Le gustan los libros"], "correct": "Tiene muchísimas tareas", "emoji": "📚", "type": "metafora" },
-    { "situation": "Ana rompió accidentalmente un vaso. Su mamá dice: \"¡Qué cuidadosa eres!\"", "question": "¿La mamá lo dice en serio o es ironía?", "options": ["Es ironía, porque fue descuidada", "Lo dice en serio, fue cuidadosa", "No está segura"], "correct": "Es ironía, porque fue descuidada", "emoji": "😏", "type": "ironia_compleja" },
-    { "situation": "Estás hablando con tu abuela vs. hablando con tu mejor amigo.", "question": "¿Cómo debería ser tu lenguaje con tu abuela?", "options": ["Más formal y respetuoso", "Igual que con tu amigo", "Más rápido y con jerga"], "correct": "Más formal y respetuoso", "emoji": "👵", "type": "adecuacion_interlocutor" },
-    { "situation": "El político dijo: 'Haré todo lo posible' cuando le preguntaron si bajarían los impuestos.", "question": "¿Qué nos indica esa respuesta?", "options": ["Que no prometió nada concreto", "Que los impuestos bajarán seguro", "Que renunciará a su cargo"], "correct": "Que no prometió nada concreto", "emoji": "🗣️", "type": "lenguaje_politico" },
-    { "situation": "Después de perder el partido, el entrenador dijo: 'Este resultado nos hará más fuertes'.", "question": "¿Qué actitud muestra el entrenador?", "options": ["Resiliencia y visión positiva", "Enojo y frustración", "Desinterés"], "correct": "Resiliencia y visión positiva", "emoji": "💪", "type": "inferencia_actitud" },
-    { "situation": "El texto dice: 'Era una noche oscura y tormentosa; algo malo estaba por suceder'.", "question": "¿Qué recurso usa el autor al describir la noche?", "options": ["Crear suspenso y anticipar un evento negativo", "Describir el clima objetivamente", "Elogiar la tormenta"], "correct": "Crear suspenso y anticipar un evento negativo", "emoji": "🌩️", "type": "inferencia_literaria" },
-    { "situation": "María siempre llega puntual, revisa sus tareas dos veces y organiza su mochila la noche anterior.", "question": "¿Cómo se puede describir la personalidad de María?", "options": ["Responsable y organizada", "Impulsiva y creativa", "Distraída y relajada"], "correct": "Responsable y organizada", "emoji": "📋", "type": "inferencia_caracter" },
-    { "situation": "El mismo chiste le parece gracioso a unos niños pero no a otros.", "question": "¿Qué nos indica esto sobre el humor?", "options": ["El humor es subjetivo y depende de cada persona", "Algunos niños no entienden los chistes", "El chiste está mal contado"], "correct": "El humor es subjetivo y depende de cada persona", "emoji": "😄", "type": "abstraccion" },
-    { "situation": "Un anuncio dice: 'El mejor producto del mundo. ¡Cómpralo ahora!'", "question": "¿Por qué deberías ser crítico con ese mensaje?", "options": ["Porque usa exageración para vender y no es objetiva", "Porque probablemente es el mejor del mundo", "Porque no da suficiente información"], "correct": "Porque usa exageración para vender y no es objetiva", "emoji": "📢", "type": "pensamiento_critico" },
-    { "situation": "Dos amigos discuten. Uno dice: 'Nunca me escuchas'. El otro responde: 'Siempre exageras'.", "question": "¿Qué están haciendo los dos con su lenguaje?", "options": ["Usando exageraciones que no son literalmente ciertas", "Describiendo hechos exactos", "Pidiendo disculpas"], "correct": "Usando exageraciones que no son literalmente ciertas", "emoji": "💬", "type": "lenguaje_hiperbole" },
-    { "situation": "En un cuento, el villano siempre viste de negro y el héroe, de blanco.", "question": "¿Qué simboliza ese uso de colores en la historia?", "options": ["El negro representa el mal y el blanco, el bien", "El autor solo usa esos colores por costumbre", "Los personajes tienen frío"], "correct": "El negro representa el mal y el blanco, el bien", "emoji": "⚫⚪", "type": "simbolismo" },
-    { "situation": "Diego no estudió, pero le dijo a su mamá: 'Hice todo lo que pude'.", "question": "¿Hay coherencia entre lo que hizo Diego y lo que dijo?", "options": ["No, hay una contradicción entre su acción y su discurso", "Sí, estudió todo lo que pudo", "Es difícil saberlo sin más información"], "correct": "No, hay una contradicción entre su acción y su discurso", "emoji": "🤔", "type": "coherencia_discursiva" }
-  ]
+  "minimalPairs": {
+    "inicial": [
+      {
+        "word": "COSER",
+        "emoji": "🧵",
+        "distractor": {
+          "word": "COCER",
+          "emoji": "🍳"
+        }
+      },
+      {
+        "word": "TUBO",
+        "emoji": "🚿",
+        "distractor": {
+          "word": "TUVO",
+          "emoji": "✅"
+        }
+      },
+      {
+        "word": "ECHO",
+        "emoji": "📤",
+        "distractor": {
+          "word": "HECHO",
+          "emoji": "✔️"
+        }
+      },
+      {
+        "word": "BELLO",
+        "emoji": "🌸",
+        "distractor": {
+          "word": "VELLO",
+          "emoji": "🦶"
+        }
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "CIMA",
+        "emoji": "🏔️",
+        "distractor": {
+          "word": "SIMA",
+          "emoji": "🕳️"
+        }
+      },
+      {
+        "word": "RALLADO",
+        "emoji": "🧀",
+        "distractor": {
+          "word": "RAYADO",
+          "emoji": "🖊️"
+        }
+      },
+      {
+        "word": "REBELAR",
+        "emoji": "✊",
+        "distractor": {
+          "word": "REVELAR",
+          "emoji": "📷"
+        }
+      },
+      {
+        "word": "HOLA",
+        "emoji": "👋",
+        "distractor": {
+          "word": "OLA",
+          "emoji": "🌊"
+        }
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "HONDA",
+        "emoji": "🎯",
+        "distractor": {
+          "word": "ONDA",
+          "emoji": "〰️"
+        }
+      },
+      {
+        "word": "CIENTO",
+        "emoji": "💯",
+        "distractor": {
+          "word": "SIENTO",
+          "emoji": "😢"
+        }
+      },
+      {
+        "word": "HIERBA",
+        "emoji": "🌿",
+        "distractor": {
+          "word": "YERBA",
+          "emoji": "🍵"
+        }
+      },
+      {
+        "word": "GRABAR",
+        "emoji": "🎙️",
+        "distractor": {
+          "word": "GRAVAR",
+          "emoji": "💸"
+        }
+      }
+    ]
+  },
+  "buildWords": {
+    "inicial": [
+      {
+        "word": "METEOROLOGÍA",
+        "emoji": "🌤️",
+        "syllables": [
+          "ME",
+          "TE",
+          "O",
+          "RO",
+          "LO",
+          "GÍ",
+          "A"
+        ],
+        "hint": "7 sílabas"
+      },
+      {
+        "word": "ELECTRICIDAD",
+        "emoji": "⚡",
+        "syllables": [
+          "E",
+          "LEC",
+          "TRI",
+          "CI",
+          "DAD"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "TRANSFORMACIÓN",
+        "emoji": "🔄",
+        "syllables": [
+          "TRANS",
+          "FOR",
+          "MA",
+          "CIÓN"
+        ],
+        "hint": "4 sílabas"
+      },
+      {
+        "word": "RESPONSABILIDAD",
+        "emoji": "⚖️",
+        "syllables": [
+          "RES",
+          "PON",
+          "SA",
+          "BI",
+          "LI",
+          "DAD"
+        ],
+        "hint": "6 sílabas"
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "EXTRAORDINARIO",
+        "emoji": "🌟",
+        "syllables": [
+          "EX",
+          "TRA",
+          "OR",
+          "DI",
+          "NA",
+          "RIO"
+        ],
+        "hint": "6 sílabas"
+      },
+      {
+        "word": "CONTEMPORÁNEO",
+        "emoji": "🕰️",
+        "syllables": [
+          "CON",
+          "TEM",
+          "PO",
+          "RÁ",
+          "NE",
+          "O"
+        ],
+        "hint": "6 sílabas"
+      },
+      {
+        "word": "COMUNICACIÓN",
+        "emoji": "📡",
+        "syllables": [
+          "CO",
+          "MU",
+          "NI",
+          "CA",
+          "CIÓN"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "APROXIMACIÓN",
+        "emoji": "📐",
+        "syllables": [
+          "A",
+          "PROX",
+          "I",
+          "MA",
+          "CIÓN"
+        ],
+        "hint": "5 sílabas"
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "BIODIVERSIDAD",
+        "emoji": "🌿",
+        "syllables": [
+          "BIO",
+          "DI",
+          "VER",
+          "SI",
+          "DAD"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "ORGANIZACIÓN",
+        "emoji": "📋",
+        "syllables": [
+          "OR",
+          "GA",
+          "NI",
+          "ZA",
+          "CIÓN"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "PERSONALIDAD",
+        "emoji": "🧠",
+        "syllables": [
+          "PER",
+          "SO",
+          "NA",
+          "LI",
+          "DAD"
+        ],
+        "hint": "5 sílabas"
+      },
+      {
+        "word": "GLOBALIZACIÓN",
+        "emoji": "🌍",
+        "syllables": [
+          "GLO",
+          "BA",
+          "LI",
+          "ZA",
+          "CIÓN"
+        ],
+        "hint": "5 sílabas"
+      }
+    ]
+  },
+  "listenRounds": {
+    "inicial": [
+      {
+        "sound": "TRANSFORMACIÓN",
+        "correct": "🔄",
+        "label": "Transformación",
+        "options": [
+          {
+            "e": "🔄",
+            "l": "Transformación"
+          },
+          {
+            "e": "⚡",
+            "l": "Electricidad"
+          },
+          {
+            "e": "🌤️",
+            "l": "Meteorología"
+          }
+        ]
+      },
+      {
+        "sound": "RESPONSABILIDAD",
+        "correct": "⚖️",
+        "label": "Responsabilidad",
+        "options": [
+          {
+            "e": "⚖️",
+            "l": "Responsabilidad"
+          },
+          {
+            "e": "🏆",
+            "l": "Logro"
+          },
+          {
+            "e": "📋",
+            "l": "Organización"
+          }
+        ]
+      },
+      {
+        "sound": "BIODIVERSIDAD",
+        "correct": "🌿",
+        "label": "Biodiversidad",
+        "options": [
+          {
+            "e": "🌿",
+            "l": "Biodiversidad"
+          },
+          {
+            "e": "🌍",
+            "l": "Globalización"
+          },
+          {
+            "e": "🧬",
+            "l": "Genética"
+          }
+        ]
+      },
+      {
+        "sound": "COMUNICACIÓN",
+        "correct": "📡",
+        "label": "Comunicación",
+        "options": [
+          {
+            "e": "📡",
+            "l": "Comunicación"
+          },
+          {
+            "e": "🎤",
+            "l": "Micrófono"
+          },
+          {
+            "e": "📺",
+            "l": "Televisor"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "sound": "EXTRAORDINARIO",
+        "correct": "🌟",
+        "label": "Extraordinario",
+        "options": [
+          {
+            "e": "🌟",
+            "l": "Extraordinario"
+          },
+          {
+            "e": "⭐",
+            "l": "Estrella"
+          },
+          {
+            "e": "✨",
+            "l": "Brillante"
+          }
+        ]
+      },
+      {
+        "sound": "ORGANIZACIÓN",
+        "correct": "📋",
+        "label": "Organización",
+        "options": [
+          {
+            "e": "📋",
+            "l": "Organización"
+          },
+          {
+            "e": "📚",
+            "l": "Biblioteca"
+          },
+          {
+            "e": "💼",
+            "l": "Trabajo"
+          }
+        ]
+      },
+      {
+        "sound": "PERSONALIDAD",
+        "correct": "🧠",
+        "label": "Personalidad",
+        "options": [
+          {
+            "e": "🧠",
+            "l": "Personalidad"
+          },
+          {
+            "e": "💭",
+            "l": "Pensamiento"
+          },
+          {
+            "e": "❤️",
+            "l": "Emoción"
+          }
+        ]
+      },
+      {
+        "sound": "GLOBALIZACIÓN",
+        "correct": "🌍",
+        "label": "Globalización",
+        "options": [
+          {
+            "e": "🌍",
+            "l": "Globalización"
+          },
+          {
+            "e": "🗺️",
+            "l": "Mapa"
+          },
+          {
+            "e": "✈️",
+            "l": "Viaje"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "sound": "METEOROLOGÍA",
+        "correct": "🌤️",
+        "label": "Meteorología",
+        "options": [
+          {
+            "e": "🌤️",
+            "l": "Meteorología"
+          },
+          {
+            "e": "🌧️",
+            "l": "Lluvia"
+          },
+          {
+            "e": "☀️",
+            "l": "Sol"
+          }
+        ]
+      },
+      {
+        "sound": "ELECTRICIDAD",
+        "correct": "⚡",
+        "label": "Electricidad",
+        "options": [
+          {
+            "e": "⚡",
+            "l": "Electricidad"
+          },
+          {
+            "e": "🔋",
+            "l": "Batería"
+          },
+          {
+            "e": "💡",
+            "l": "Bombilla"
+          }
+        ]
+      },
+      {
+        "sound": "APROXIMACIÓN",
+        "correct": "📐",
+        "label": "Aproximación",
+        "options": [
+          {
+            "e": "📐",
+            "l": "Aproximación"
+          },
+          {
+            "e": "📏",
+            "l": "Medición"
+          },
+          {
+            "e": "🔭",
+            "l": "Observación"
+          }
+        ]
+      },
+      {
+        "sound": "CONTEMPORÁNEO",
+        "correct": "🕰️",
+        "label": "Contemporáneo",
+        "options": [
+          {
+            "e": "🕰️",
+            "l": "Contemporáneo"
+          },
+          {
+            "e": "📅",
+            "l": "Calendario"
+          },
+          {
+            "e": "⏳",
+            "l": "Tiempo"
+          }
+        ]
+      }
+    ]
+  },
+  "connectors": {
+    "inicial": [
+      {
+        "sentence": "El proyecto fracasó, ___ no habíamos planificado bien.",
+        "options": [
+          "dado que",
+          "aunque",
+          "mientras"
+        ],
+        "correct": "dado que",
+        "explanation": "\"Dado que\" introduce una causa formal.",
+        "level": "causal_formal"
+      },
+      {
+        "sentence": "___ los resultados sean negativos, seguiremos intentando.",
+        "options": [
+          "Aunque",
+          "Porque",
+          "Entonces"
+        ],
+        "correct": "Aunque",
+        "explanation": "\"Aunque\" introduce una concesión formal.",
+        "level": "concesivo_subjuntivo"
+      },
+      {
+        "sentence": "Estudió mucho; ___, reprobó el examen.",
+        "options": [
+          "sin embargo",
+          "porque",
+          "cuando"
+        ],
+        "correct": "sin embargo",
+        "explanation": "\"Sin embargo\" contrasta dos ideas opuestas.",
+        "level": "adversativo_formal"
+      },
+      {
+        "sentence": "No solo llegó tarde, ___ tampoco trajo los materiales.",
+        "options": [
+          "sino que",
+          "porque",
+          "aunque"
+        ],
+        "correct": "sino que",
+        "explanation": "\"Sino que\" añade una idea negativa adicional.",
+        "level": "adversativo_exclusivo"
+      }
+    ],
+    "intermedio": [
+      {
+        "sentence": "El informe era incompleto; ___ así, fue aceptado.",
+        "options": [
+          "aun así",
+          "dado que",
+          "sino que"
+        ],
+        "correct": "aun así",
+        "explanation": "\"Aun así\" concede a pesar del obstáculo.",
+        "level": "concesivo_formal"
+      },
+      {
+        "sentence": "Se esforzó mucho; ___ lo consiguió.",
+        "options": [
+          "finalmente",
+          "aunque",
+          "dado que"
+        ],
+        "correct": "finalmente",
+        "explanation": "\"Finalmente\" señala el resultado luego del esfuerzo.",
+        "level": "consecutivo_formal"
+      },
+      {
+        "sentence": "La ley prohíbe hacerlo; ___, mucha gente lo hace.",
+        "options": [
+          "sin embargo",
+          "dado que",
+          "sino que"
+        ],
+        "correct": "sin embargo",
+        "explanation": "\"Sin embargo\" introduce la contradicción social.",
+        "level": "adversativo_formal"
+      },
+      {
+        "sentence": "___ se considere difícil, es el camino correcto.",
+        "options": [
+          "Aunque",
+          "Porque",
+          "Dado que"
+        ],
+        "correct": "Aunque",
+        "explanation": "\"Aunque\" concede la dificultad pero mantiene la decisión.",
+        "level": "concesivo_subjuntivo"
+      }
+    ],
+    "avanzado": [
+      {
+        "sentence": "El clima fue adverso; ___, el evento continuó.",
+        "options": [
+          "aun así",
+          "sino que",
+          "dado que"
+        ],
+        "correct": "aun así",
+        "explanation": "\"Aun así\" indica que la adversidad no impidió la acción.",
+        "level": "concesivo_formal"
+      },
+      {
+        "sentence": "El estudiante reprobó ___ no estudió suficiente; ___ sus compañeros sí aprobaron.",
+        "options": [
+          "aunque ... sino que",
+          "dado que ... sin embargo",
+          "porque ... sino que"
+        ],
+        "correct": "dado que ... sin embargo",
+        "explanation": "\"Dado que\" introduce la causa; \"sin embargo\" contrasta con el resultado de los compañeros.",
+        "level": "multiple_formal"
+      },
+      {
+        "sentence": "___ la distancia era enorme, decidieron intentarlo de todos modos.",
+        "options": [
+          "Aunque",
+          "Dado que",
+          "Finalmente"
+        ],
+        "correct": "Aunque",
+        "explanation": "\"Aunque\" abre la concesión que luego contrasta.",
+        "level": "concesivo_subjuntivo"
+      },
+      {
+        "sentence": "No le interesaba el dinero; le importaba, ___, el reconocimiento.",
+        "options": [
+          "sino",
+          "dado que",
+          "aunque"
+        ],
+        "correct": "sino",
+        "explanation": "\"Sino\" corrige o sustituye lo que se negó antes.",
+        "level": "adversativo_exclusivo"
+      }
+    ]
+  },
+  "opposites": {
+    "inicial": [
+      {
+        "word": "ABSTRACTO",
+        "emoji": "🌀",
+        "opposite": "CONCRETO",
+        "oppositeEmoji": "🧱"
+      },
+      {
+        "word": "VOLUNTARIO",
+        "emoji": "🤝",
+        "opposite": "OBLIGATORIO",
+        "oppositeEmoji": "📋"
+      },
+      {
+        "word": "PARCIAL",
+        "emoji": "🔀",
+        "opposite": "TOTAL",
+        "oppositeEmoji": "💯"
+      },
+      {
+        "word": "COHERENTE",
+        "emoji": "🔗",
+        "opposite": "INCOHERENTE",
+        "oppositeEmoji": "🔀"
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "FORMAL",
+        "emoji": "👔",
+        "opposite": "INFORMAL",
+        "oppositeEmoji": "👕"
+      },
+      {
+        "word": "SUBJETIVO",
+        "emoji": "💭",
+        "opposite": "OBJETIVO",
+        "oppositeEmoji": "⚖️"
+      },
+      {
+        "word": "LITERAL",
+        "emoji": "📖",
+        "opposite": "FIGURADO",
+        "oppositeEmoji": "🎭"
+      },
+      {
+        "word": "CONSCIENTE",
+        "emoji": "🧠",
+        "opposite": "INCONSCIENTE",
+        "oppositeEmoji": "😴"
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "EXPLÍCITO",
+        "emoji": "📢",
+        "opposite": "IMPLÍCITO",
+        "oppositeEmoji": "🤫"
+      },
+      {
+        "word": "GLOBAL",
+        "emoji": "🌍",
+        "opposite": "LOCAL",
+        "oppositeEmoji": "📍"
+      },
+      {
+        "word": "COMPLEJO",
+        "emoji": "🧩",
+        "opposite": "SIMPLE",
+        "oppositeEmoji": "⭕"
+      },
+      {
+        "word": "PERMANENTE",
+        "emoji": "♾️",
+        "opposite": "TEMPORAL",
+        "oppositeEmoji": "⏳"
+      }
+    ]
+  },
+  "definitions": {
+    "inicial": [
+      {
+        "definition": "Manera de decir algo de forma indirecta usando una comparación, como 'sus ojos son estrellas'",
+        "options": [
+          {
+            "word": "METÁFORA",
+            "emoji": "✨"
+          },
+          {
+            "word": "PREGUNTA",
+            "emoji": "❓"
+          },
+          {
+            "word": "ORDEN",
+            "emoji": "📢"
+          }
+        ],
+        "correct": "METÁFORA"
+      },
+      {
+        "definition": "Cuando alguien dice lo contrario de lo que piensa, generalmente para bromear o criticar",
+        "options": [
+          {
+            "word": "IRONÍA",
+            "emoji": "😏"
+          },
+          {
+            "word": "VERDAD",
+            "emoji": "✅"
+          },
+          {
+            "word": "MENTIRA",
+            "emoji": "🤥"
+          }
+        ],
+        "correct": "IRONÍA"
+      },
+      {
+        "definition": "Es el estudio del clima y los fenómenos atmosféricos como la lluvia o el viento",
+        "options": [
+          {
+            "word": "METEOROLOGÍA",
+            "emoji": "🌤️"
+          },
+          {
+            "word": "GEOLOGÍA",
+            "emoji": "🪨"
+          },
+          {
+            "word": "BIOLOGÍA",
+            "emoji": "🔬"
+          }
+        ],
+        "correct": "METEOROLOGÍA"
+      },
+      {
+        "definition": "Es cuando una persona, sin querer, revela algo que quería mantener en secreto",
+        "options": [
+          {
+            "word": "DELATAR",
+            "emoji": "🤭"
+          },
+          {
+            "word": "ACUSAR",
+            "emoji": "👆"
+          },
+          {
+            "word": "MENTIR",
+            "emoji": "🤥"
+          }
+        ],
+        "correct": "DELATAR"
+      }
+    ],
+    "intermedio": [
+      {
+        "definition": "Es el conjunto de características únicas que hacen que una persona sea diferente a las demás",
+        "options": [
+          {
+            "word": "PERSONALIDAD",
+            "emoji": "🧠"
+          },
+          {
+            "word": "APARIENCIA",
+            "emoji": "👗"
+          },
+          {
+            "word": "OPINIÓN",
+            "emoji": "💬"
+          }
+        ],
+        "correct": "PERSONALIDAD"
+      },
+      {
+        "definition": "Es cuando una palabra tiene dos o más significados distintos según el contexto",
+        "options": [
+          {
+            "word": "POLISEMIA",
+            "emoji": "🔄"
+          },
+          {
+            "word": "SINÓNIMO",
+            "emoji": "↔️"
+          },
+          {
+            "word": "ANTÓNIMO",
+            "emoji": "⇔"
+          }
+        ],
+        "correct": "POLISEMIA"
+      },
+      {
+        "definition": "Es la capacidad de ponerse en el lugar de otra persona y entender cómo se siente",
+        "options": [
+          {
+            "word": "EMPATÍA",
+            "emoji": "🤝"
+          },
+          {
+            "word": "SIMPATÍA",
+            "emoji": "😊"
+          },
+          {
+            "word": "ANTIPATÍA",
+            "emoji": "😠"
+          }
+        ],
+        "correct": "EMPATÍA"
+      },
+      {
+        "definition": "Es el proceso mediante el cual un ser vivo crece y cambia a lo largo del tiempo",
+        "options": [
+          {
+            "word": "DESARROLLO",
+            "emoji": "📈"
+          },
+          {
+            "word": "REPRODUCCIÓN",
+            "emoji": "🔄"
+          },
+          {
+            "word": "ADAPTACIÓN",
+            "emoji": "🦎"
+          }
+        ],
+        "correct": "DESARROLLO"
+      }
+    ],
+    "avanzado": [
+      {
+        "definition": "Es cuando una idea o texto puede entenderse de más de una manera",
+        "options": [
+          {
+            "word": "AMBIGÜEDAD",
+            "emoji": "❓"
+          },
+          {
+            "word": "CLARIDAD",
+            "emoji": "💡"
+          },
+          {
+            "word": "PRECISIÓN",
+            "emoji": "🎯"
+          }
+        ],
+        "correct": "AMBIGÜEDAD"
+      },
+      {
+        "definition": "Es la frase hecha cuyo significado no puede deducirse de las palabras que la componen, como 'meter la pata'",
+        "options": [
+          {
+            "word": "MODISMO",
+            "emoji": "🗣️"
+          },
+          {
+            "word": "REFRÁN",
+            "emoji": "📜"
+          },
+          {
+            "word": "METÁFORA",
+            "emoji": "✨"
+          }
+        ],
+        "correct": "MODISMO"
+      },
+      {
+        "definition": "Es la capacidad de crear algo nuevo o de encontrar soluciones originales a los problemas",
+        "options": [
+          {
+            "word": "CREATIVIDAD",
+            "emoji": "🎨"
+          },
+          {
+            "word": "MEMORIA",
+            "emoji": "🧠"
+          },
+          {
+            "word": "ATENCIÓN",
+            "emoji": "👁️"
+          }
+        ],
+        "correct": "CREATIVIDAD"
+      },
+      {
+        "definition": "Es cuando el hablante adapta su forma de hablar según la persona con quien habla o el lugar donde está",
+        "options": [
+          {
+            "word": "REGISTRO",
+            "emoji": "🎚️"
+          },
+          {
+            "word": "ACENTO",
+            "emoji": "🔊"
+          },
+          {
+            "word": "VOCABULARIO",
+            "emoji": "📖"
+          }
+        ],
+        "correct": "REGISTRO"
+      }
+    ]
+  },
+  "narrativeSequences": {
+    "inicial": [
+      {
+        "title": "El niño y el lobo",
+        "frames": [
+          {
+            "emoji": "👦🐑",
+            "text": "Un pastor cuidaba sus ovejas en el monte."
+          },
+          {
+            "emoji": "😂👦",
+            "text": "Para divertirse, gritó: '¡El lobo, el lobo!' aunque no había ninguno."
+          },
+          {
+            "emoji": "🏃🏃",
+            "text": "Los aldeanos corrieron a ayudarlo, pero no encontraron ningún lobo."
+          },
+          {
+            "emoji": "🐺👦",
+            "text": "Un día llegó un lobo de verdad y el niño pidió ayuda."
+          },
+          {
+            "emoji": "🚫👥",
+            "text": "Nadie le creyó esta vez. Aprendió que mentir trae consecuencias."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El experimento científico",
+        "frames": [
+          {
+            "emoji": "💡",
+            "text": "Elena tuvo una idea: investigar si las plantas crecen más con música."
+          },
+          {
+            "emoji": "🌱🌱",
+            "text": "Plantó dos semillas iguales en macetas idénticas con la misma tierra."
+          },
+          {
+            "emoji": "🎵🌱",
+            "text": "A una le puso música clásica cada día; a la otra, solo silencio."
+          },
+          {
+            "emoji": "📏",
+            "text": "Midió el crecimiento de ambas plantas cada semana durante un mes."
+          },
+          {
+            "emoji": "📊",
+            "text": "La planta con música creció más alto. Elena presentó su investigación en clase."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "La decisión de Miguel",
+        "frames": [
+          {
+            "emoji": "🤔",
+            "text": "Miguel encontró una billetera en el parque con mucho dinero adentro."
+          },
+          {
+            "emoji": "💭",
+            "text": "Pensó en quedársela, pero sabía que era incorrecto."
+          },
+          {
+            "emoji": "👮",
+            "text": "Decidió llevarla a la comisaría del barrio."
+          },
+          {
+            "emoji": "😊",
+            "text": "Al día siguiente, el dueño llamó a sus padres para agradecerle."
+          },
+          {
+            "emoji": "🏅",
+            "text": "Miguel se sintió muy bien consigo mismo por haber actuado honestamente."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "La migración de las aves",
+        "frames": [
+          {
+            "emoji": "🍂",
+            "text": "Al llegar el otoño, las temperaturas comenzaron a bajar."
+          },
+          {
+            "emoji": "🐦🐦",
+            "text": "Miles de aves se reunieron en un lago para preparar el viaje."
+          },
+          {
+            "emoji": "✈️🐦",
+            "text": "Volaron en formación durante miles de kilómetros hacia el sur."
+          },
+          {
+            "emoji": "☀️🌴",
+            "text": "Llegaron a tierras cálidas donde encontraron abundante alimento."
+          },
+          {
+            "emoji": "🌸🐦",
+            "text": "En primavera, emprenderían el regreso a su lugar de origen."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "title": "El puente roto",
+        "frames": [
+          {
+            "emoji": "🌊",
+            "text": "Una tormenta dañó el único puente que conectaba dos aldeas."
+          },
+          {
+            "emoji": "😔",
+            "text": "Los aldeanos no podían cruzar el río para ir al mercado ni al hospital."
+          },
+          {
+            "emoji": "🛠️",
+            "text": "Los dos alcaldes se reunieron y acordaron repararlo juntos."
+          },
+          {
+            "emoji": "👷👷",
+            "text": "Ingenieros y vecinos trabajaron durante semanas en la reconstrucción."
+          },
+          {
+            "emoji": "🌉",
+            "text": "El nuevo puente quedó más resistente que el anterior."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "La carta de cumpleaños",
+        "frames": [
+          {
+            "emoji": "📅",
+            "text": "Camila se acordó de que era el cumpleaños de su abuela en otra ciudad."
+          },
+          {
+            "emoji": "✍️",
+            "text": "Decidió escribirle una carta a mano en vez de enviar un mensaje de texto."
+          },
+          {
+            "emoji": "📬",
+            "text": "La metió en un sobre, le pegó una estampilla y la envió por correo."
+          },
+          {
+            "emoji": "📞",
+            "text": "Una semana después, su abuela la llamó emocionada al recibir la carta."
+          },
+          {
+            "emoji": "❤️",
+            "text": "La abuela guardó la carta en un cajón especial como un tesoro."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El concurso de debate",
+        "frames": [
+          {
+            "emoji": "📋",
+            "text": "El colegio organizó un concurso de debate sobre el medio ambiente."
+          },
+          {
+            "emoji": "📚",
+            "text": "Cada equipo investigó su posición durante dos semanas."
+          },
+          {
+            "emoji": "🎤",
+            "text": "El día del concurso, los equipos argumentaron sus ideas ante un jurado."
+          },
+          {
+            "emoji": "⚖️",
+            "text": "El jurado evaluó la claridad, los argumentos y el respeto al turno de hablar."
+          },
+          {
+            "emoji": "🏆",
+            "text": "El equipo de Sofía ganó por presentar los argumentos más sólidos."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "title": "El libro perdido",
+        "frames": [
+          {
+            "emoji": "📖",
+            "text": "Andrés pidió prestado un libro muy valioso de la biblioteca."
+          },
+          {
+            "emoji": "🕳️",
+            "text": "Al devolver su mochila, descubrió que el libro había desaparecido."
+          },
+          {
+            "emoji": "😰",
+            "text": "Buscó en todos sus cuadernos, en el bus y en el aula, pero no lo encontró."
+          },
+          {
+            "emoji": "🙋",
+            "text": "Decidió ser honesto y contarle a la bibliotecaria lo sucedido."
+          },
+          {
+            "emoji": "💰📖",
+            "text": "Con sus ahorros compró un ejemplar nuevo para reponerlo."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "La huerta escolar",
+        "frames": [
+          {
+            "emoji": "🌱",
+            "text": "El colegio propuso crear una huerta en el patio trasero."
+          },
+          {
+            "emoji": "🪣",
+            "text": "Los alumnos prepararon la tierra y la dividieron en parcelas."
+          },
+          {
+            "emoji": "🫘",
+            "text": "Cada curso eligió qué sembrar: tomates, lechugas o zanahorias."
+          },
+          {
+            "emoji": "💧",
+            "text": "Durante meses regaron y cuidaron las plantas con responsabilidad."
+          },
+          {
+            "emoji": "🥗",
+            "text": "Al final del año, cosecharon las verduras y cocinaron una ensalada para todos."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "title": "El volcán despierto",
+        "frames": [
+          {
+            "emoji": "🌋",
+            "text": "Los científicos detectaron que un volcán dormido empezaba a activarse."
+          },
+          {
+            "emoji": "📢",
+            "text": "Las autoridades avisaron a los habitantes de los pueblos cercanos."
+          },
+          {
+            "emoji": "🚗🏃",
+            "text": "Miles de familias evacuaron con sus pertenencias más importantes."
+          },
+          {
+            "emoji": "🌋💥",
+            "text": "Días después, el volcán entró en erupción lanzando lava y ceniza."
+          },
+          {
+            "emoji": "✅",
+            "text": "Gracias a la evacuación a tiempo, ninguna persona resultó herida."
+          }
+        ],
+        "correctOrder": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "inferences": {
+    "inicial": [
+      {
+        "situation": "Lucas dice: \"Tengo tantas tareas que me estoy ahogando en libros\".",
+        "question": "¿Qué significa eso realmente?",
+        "options": [
+          "Tiene muchísimas tareas",
+          "Cayó dentro de libros",
+          "Le gustan los libros"
+        ],
+        "correct": "Tiene muchísimas tareas",
+        "emoji": "📚",
+        "type": "metafora"
+      },
+      {
+        "situation": "Ana rompió accidentalmente un vaso. Su mamá dice: \"¡Qué cuidadosa eres!\"",
+        "question": "¿La mamá lo dice en serio o es ironía?",
+        "options": [
+          "Es ironía, porque fue descuidada",
+          "Lo dice en serio, fue cuidadosa",
+          "No está segura"
+        ],
+        "correct": "Es ironía, porque fue descuidada",
+        "emoji": "😏",
+        "type": "ironia_compleja"
+      },
+      {
+        "situation": "Estás hablando con tu abuela vs. hablando con tu mejor amigo.",
+        "question": "¿Cómo debería ser tu lenguaje con tu abuela?",
+        "options": [
+          "Más formal y respetuoso",
+          "Igual que con tu amigo",
+          "Más rápido y con jerga"
+        ],
+        "correct": "Más formal y respetuoso",
+        "emoji": "👵",
+        "type": "adecuacion_interlocutor"
+      },
+      {
+        "situation": "El político dijo: 'Haré todo lo posible' cuando le preguntaron si bajarían los impuestos.",
+        "question": "¿Qué nos indica esa respuesta?",
+        "options": [
+          "Que no prometió nada concreto",
+          "Que los impuestos bajarán seguro",
+          "Que renunciará a su cargo"
+        ],
+        "correct": "Que no prometió nada concreto",
+        "emoji": "🗣️",
+        "type": "lenguaje_politico"
+      }
+    ],
+    "intermedio": [
+      {
+        "situation": "Después de perder el partido, el entrenador dijo: 'Este resultado nos hará más fuertes'.",
+        "question": "¿Qué actitud muestra el entrenador?",
+        "options": [
+          "Resiliencia y visión positiva",
+          "Enojo y frustración",
+          "Desinterés"
+        ],
+        "correct": "Resiliencia y visión positiva",
+        "emoji": "💪",
+        "type": "inferencia_actitud"
+      },
+      {
+        "situation": "El texto dice: 'Era una noche oscura y tormentosa; algo malo estaba por suceder'.",
+        "question": "¿Qué recurso usa el autor al describir la noche?",
+        "options": [
+          "Crear suspenso y anticipar un evento negativo",
+          "Describir el clima objetivamente",
+          "Elogiar la tormenta"
+        ],
+        "correct": "Crear suspenso y anticipar un evento negativo",
+        "emoji": "🌩️",
+        "type": "inferencia_literaria"
+      },
+      {
+        "situation": "María siempre llega puntual, revisa sus tareas dos veces y organiza su mochila la noche anterior.",
+        "question": "¿Cómo se puede describir la personalidad de María?",
+        "options": [
+          "Responsable y organizada",
+          "Impulsiva y creativa",
+          "Distraída y relajada"
+        ],
+        "correct": "Responsable y organizada",
+        "emoji": "📋",
+        "type": "inferencia_caracter"
+      },
+      {
+        "situation": "El mismo chiste le parece gracioso a unos niños pero no a otros.",
+        "question": "¿Qué nos indica esto sobre el humor?",
+        "options": [
+          "El humor es subjetivo y depende de cada persona",
+          "Algunos niños no entienden los chistes",
+          "El chiste está mal contado"
+        ],
+        "correct": "El humor es subjetivo y depende de cada persona",
+        "emoji": "😄",
+        "type": "abstraccion"
+      }
+    ],
+    "avanzado": [
+      {
+        "situation": "Un anuncio dice: 'El mejor producto del mundo. ¡Cómpralo ahora!'",
+        "question": "¿Por qué deberías ser crítico con ese mensaje?",
+        "options": [
+          "Porque usa exageración para vender y no es objetiva",
+          "Porque probablemente es el mejor del mundo",
+          "Porque no da suficiente información"
+        ],
+        "correct": "Porque usa exageración para vender y no es objetiva",
+        "emoji": "📢",
+        "type": "pensamiento_critico"
+      },
+      {
+        "situation": "Dos amigos discuten. Uno dice: 'Nunca me escuchas'. El otro responde: 'Siempre exageras'.",
+        "question": "¿Qué están haciendo los dos con su lenguaje?",
+        "options": [
+          "Usando exageraciones que no son literalmente ciertas",
+          "Describiendo hechos exactos",
+          "Pidiendo disculpas"
+        ],
+        "correct": "Usando exageraciones que no son literalmente ciertas",
+        "emoji": "💬",
+        "type": "lenguaje_hiperbole"
+      },
+      {
+        "situation": "En un cuento, el villano siempre viste de negro y el héroe, de blanco.",
+        "question": "¿Qué simboliza ese uso de colores en la historia?",
+        "options": [
+          "El negro representa el mal y el blanco, el bien",
+          "El autor solo usa esos colores por costumbre",
+          "Los personajes tienen frío"
+        ],
+        "correct": "El negro representa el mal y el blanco, el bien",
+        "emoji": "⚫⚪",
+        "type": "simbolismo"
+      },
+      {
+        "situation": "Diego no estudió, pero le dijo a su mamá: 'Hice todo lo que pude'.",
+        "question": "¿Hay coherencia entre lo que hizo Diego y lo que dijo?",
+        "options": [
+          "No, hay una contradicción entre su acción y su discurso",
+          "Sí, estudió todo lo que pudo",
+          "Es difícil saberlo sin más información"
+        ],
+        "correct": "No, hay una contradicción entre su acción y su discurso",
+        "emoji": "🤔",
+        "type": "coherencia_discursiva"
+      }
+    ]
+  },
+  "rhymes": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "pointImages": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "categories": {
+    "inicial": [
+      {
+        "category": "Formas de comunicación no verbal",
+        "intruder": {
+          "word": "GRITAR",
+          "emoji": "📢"
+        },
+        "options": [
+          {
+            "word": "GESTICULAR",
+            "emoji": "🤙"
+          },
+          {
+            "word": "MIRADA",
+            "emoji": "👁️"
+          },
+          {
+            "word": "POSTURA",
+            "emoji": "🧍"
+          },
+          {
+            "word": "GRITAR",
+            "emoji": "📢"
+          }
+        ]
+      },
+      {
+        "category": "Figuras retóricas",
+        "intruder": {
+          "word": "CORRER",
+          "emoji": "🏃"
+        },
+        "options": [
+          {
+            "word": "METÁFORA",
+            "emoji": "🎭"
+          },
+          {
+            "word": "HIPÉRBOLE",
+            "emoji": "💬"
+          },
+          {
+            "word": "IRONÍA",
+            "emoji": "😏"
+          },
+          {
+            "word": "CORRER",
+            "emoji": "🏃"
+          }
+        ]
+      },
+      {
+        "category": "Instituciones democráticas",
+        "intruder": {
+          "word": "HOSPITAL",
+          "emoji": "🏥"
+        },
+        "options": [
+          {
+            "word": "PARLAMENTO",
+            "emoji": "🏛️"
+          },
+          {
+            "word": "TRIBUNAL",
+            "emoji": "⚖️"
+          },
+          {
+            "word": "MINISTERIO",
+            "emoji": "🏢"
+          },
+          {
+            "word": "HOSPITAL",
+            "emoji": "🏥"
+          }
+        ]
+      },
+      {
+        "category": "Argumentos lógicos",
+        "intruder": {
+          "word": "OPINIÓN",
+          "emoji": "💭"
+        },
+        "options": [
+          {
+            "word": "PREMISA",
+            "emoji": "📌"
+          },
+          {
+            "word": "CONCLUSIÓN",
+            "emoji": "✅"
+          },
+          {
+            "word": "EVIDENCIA",
+            "emoji": "🔍"
+          },
+          {
+            "word": "OPINIÓN",
+            "emoji": "💭"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "category": "Géneros literarios",
+        "intruder": {
+          "word": "HISTORIA",
+          "emoji": "📜"
+        },
+        "options": [
+          {
+            "word": "NOVELA",
+            "emoji": "📚"
+          },
+          {
+            "word": "POESÍA",
+            "emoji": "🎵"
+          },
+          {
+            "word": "TEATRO",
+            "emoji": "🎭"
+          },
+          {
+            "word": "HISTORIA",
+            "emoji": "📜"
+          }
+        ]
+      },
+      {
+        "category": "Conceptos matemáticos abstractos",
+        "intruder": {
+          "word": "MANZANA",
+          "emoji": "🍎"
+        },
+        "options": [
+          {
+            "word": "ÁLGEBRA",
+            "emoji": "🔢"
+          },
+          {
+            "word": "GEOMETRÍA",
+            "emoji": "📐"
+          },
+          {
+            "word": "PROBABILIDAD",
+            "emoji": "🎲"
+          },
+          {
+            "word": "MANZANA",
+            "emoji": "🍎"
+          }
+        ]
+      },
+      {
+        "category": "Valores democráticos",
+        "intruder": {
+          "word": "COMPETIR",
+          "emoji": "🏆"
+        },
+        "options": [
+          {
+            "word": "IGUALDAD",
+            "emoji": "⚖️"
+          },
+          {
+            "word": "LIBERTAD",
+            "emoji": "🕊️"
+          },
+          {
+            "word": "SOLIDARIDAD",
+            "emoji": "🤝"
+          },
+          {
+            "word": "COMPETIR",
+            "emoji": "🏆"
+          }
+        ]
+      },
+      {
+        "category": "Conectores adversativos",
+        "intruder": {
+          "word": "PORQUE",
+          "emoji": "🔗"
+        },
+        "options": [
+          {
+            "word": "AUNQUE",
+            "emoji": "🔄"
+          },
+          {
+            "word": "SIN EMBARGO",
+            "emoji": "⛔"
+          },
+          {
+            "word": "A PESAR DE",
+            "emoji": "🚧"
+          },
+          {
+            "word": "PORQUE",
+            "emoji": "🔗"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "category": "Tipos de argumento",
+        "intruder": {
+          "word": "EMOCIÓN",
+          "emoji": "😊"
+        },
+        "options": [
+          {
+            "word": "DEDUCTIVO",
+            "emoji": "🔽"
+          },
+          {
+            "word": "INDUCTIVO",
+            "emoji": "🔼"
+          },
+          {
+            "word": "ANALÓGICO",
+            "emoji": "🔁"
+          },
+          {
+            "word": "EMOCIÓN",
+            "emoji": "😊"
+          }
+        ]
+      },
+      {
+        "category": "Elementos de la narrativa",
+        "intruder": {
+          "word": "SUMA",
+          "emoji": "➕"
+        },
+        "options": [
+          {
+            "word": "NUDO",
+            "emoji": "🪢"
+          },
+          {
+            "word": "DESENLACE",
+            "emoji": "🔓"
+          },
+          {
+            "word": "CLÍMAX",
+            "emoji": "⬆️"
+          },
+          {
+            "word": "SUMA",
+            "emoji": "➕"
+          }
+        ]
+      },
+      {
+        "category": "Procesos cognitivos superiores",
+        "intruder": {
+          "word": "CAMINAR",
+          "emoji": "🚶"
+        },
+        "options": [
+          {
+            "word": "RAZONAR",
+            "emoji": "🧠"
+          },
+          {
+            "word": "INFERIR",
+            "emoji": "🔍"
+          },
+          {
+            "word": "ABSTRAER",
+            "emoji": "💡"
+          },
+          {
+            "word": "CAMINAR",
+            "emoji": "🚶"
+          }
+        ]
+      },
+      {
+        "category": "Disciplinas filosóficas",
+        "intruder": {
+          "word": "COCINAR",
+          "emoji": "👨‍🍳"
+        },
+        "options": [
+          {
+            "word": "ÉTICA",
+            "emoji": "⚖️"
+          },
+          {
+            "word": "LÓGICA",
+            "emoji": "🔢"
+          },
+          {
+            "word": "EPISTEMOLOGÍA",
+            "emoji": "📖"
+          },
+          {
+            "word": "COCINAR",
+            "emoji": "👨‍🍳"
+          }
+        ]
+      }
+    ]
+  },
+  "instructions": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "communicativeIntents": {
+    "inicial": [
+      {
+        "scenario": "Un político dice en campaña: «Yo soy como vosotros, conozco vuestros problemas»",
+        "emoji": "🗳️",
+        "question": "¿Cuál es la intención comunicativa?",
+        "correct": "Proponer",
+        "options": [
+          "Proponer",
+          "Informar",
+          "Animar",
+          "Pedir"
+        ]
+      },
+      {
+        "scenario": "Alguien escribe en redes: «¡Qué calor hace aquí!» mirando la ventana cerrada",
+        "emoji": "📱",
+        "question": "¿Qué intención hay detrás del mensaje?",
+        "correct": "Quejarse",
+        "options": [
+          "Quejarse",
+          "Informar",
+          "Protestar",
+          "Reprochar"
+        ]
+      },
+      {
+        "scenario": "Un vendedor de seguros dice: «¿Ha pensado en lo que pasaría si mañana le ocurriera algo?»",
+        "emoji": "📋",
+        "question": "¿Qué intenta conseguir el vendedor?",
+        "correct": "Advertir",
+        "options": [
+          "Advertir",
+          "Preguntar",
+          "Informar",
+          "Pedir"
+        ]
+      },
+      {
+        "scenario": "Una madre dice: «¡Anda, mira qué ordenada está tu habitación!» con ironía",
+        "emoji": "🙃",
+        "question": "¿Cuál es la intención real?",
+        "correct": "Reprochar",
+        "options": [
+          "Reprochar",
+          "Felicitar",
+          "Animar",
+          "Informar"
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "scenario": "Un negociador dice: «Creo que ambas partes podemos beneficiarnos de llegar a un acuerdo»",
+        "emoji": "🤝",
+        "question": "¿Cuál es la intención comunicativa?",
+        "correct": "Proponer",
+        "options": [
+          "Proponer",
+          "Informar",
+          "Pedir",
+          "Animar"
+        ]
+      },
+      {
+        "scenario": "Alguien dice: «No es que no quiera ayudarte, es que tengo muchas cosas hoy»",
+        "emoji": "😅",
+        "question": "¿Qué intenta comunicar?",
+        "correct": "Negarse",
+        "options": [
+          "Negarse",
+          "Informar",
+          "Disculparse",
+          "Rechazar"
+        ]
+      },
+      {
+        "scenario": "Un entrenador dice tras una derrota: «Hoy no fue nuestro día, pero hemos aprendido»",
+        "emoji": "⚽",
+        "question": "¿Cuál es la intención del entrenador?",
+        "correct": "Animar",
+        "options": [
+          "Animar",
+          "Informar",
+          "Consolar",
+          "Reprochar"
+        ]
+      },
+      {
+        "scenario": "Alguien publica: «Otra vez obras en mi calle. ¡Gracias por avisar!»",
+        "emoji": "🚧",
+        "question": "¿Qué intención tiene el mensaje?",
+        "correct": "Protestar",
+        "options": [
+          "Protestar",
+          "Agradecer",
+          "Informar",
+          "Quejarse"
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "scenario": "Un abogado defensor dice: «Mi cliente siempre ha sido un ciudadano ejemplar»",
+        "emoji": "⚖️",
+        "question": "¿Cuál es la intención comunicativa en este contexto?",
+        "correct": "Proponer",
+        "options": [
+          "Proponer",
+          "Informar",
+          "Animar",
+          "Negarse"
+        ]
+      },
+      {
+        "scenario": "Alguien dice: «No te digo que no tengas razón, pero...»",
+        "emoji": "🤷",
+        "question": "¿Qué intención hay detrás?",
+        "correct": "Rechazar",
+        "options": [
+          "Rechazar",
+          "Agradecer",
+          "Proponer",
+          "Informar"
+        ]
+      },
+      {
+        "scenario": "Un médico dice: «Podríamos plantearnos reducir un poco el consumo de sal»",
+        "emoji": "🧂",
+        "question": "¿Cuál es la intención real del médico?",
+        "correct": "Ordenar",
+        "options": [
+          "Ordenar",
+          "Proponer",
+          "Informar",
+          "Advertir"
+        ]
+      },
+      {
+        "scenario": "Una persona escribe: «¡Qué maravillosa sorpresa encontrar el coche rayado!»",
+        "emoji": "🚗",
+        "question": "¿Cuál es la intención real del mensaje?",
+        "correct": "Protestar",
+        "options": [
+          "Protestar",
+          "Felicitar",
+          "Informar",
+          "Quejarse"
+        ]
+      }
+    ]
+  }
 }

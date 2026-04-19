@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback } from '../utils/audioFeedback'
+import { getDifficultyForActivity } from '../utils/componentMap'
 
 function speak(text, rate = 0.82, pitch = 1.05) {
   const synth = window.speechSynthesis
@@ -15,7 +16,9 @@ function speak(text, rate = 0.82, pitch = 1.05) {
 
 function MinimalPairsScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const _pairs = getContent(patient.levelId).minimalPairs ?? []
+  const contentData = getContent(patient.levelId)
+  const difficulty = getDifficultyForActivity('minimal-pairs', patient.componentLevels)
+  const _pairs = contentData.minimalPairs?.[difficulty] ?? contentData.minimalPairs?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['minimal-pairs'] ?? 12
   const pairs = _pairs.slice(0, n)
   const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500

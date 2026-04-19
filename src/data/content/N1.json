@@ -1,66 +1,1224 @@
 {
-  "minimalPairs": [
-    { "word": "PATO", "emoji": "🦆", "distractor": { "word": "GATO", "emoji": "🐱" } },
-    { "word": "PELO", "emoji": "💇", "distractor": { "word": "PALO", "emoji": "🪵" } },
-    { "word": "MAMÁ", "emoji": "👩", "distractor": { "word": "PAPÁ", "emoji": "👨" } },
-    { "word": "CAMA", "emoji": "🛏️", "distractor": { "word": "DAMA", "emoji": "♟️" } },
-    { "word": "SOPA", "emoji": "🍲", "distractor": { "word": "COPA", "emoji": "🏆" } },
-    { "word": "TAPA", "emoji": "🍳", "distractor": { "word": "PAPA", "emoji": "🥔" } },
-    { "word": "BOCA", "emoji": "👄", "distractor": { "word": "LOCA", "emoji": "😵" } },
-    { "word": "NENE", "emoji": "👶", "distractor": { "word": "NENA", "emoji": "👧" } },
-    { "word": "PALA", "emoji": "🪣", "distractor": { "word": "BALA", "emoji": "🎱" } },
-    { "word": "MESA", "emoji": "🍽️", "distractor": { "word": "PESA", "emoji": "⚖️" } },
-    { "word": "LUNA", "emoji": "🌙", "distractor": { "word": "TUNA", "emoji": "🌵" } },
-    { "word": "GATO", "emoji": "🐱", "distractor": { "word": "DATO", "emoji": "📊" } },
-    { "word": "MAPA", "emoji": "🗺️", "distractor": { "word": "CAPA", "emoji": "🧥" } },
-    { "word": "CASA", "emoji": "🏠", "distractor": { "word": "MASA", "emoji": "🫓" } },
-    { "word": "BESO", "emoji": "😘", "distractor": { "word": "PESO", "emoji": "💰" } },
-    { "word": "NARIZ", "emoji": "👃", "distractor": { "word": "MAÍZ", "emoji": "🌽" } },
-    { "word": "LECHE", "emoji": "🥛", "distractor": { "word": "PECHE", "emoji": "🐟" } }
-  ],
-  "buildWords": [
-    { "word": "MAMÁ", "emoji": "👩", "syllables": ["MA", "MÁ"], "hint": "2 sílabas" },
-    { "word": "PAPÁ", "emoji": "👨", "syllables": ["PA", "PÁ"], "hint": "2 sílabas" },
-    { "word": "PATO", "emoji": "🦆", "syllables": ["PA", "TO"], "hint": "2 sílabas" },
-    { "word": "GATO", "emoji": "🐱", "syllables": ["GA", "TO"], "hint": "2 sílabas" },
-    { "word": "PELO", "emoji": "💇", "syllables": ["PE", "LO"], "hint": "2 sílabas" },
-    { "word": "MESA", "emoji": "🍽️", "syllables": ["ME", "SA"], "hint": "2 sílabas" },
-    { "word": "CAMA", "emoji": "🛏️", "syllables": ["CA", "MA"], "hint": "2 sílabas" },
-    { "word": "SOPA", "emoji": "🍲", "syllables": ["SO", "PA"], "hint": "2 sílabas" },
-    { "word": "NENE", "emoji": "👶", "syllables": ["NE", "NE"], "hint": "2 sílabas" },
-    { "word": "LECHE", "emoji": "🥛", "syllables": ["LE", "CHE"], "hint": "2 sílabas" },
-    { "word": "AGUA", "emoji": "💧", "syllables": ["A", "GUA"], "hint": "2 sílabas" },
-    { "word": "LUNA", "emoji": "🌙", "syllables": ["LU", "NA"], "hint": "2 sílabas" },
-    { "word": "MANO", "emoji": "✋", "syllables": ["MA", "NO"], "hint": "2 sílabas" },
-    { "word": "BOCA", "emoji": "👄", "syllables": ["BO", "CA"], "hint": "2 sílabas" },
-    { "word": "SILLA", "emoji": "🪑", "syllables": ["SI", "LLA"], "hint": "2 sílabas" },
-    { "word": "NARIZ", "emoji": "👃", "syllables": ["NA", "RIZ"], "hint": "2 sílabas" },
-    { "word": "PELOTA", "emoji": "⚽", "syllables": ["PE", "LO", "TA"], "hint": "3 sílabas" },
-    { "word": "ZAPATO", "emoji": "👟", "syllables": ["ZA", "PA", "TO"], "hint": "3 sílabas" }
-  ],
-  "listenRounds": [
-    { "sound": "MAMÁ", "correct": "👩", "label": "Mamá", "options": [{ "e": "👩", "l": "Mamá" }, { "e": "👨", "l": "Papá" }, { "e": "👶", "l": "Bebé" }] },
-    { "sound": "PAPÁ", "correct": "👨", "label": "Papá", "options": [{ "e": "🐱", "l": "Gato" }, { "e": "👨", "l": "Papá" }, { "e": "👩", "l": "Mamá" }] },
-    { "sound": "GATO", "correct": "🐱", "label": "Gato", "options": [{ "e": "🐶", "l": "Perro" }, { "e": "🦆", "l": "Pato" }, { "e": "🐱", "l": "Gato" }] },
-    { "sound": "PERRO", "correct": "🐶", "label": "Perro", "options": [{ "e": "🐱", "l": "Gato" }, { "e": "🐶", "l": "Perro" }, { "e": "🦆", "l": "Pato" }] },
-    { "sound": "PATO", "correct": "🦆", "label": "Pato", "options": [{ "e": "🦆", "l": "Pato" }, { "e": "🐱", "l": "Gato" }, { "e": "🐶", "l": "Perro" }] },
-    { "sound": "PELOTA", "correct": "⚽", "label": "Pelota", "options": [{ "e": "🏠", "l": "Casa" }, { "e": "⚽", "l": "Pelota" }, { "e": "🐶", "l": "Perro" }] },
-    { "sound": "AGUA", "correct": "💧", "label": "Agua", "options": [{ "e": "💧", "l": "Agua" }, { "e": "🍞", "l": "Pan" }, { "e": "🥛", "l": "Leche" }] },
-    { "sound": "LECHE", "correct": "🥛", "label": "Leche", "options": [{ "e": "🍞", "l": "Pan" }, { "e": "💧", "l": "Agua" }, { "e": "🥛", "l": "Leche" }] },
-    { "sound": "PAN", "correct": "🍞", "label": "Pan", "options": [{ "e": "🍞", "l": "Pan" }, { "e": "🥛", "l": "Leche" }, { "e": "💧", "l": "Agua" }] },
-    { "sound": "MANO", "correct": "✋", "label": "Mano", "options": [{ "e": "🦶", "l": "Pie" }, { "e": "✋", "l": "Mano" }, { "e": "👃", "l": "Nariz" }] },
-    { "sound": "PIE", "correct": "🦶", "label": "Pie", "options": [{ "e": "👃", "l": "Nariz" }, { "e": "👁️", "l": "Ojo" }, { "e": "🦶", "l": "Pie" }] },
-    { "sound": "OJO", "correct": "👁️", "label": "Ojo", "options": [{ "e": "👁️", "l": "Ojo" }, { "e": "👃", "l": "Nariz" }, { "e": "👄", "l": "Boca" }] },
-    { "sound": "NARIZ", "correct": "👃", "label": "Nariz", "options": [{ "e": "👄", "l": "Boca" }, { "e": "👃", "l": "Nariz" }, { "e": "👁️", "l": "Ojo" }] },
-    { "sound": "BOCA", "correct": "👄", "label": "Boca", "options": [{ "e": "👄", "l": "Boca" }, { "e": "👁️", "l": "Ojo" }, { "e": "👃", "l": "Nariz" }] },
-    { "sound": "SILLA", "correct": "🪑", "label": "Silla", "options": [{ "e": "🛏️", "l": "Cama" }, { "e": "🪑", "l": "Silla" }, { "e": "🍽️", "l": "Mesa" }] },
-    { "sound": "CAMA", "correct": "🛏️", "label": "Cama", "options": [{ "e": "🛏️", "l": "Cama" }, { "e": "🪑", "l": "Silla" }, { "e": "🏠", "l": "Casa" }] },
-    { "sound": "ZAPATO", "correct": "👟", "label": "Zapato", "options": [{ "e": "🧤", "l": "Guante" }, { "e": "🧢", "l": "Gorra" }, { "e": "👟", "l": "Zapato" }] },
-    { "sound": "PELO", "correct": "💇", "label": "Pelo", "options": [{ "e": "💇", "l": "Pelo" }, { "e": "👁️", "l": "Ojo" }, { "e": "👃", "l": "Nariz" }] }
-  ],
-  "connectors": [],
-  "opposites": [],
-  "definitions": [],
-  "narrativeSequences": [],
-  "inferences": []
+  "minimalPairs": {
+    "inicial": [
+      {
+        "word": "PATO",
+        "emoji": "🦆",
+        "distractor": {
+          "word": "GATO",
+          "emoji": "🐱"
+        }
+      },
+      {
+        "word": "PELO",
+        "emoji": "💇",
+        "distractor": {
+          "word": "PALO",
+          "emoji": "🪵"
+        }
+      },
+      {
+        "word": "MAMÁ",
+        "emoji": "👩",
+        "distractor": {
+          "word": "PAPÁ",
+          "emoji": "👨"
+        }
+      },
+      {
+        "word": "CAMA",
+        "emoji": "🛏️",
+        "distractor": {
+          "word": "DAMA",
+          "emoji": "♟️"
+        }
+      },
+      {
+        "word": "SOPA",
+        "emoji": "🍲",
+        "distractor": {
+          "word": "COPA",
+          "emoji": "🏆"
+        }
+      },
+      {
+        "word": "TAPA",
+        "emoji": "🍳",
+        "distractor": {
+          "word": "PAPA",
+          "emoji": "🥔"
+        }
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "BOCA",
+        "emoji": "👄",
+        "distractor": {
+          "word": "LOCA",
+          "emoji": "😵"
+        }
+      },
+      {
+        "word": "NENE",
+        "emoji": "👶",
+        "distractor": {
+          "word": "NENA",
+          "emoji": "👧"
+        }
+      },
+      {
+        "word": "PALA",
+        "emoji": "🪣",
+        "distractor": {
+          "word": "BALA",
+          "emoji": "🎱"
+        }
+      },
+      {
+        "word": "MESA",
+        "emoji": "🍽️",
+        "distractor": {
+          "word": "PESA",
+          "emoji": "⚖️"
+        }
+      },
+      {
+        "word": "LUNA",
+        "emoji": "🌙",
+        "distractor": {
+          "word": "TUNA",
+          "emoji": "🌵"
+        }
+      },
+      {
+        "word": "GATO",
+        "emoji": "🐱",
+        "distractor": {
+          "word": "DATO",
+          "emoji": "📊"
+        }
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "MAPA",
+        "emoji": "🗺️",
+        "distractor": {
+          "word": "CAPA",
+          "emoji": "🧥"
+        }
+      },
+      {
+        "word": "CASA",
+        "emoji": "🏠",
+        "distractor": {
+          "word": "MASA",
+          "emoji": "🫓"
+        }
+      },
+      {
+        "word": "BESO",
+        "emoji": "😘",
+        "distractor": {
+          "word": "PESO",
+          "emoji": "💰"
+        }
+      },
+      {
+        "word": "NARIZ",
+        "emoji": "👃",
+        "distractor": {
+          "word": "MAÍZ",
+          "emoji": "🌽"
+        }
+      },
+      {
+        "word": "LECHE",
+        "emoji": "🥛",
+        "distractor": {
+          "word": "PECHE",
+          "emoji": "🐟"
+        }
+      }
+    ]
+  },
+  "buildWords": {
+    "inicial": [
+      {
+        "word": "MAMÁ",
+        "emoji": "👩",
+        "syllables": [
+          "MA",
+          "MÁ"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "PAPÁ",
+        "emoji": "👨",
+        "syllables": [
+          "PA",
+          "PÁ"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "PATO",
+        "emoji": "🦆",
+        "syllables": [
+          "PA",
+          "TO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "GATO",
+        "emoji": "🐱",
+        "syllables": [
+          "GA",
+          "TO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "PELO",
+        "emoji": "💇",
+        "syllables": [
+          "PE",
+          "LO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "MESA",
+        "emoji": "🍽️",
+        "syllables": [
+          "ME",
+          "SA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "CAMA",
+        "emoji": "🛏️",
+        "syllables": [
+          "CA",
+          "MA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "SOPA",
+        "emoji": "🍲",
+        "syllables": [
+          "SO",
+          "PA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "NENE",
+        "emoji": "👶",
+        "syllables": [
+          "NE",
+          "NE"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "LECHE",
+        "emoji": "🥛",
+        "syllables": [
+          "LE",
+          "CHE"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "AGUA",
+        "emoji": "💧",
+        "syllables": [
+          "A",
+          "GUA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "LUNA",
+        "emoji": "🌙",
+        "syllables": [
+          "LU",
+          "NA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "MANO",
+        "emoji": "✋",
+        "syllables": [
+          "MA",
+          "NO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "BOCA",
+        "emoji": "👄",
+        "syllables": [
+          "BO",
+          "CA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "SILLA",
+        "emoji": "🪑",
+        "syllables": [
+          "SI",
+          "LLA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "NARIZ",
+        "emoji": "👃",
+        "syllables": [
+          "NA",
+          "RIZ"
+        ],
+        "hint": "2 sílabas"
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "PELOTA",
+        "emoji": "⚽",
+        "syllables": [
+          "PE",
+          "LO",
+          "TA"
+        ],
+        "hint": "3 sílabas"
+      },
+      {
+        "word": "ZAPATO",
+        "emoji": "👟",
+        "syllables": [
+          "ZA",
+          "PA",
+          "TO"
+        ],
+        "hint": "3 sílabas"
+      }
+    ],
+    "avanzado": []
+  },
+  "listenRounds": {
+    "inicial": [
+      {
+        "sound": "MAMÁ",
+        "correct": "👩",
+        "label": "Mamá",
+        "options": [
+          {
+            "e": "👩",
+            "l": "Mamá"
+          },
+          {
+            "e": "👨",
+            "l": "Papá"
+          },
+          {
+            "e": "👶",
+            "l": "Bebé"
+          }
+        ]
+      },
+      {
+        "sound": "PAPÁ",
+        "correct": "👨",
+        "label": "Papá",
+        "options": [
+          {
+            "e": "🐱",
+            "l": "Gato"
+          },
+          {
+            "e": "👨",
+            "l": "Papá"
+          },
+          {
+            "e": "👩",
+            "l": "Mamá"
+          }
+        ]
+      },
+      {
+        "sound": "GATO",
+        "correct": "🐱",
+        "label": "Gato",
+        "options": [
+          {
+            "e": "🐶",
+            "l": "Perro"
+          },
+          {
+            "e": "🦆",
+            "l": "Pato"
+          },
+          {
+            "e": "🐱",
+            "l": "Gato"
+          }
+        ]
+      },
+      {
+        "sound": "PERRO",
+        "correct": "🐶",
+        "label": "Perro",
+        "options": [
+          {
+            "e": "🐱",
+            "l": "Gato"
+          },
+          {
+            "e": "🐶",
+            "l": "Perro"
+          },
+          {
+            "e": "🦆",
+            "l": "Pato"
+          }
+        ]
+      },
+      {
+        "sound": "PATO",
+        "correct": "🦆",
+        "label": "Pato",
+        "options": [
+          {
+            "e": "🦆",
+            "l": "Pato"
+          },
+          {
+            "e": "🐱",
+            "l": "Gato"
+          },
+          {
+            "e": "🐶",
+            "l": "Perro"
+          }
+        ]
+      },
+      {
+        "sound": "PELOTA",
+        "correct": "⚽",
+        "label": "Pelota",
+        "options": [
+          {
+            "e": "🏠",
+            "l": "Casa"
+          },
+          {
+            "e": "⚽",
+            "l": "Pelota"
+          },
+          {
+            "e": "🐶",
+            "l": "Perro"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "sound": "AGUA",
+        "correct": "💧",
+        "label": "Agua",
+        "options": [
+          {
+            "e": "💧",
+            "l": "Agua"
+          },
+          {
+            "e": "🍞",
+            "l": "Pan"
+          },
+          {
+            "e": "🥛",
+            "l": "Leche"
+          }
+        ]
+      },
+      {
+        "sound": "LECHE",
+        "correct": "🥛",
+        "label": "Leche",
+        "options": [
+          {
+            "e": "🍞",
+            "l": "Pan"
+          },
+          {
+            "e": "💧",
+            "l": "Agua"
+          },
+          {
+            "e": "🥛",
+            "l": "Leche"
+          }
+        ]
+      },
+      {
+        "sound": "PAN",
+        "correct": "🍞",
+        "label": "Pan",
+        "options": [
+          {
+            "e": "🍞",
+            "l": "Pan"
+          },
+          {
+            "e": "🥛",
+            "l": "Leche"
+          },
+          {
+            "e": "💧",
+            "l": "Agua"
+          }
+        ]
+      },
+      {
+        "sound": "MANO",
+        "correct": "✋",
+        "label": "Mano",
+        "options": [
+          {
+            "e": "🦶",
+            "l": "Pie"
+          },
+          {
+            "e": "✋",
+            "l": "Mano"
+          },
+          {
+            "e": "👃",
+            "l": "Nariz"
+          }
+        ]
+      },
+      {
+        "sound": "PIE",
+        "correct": "🦶",
+        "label": "Pie",
+        "options": [
+          {
+            "e": "👃",
+            "l": "Nariz"
+          },
+          {
+            "e": "👁️",
+            "l": "Ojo"
+          },
+          {
+            "e": "🦶",
+            "l": "Pie"
+          }
+        ]
+      },
+      {
+        "sound": "OJO",
+        "correct": "👁️",
+        "label": "Ojo",
+        "options": [
+          {
+            "e": "👁️",
+            "l": "Ojo"
+          },
+          {
+            "e": "👃",
+            "l": "Nariz"
+          },
+          {
+            "e": "👄",
+            "l": "Boca"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "sound": "NARIZ",
+        "correct": "👃",
+        "label": "Nariz",
+        "options": [
+          {
+            "e": "👄",
+            "l": "Boca"
+          },
+          {
+            "e": "👃",
+            "l": "Nariz"
+          },
+          {
+            "e": "👁️",
+            "l": "Ojo"
+          }
+        ]
+      },
+      {
+        "sound": "BOCA",
+        "correct": "👄",
+        "label": "Boca",
+        "options": [
+          {
+            "e": "👄",
+            "l": "Boca"
+          },
+          {
+            "e": "👁️",
+            "l": "Ojo"
+          },
+          {
+            "e": "👃",
+            "l": "Nariz"
+          }
+        ]
+      },
+      {
+        "sound": "SILLA",
+        "correct": "🪑",
+        "label": "Silla",
+        "options": [
+          {
+            "e": "🛏️",
+            "l": "Cama"
+          },
+          {
+            "e": "🪑",
+            "l": "Silla"
+          },
+          {
+            "e": "🍽️",
+            "l": "Mesa"
+          }
+        ]
+      },
+      {
+        "sound": "CAMA",
+        "correct": "🛏️",
+        "label": "Cama",
+        "options": [
+          {
+            "e": "🛏️",
+            "l": "Cama"
+          },
+          {
+            "e": "🪑",
+            "l": "Silla"
+          },
+          {
+            "e": "🏠",
+            "l": "Casa"
+          }
+        ]
+      },
+      {
+        "sound": "ZAPATO",
+        "correct": "👟",
+        "label": "Zapato",
+        "options": [
+          {
+            "e": "🧤",
+            "l": "Guante"
+          },
+          {
+            "e": "🧢",
+            "l": "Gorra"
+          },
+          {
+            "e": "👟",
+            "l": "Zapato"
+          }
+        ]
+      },
+      {
+        "sound": "PELO",
+        "correct": "💇",
+        "label": "Pelo",
+        "options": [
+          {
+            "e": "💇",
+            "l": "Pelo"
+          },
+          {
+            "e": "👁️",
+            "l": "Ojo"
+          },
+          {
+            "e": "👃",
+            "l": "Nariz"
+          }
+        ]
+      }
+    ]
+  },
+  "connectors": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "opposites": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "definitions": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "narrativeSequences": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "inferences": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "rhymes": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "pointImages": {
+    "inicial": [
+      {
+        "word": "MAMÁ",
+        "options": [
+          {
+            "word": "MAMÁ",
+            "emoji": "👩"
+          },
+          {
+            "word": "PAPÁ",
+            "emoji": "👨"
+          },
+          {
+            "word": "BEBÉ",
+            "emoji": "👶"
+          },
+          {
+            "word": "ABUELA",
+            "emoji": "👵"
+          }
+        ]
+      },
+      {
+        "word": "PAPÁ",
+        "options": [
+          {
+            "word": "PAPÁ",
+            "emoji": "👨"
+          },
+          {
+            "word": "MAMÁ",
+            "emoji": "👩"
+          },
+          {
+            "word": "ABUELO",
+            "emoji": "👴"
+          },
+          {
+            "word": "NIÑO",
+            "emoji": "🧒"
+          }
+        ]
+      },
+      {
+        "word": "PERRO",
+        "options": [
+          {
+            "word": "PERRO",
+            "emoji": "🐕"
+          },
+          {
+            "word": "GATO",
+            "emoji": "🐈"
+          },
+          {
+            "word": "PÁJARO",
+            "emoji": "🐦"
+          },
+          {
+            "word": "PEZ",
+            "emoji": "🐟"
+          }
+        ]
+      },
+      {
+        "word": "GATO",
+        "options": [
+          {
+            "word": "GATO",
+            "emoji": "🐈"
+          },
+          {
+            "word": "PERRO",
+            "emoji": "🐕"
+          },
+          {
+            "word": "CONEJO",
+            "emoji": "🐰"
+          },
+          {
+            "word": "VACA",
+            "emoji": "🐮"
+          }
+        ]
+      },
+      {
+        "word": "PELOTA",
+        "options": [
+          {
+            "word": "PELOTA",
+            "emoji": "⚽"
+          },
+          {
+            "word": "COCHE",
+            "emoji": "🚗"
+          },
+          {
+            "word": "MUÑECA",
+            "emoji": "🪆"
+          },
+          {
+            "word": "GLOBO",
+            "emoji": "🎈"
+          }
+        ]
+      },
+      {
+        "word": "AGUA",
+        "options": [
+          {
+            "word": "AGUA",
+            "emoji": "💧"
+          },
+          {
+            "word": "LECHE",
+            "emoji": "🥛"
+          },
+          {
+            "word": "ZUMO",
+            "emoji": "🧃"
+          },
+          {
+            "word": "SOPA",
+            "emoji": "🍲"
+          }
+        ]
+      },
+      {
+        "word": "PAN",
+        "options": [
+          {
+            "word": "PAN",
+            "emoji": "🍞"
+          },
+          {
+            "word": "MANZANA",
+            "emoji": "🍎"
+          },
+          {
+            "word": "GALLETA",
+            "emoji": "🍪"
+          },
+          {
+            "word": "HUEVO",
+            "emoji": "🥚"
+          }
+        ]
+      },
+      {
+        "word": "COCHE",
+        "options": [
+          {
+            "word": "COCHE",
+            "emoji": "🚗"
+          },
+          {
+            "word": "BICI",
+            "emoji": "🚲"
+          },
+          {
+            "word": "AVIÓN",
+            "emoji": "✈️"
+          },
+          {
+            "word": "BARCO",
+            "emoji": "⛵"
+          }
+        ]
+      },
+      {
+        "word": "CASA",
+        "options": [
+          {
+            "word": "CASA",
+            "emoji": "🏠"
+          },
+          {
+            "word": "ÁRBOL",
+            "emoji": "🌳"
+          },
+          {
+            "word": "FLOR",
+            "emoji": "🌸"
+          },
+          {
+            "word": "SOL",
+            "emoji": "☀️"
+          }
+        ]
+      },
+      {
+        "word": "LUNA",
+        "options": [
+          {
+            "word": "LUNA",
+            "emoji": "🌙"
+          },
+          {
+            "word": "SOL",
+            "emoji": "☀️"
+          },
+          {
+            "word": "ESTRELLA",
+            "emoji": "⭐"
+          },
+          {
+            "word": "NUBE",
+            "emoji": "☁️"
+          }
+        ]
+      },
+      {
+        "word": "ZAPATO",
+        "options": [
+          {
+            "word": "ZAPATO",
+            "emoji": "👟"
+          },
+          {
+            "word": "GORRO",
+            "emoji": "🧢"
+          },
+          {
+            "word": "CALCETÍN",
+            "emoji": "🧦"
+          },
+          {
+            "word": "CHAQUETA",
+            "emoji": "🧥"
+          }
+        ]
+      },
+      {
+        "word": "MESA",
+        "options": [
+          {
+            "word": "MESA",
+            "emoji": "🪑"
+          },
+          {
+            "word": "CAMA",
+            "emoji": "🛏️"
+          },
+          {
+            "word": "SILLA",
+            "emoji": "💺"
+          },
+          {
+            "word": "PUERTA",
+            "emoji": "🚪"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "MANZANA",
+        "options": [
+          {
+            "word": "MANZANA",
+            "emoji": "🍎"
+          },
+          {
+            "word": "PLÁTANO",
+            "emoji": "🍌"
+          },
+          {
+            "word": "UVA",
+            "emoji": "🍇"
+          },
+          {
+            "word": "NARANJA",
+            "emoji": "🍊"
+          }
+        ]
+      },
+      {
+        "word": "PLÁTANO",
+        "options": [
+          {
+            "word": "PLÁTANO",
+            "emoji": "🍌"
+          },
+          {
+            "word": "PERA",
+            "emoji": "🍐"
+          },
+          {
+            "word": "FRESA",
+            "emoji": "🍓"
+          },
+          {
+            "word": "SANDÍA",
+            "emoji": "🍉"
+          }
+        ]
+      },
+      {
+        "word": "LIBRO",
+        "options": [
+          {
+            "word": "LIBRO",
+            "emoji": "📚"
+          },
+          {
+            "word": "LÁPIZ",
+            "emoji": "✏️"
+          },
+          {
+            "word": "TIJERAS",
+            "emoji": "✂️"
+          },
+          {
+            "word": "MOCHILA",
+            "emoji": "🎒"
+          }
+        ]
+      },
+      {
+        "word": "CAMA",
+        "options": [
+          {
+            "word": "CAMA",
+            "emoji": "🛏️"
+          },
+          {
+            "word": "MESA",
+            "emoji": "🪑"
+          },
+          {
+            "word": "BAÑO",
+            "emoji": "🛁"
+          },
+          {
+            "word": "ESPEJO",
+            "emoji": "🪞"
+          }
+        ]
+      },
+      {
+        "word": "ÁRBOL",
+        "options": [
+          {
+            "word": "ÁRBOL",
+            "emoji": "🌳"
+          },
+          {
+            "word": "FLOR",
+            "emoji": "🌸"
+          },
+          {
+            "word": "HOJA",
+            "emoji": "🍃"
+          },
+          {
+            "word": "NUBE",
+            "emoji": "☁️"
+          }
+        ]
+      },
+      {
+        "word": "PÁJARO",
+        "options": [
+          {
+            "word": "PÁJARO",
+            "emoji": "🐦"
+          },
+          {
+            "word": "MARIPOSA",
+            "emoji": "🦋"
+          },
+          {
+            "word": "ABEJA",
+            "emoji": "🐝"
+          },
+          {
+            "word": "CARACOL",
+            "emoji": "🐌"
+          }
+        ]
+      },
+      {
+        "word": "TREN",
+        "options": [
+          {
+            "word": "TREN",
+            "emoji": "🚂"
+          },
+          {
+            "word": "AVIÓN",
+            "emoji": "✈️"
+          },
+          {
+            "word": "BARCO",
+            "emoji": "⛵"
+          },
+          {
+            "word": "MOTO",
+            "emoji": "🏍️"
+          }
+        ]
+      },
+      {
+        "word": "LLUVIA",
+        "options": [
+          {
+            "word": "LLUVIA",
+            "emoji": "🌧️"
+          },
+          {
+            "word": "SOL",
+            "emoji": "☀️"
+          },
+          {
+            "word": "NIEVE",
+            "emoji": "❄️"
+          },
+          {
+            "word": "ARCOÍRIS",
+            "emoji": "🌈"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "MARIPOSA",
+        "options": [
+          {
+            "word": "MARIPOSA",
+            "emoji": "🦋"
+          },
+          {
+            "word": "ABEJA",
+            "emoji": "🐝"
+          },
+          {
+            "word": "ARAÑA",
+            "emoji": "🕷️"
+          },
+          {
+            "word": "LIBÉLULA",
+            "emoji": "🪲"
+          }
+        ]
+      },
+      {
+        "word": "ELEFANTE",
+        "options": [
+          {
+            "word": "ELEFANTE",
+            "emoji": "🐘"
+          },
+          {
+            "word": "JIRAFA",
+            "emoji": "🦒"
+          },
+          {
+            "word": "CEBRA",
+            "emoji": "🦓"
+          },
+          {
+            "word": "HIPOPÓTAMO",
+            "emoji": "🦛"
+          }
+        ]
+      },
+      {
+        "word": "SEMÁFORO",
+        "options": [
+          {
+            "word": "SEMÁFORO",
+            "emoji": "🚦"
+          },
+          {
+            "word": "SEÑAL",
+            "emoji": "🚧"
+          },
+          {
+            "word": "PUENTE",
+            "emoji": "🌉"
+          },
+          {
+            "word": "FAROLA",
+            "emoji": "🏮"
+          }
+        ]
+      },
+      {
+        "word": "PARAGUAS",
+        "options": [
+          {
+            "word": "PARAGUAS",
+            "emoji": "☂️"
+          },
+          {
+            "word": "ABRIGO",
+            "emoji": "🧥"
+          },
+          {
+            "word": "BUFANDA",
+            "emoji": "🧣"
+          },
+          {
+            "word": "GUANTES",
+            "emoji": "🧤"
+          }
+        ]
+      }
+    ]
+  },
+  "categories": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "instructions": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "communicativeIntents": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  }
 }

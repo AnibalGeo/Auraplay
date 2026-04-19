@@ -1,77 +1,1448 @@
 {
-  "minimalPairs": [
-    { "word": "PALA", "emoji": "🪣", "distractor": { "word": "BALA", "emoji": "🎱" } },
-    { "word": "CAMA", "emoji": "🛏️", "distractor": { "word": "RAMA", "emoji": "🌿" } },
-    { "word": "LUNA", "emoji": "🌙", "distractor": { "word": "TUNA", "emoji": "🌵" } },
-    { "word": "FOCA", "emoji": "🦭", "distractor": { "word": "BOCA", "emoji": "👄" } },
-    { "word": "PENA", "emoji": "😢", "distractor": { "word": "VENA", "emoji": "💉" } },
-    { "word": "BOLA", "emoji": "⚽", "distractor": { "word": "COLA", "emoji": "🦊" } },
-    { "word": "PISO", "emoji": "🏠", "distractor": { "word": "LISO", "emoji": "✨" } },
-    { "word": "MANO", "emoji": "✋", "distractor": { "word": "SANO", "emoji": "💚" } },
-    { "word": "GATO", "emoji": "🐱", "distractor": { "word": "RATO", "emoji": "🐭" } },
-    { "word": "CARRO", "emoji": "🚗", "distractor": { "word": "BARRO", "emoji": "🌱" } },
-    { "word": "VELA", "emoji": "🕯️", "distractor": { "word": "TELA", "emoji": "🧵" } },
-    { "word": "NOCHE", "emoji": "🌙", "distractor": { "word": "COCHE", "emoji": "🚗" } },
-    { "word": "JOYA", "emoji": "💍", "distractor": { "word": "BOYA", "emoji": "🪝" } },
-    { "word": "PERA", "emoji": "🍐", "distractor": { "word": "PENA", "emoji": "😢" } },
-    { "word": "BESO", "emoji": "😘", "distractor": { "word": "PESO", "emoji": "⚖️" } },
-    { "word": "SALA", "emoji": "🛋️", "distractor": { "word": "BALA", "emoji": "🎱" } }
-  ],
-  "buildWords": [
-    { "word": "GATO", "emoji": "🐱", "syllables": ["GA", "TO"], "hint": "2 sílabas" },
-    { "word": "NENE", "emoji": "👶", "syllables": ["NE", "NE"], "hint": "2 sílabas" },
-    { "word": "JUGO", "emoji": "🧃", "syllables": ["JU", "GO"], "hint": "2 sílabas" },
-    { "word": "BOCA", "emoji": "👄", "syllables": ["BO", "CA"], "hint": "2 sílabas" },
-    { "word": "NUBE", "emoji": "☁️", "syllables": ["NU", "BE"], "hint": "2 sílabas" },
-    { "word": "VELA", "emoji": "🕯️", "syllables": ["VE", "LA"], "hint": "2 sílabas" },
-    { "word": "BESO", "emoji": "😘", "syllables": ["BE", "SO"], "hint": "2 sílabas" },
-    { "word": "CARRO", "emoji": "🚗", "syllables": ["CA", "RRO"], "hint": "2 sílabas" },
-    { "word": "ÁRBOL", "emoji": "🌳", "syllables": ["ÁR", "BOL"], "hint": "2 sílabas" },
-    { "word": "QUESO", "emoji": "🧀", "syllables": ["QUE", "SO"], "hint": "2 sílabas" },
-    { "word": "PERA", "emoji": "🍐", "syllables": ["PE", "RA"], "hint": "2 sílabas" },
-    { "word": "MANZANA", "emoji": "🍎", "syllables": ["MAN", "ZA", "NA"], "hint": "3 sílabas" },
-    { "word": "PLÁTANO", "emoji": "🍌", "syllables": ["PLÁ", "TA", "NO"], "hint": "3 sílabas" },
-    { "word": "CAMISA", "emoji": "👕", "syllables": ["CA", "MI", "SA"], "hint": "3 sílabas" },
-    { "word": "PELOTA", "emoji": "⚽", "syllables": ["PE", "LO", "TA"], "hint": "3 sílabas" },
-    { "word": "PALOMA", "emoji": "🕊️", "syllables": ["PA", "LO", "MA"], "hint": "3 sílabas" }
-  ],
-  "listenRounds": [
-    { "sound": "GATO", "correct": "🐱", "label": "Gato", "options": [{ "e": "🐱", "l": "Gato" }, { "e": "🐶", "l": "Perro" }, { "e": "🐸", "l": "Rana" }] },
-    { "sound": "MANZANA", "correct": "🍎", "label": "Manzana", "options": [{ "e": "🍌", "l": "Plátano" }, { "e": "🍎", "l": "Manzana" }, { "e": "🍊", "l": "Naranja" }] },
-    { "sound": "ÁRBOL", "correct": "🌳", "label": "Árbol", "options": [{ "e": "🌳", "l": "Árbol" }, { "e": "🌸", "l": "Flor" }, { "e": "🌿", "l": "Planta" }] },
-    { "sound": "NUBE", "correct": "☁️", "label": "Nube", "options": [{ "e": "🌙", "l": "Luna" }, { "e": "☁️", "l": "Nube" }, { "e": "⭐", "l": "Estrella" }] },
-    { "sound": "JUGO", "correct": "🧃", "label": "Jugo", "options": [{ "e": "🥛", "l": "Leche" }, { "e": "💧", "l": "Agua" }, { "e": "🧃", "l": "Jugo" }] },
-    { "sound": "QUESO", "correct": "🧀", "label": "Queso", "options": [{ "e": "🧀", "l": "Queso" }, { "e": "🍞", "l": "Pan" }, { "e": "🥚", "l": "Huevo" }] },
-    { "sound": "UVA", "correct": "🍇", "label": "Uva", "options": [{ "e": "🍐", "l": "Pera" }, { "e": "🍇", "l": "Uva" }, { "e": "🍎", "l": "Manzana" }] },
-    { "sound": "PERA", "correct": "🍐", "label": "Pera", "options": [{ "e": "🍐", "l": "Pera" }, { "e": "🍇", "l": "Uva" }, { "e": "🍌", "l": "Plátano" }] },
-    { "sound": "LLUVIA", "correct": "🌧️", "label": "Lluvia", "options": [{ "e": "🌧️", "l": "Lluvia" }, { "e": "☁️", "l": "Nube" }, { "e": "☀️", "l": "Sol" }] },
-    { "sound": "FUEGO", "correct": "🔥", "label": "Fuego", "options": [{ "e": "💧", "l": "Agua" }, { "e": "🔥", "l": "Fuego" }, { "e": "☀️", "l": "Sol" }] },
-    { "sound": "PLÁTANO", "correct": "🍌", "label": "Plátano", "options": [{ "e": "🍌", "l": "Plátano" }, { "e": "🍎", "l": "Manzana" }, { "e": "🍊", "l": "Naranja" }] },
-    { "sound": "CARRO", "correct": "🚗", "label": "Carro", "options": [{ "e": "🚗", "l": "Carro" }, { "e": "🚌", "l": "Bus" }, { "e": "✈️", "l": "Avión" }] },
-    { "sound": "SOL", "correct": "☀️", "label": "Sol", "options": [{ "e": "🌙", "l": "Luna" }, { "e": "⭐", "l": "Estrella" }, { "e": "☀️", "l": "Sol" }] },
-    { "sound": "FLOR", "correct": "🌸", "label": "Flor", "options": [{ "e": "🌸", "l": "Flor" }, { "e": "🌿", "l": "Planta" }, { "e": "🌳", "l": "Árbol" }] },
-    { "sound": "VELA", "correct": "🕯️", "label": "Vela", "options": [{ "e": "💡", "l": "Lámpara" }, { "e": "🕯️", "l": "Vela" }, { "e": "🔦", "l": "Linterna" }] },
-    { "sound": "JOYA", "correct": "💍", "label": "Joya", "options": [{ "e": "💍", "l": "Joya" }, { "e": "⌚", "l": "Reloj" }, { "e": "🎀", "l": "Lazo" }] }
-  ],
-  "connectors": [
-    { "sentence": "El nene come ___ duerme.", "options": ["y", "pero", "porque"], "correct": "y", "explanation": "\"Y\" une dos acciones que hace el mismo personaje.", "level": "coordinante_copulativo" },
-    { "sentence": "El gato maúlla ___ el perro ladra.", "options": ["y", "pero", "porque"], "correct": "y", "explanation": "\"Y\" une dos cosas que ocurren juntas.", "level": "coordinante_copulativo" },
-    { "sentence": "Quiero jugar ___ está lloviendo.", "options": ["pero", "y", "porque"], "correct": "pero", "explanation": "\"Pero\" muestra que hay algo que impide o contrasta.", "level": "coordinante_adversativo" },
-    { "sentence": "El bebé llora ___ tiene hambre.", "options": ["porque", "pero", "y"], "correct": "porque", "explanation": "\"Porque\" explica el motivo del llanto.", "level": "subordinante_causal" },
-    { "sentence": "Mamá canta ___ baila.", "options": ["y", "porque", "pero"], "correct": "y", "explanation": "\"Y\" une dos cosas que hace mamá.", "level": "coordinante_copulativo" },
-    { "sentence": "Quiero el jugo ___ no hay.", "options": ["pero", "y", "porque"], "correct": "pero", "explanation": "\"Pero\" muestra el obstáculo.", "level": "coordinante_adversativo" },
-    { "sentence": "El pato nada ___ tiene patas palmeadas.", "options": ["porque", "pero", "y"], "correct": "porque", "explanation": "\"Porque\" da la razón de que el pato pueda nadar.", "level": "subordinante_causal" },
-    { "sentence": "No puedo salir ___ llueve mucho.", "options": ["porque", "y", "pero"], "correct": "porque", "explanation": "\"Porque\" explica el motivo de no poder salir.", "level": "subordinante_causal" },
-    { "sentence": "Quiero dulces ___ mamá dice no.", "options": ["pero", "y", "porque"], "correct": "pero", "explanation": "\"Pero\" introduce la oposición.", "level": "coordinante_adversativo" },
-    { "sentence": "El sol sale ___ es de día.", "options": ["y", "porque", "pero"], "correct": "y", "explanation": "\"Y\" une el hecho con la consecuencia inmediata.", "level": "coordinante_copulativo" },
-    { "sentence": "El niño tiene frío ___ se pone el abrigo.", "options": ["y", "pero", "porque"], "correct": "y", "explanation": "\"Y\" une la causa con la acción que sigue.", "level": "coordinante_copulativo" },
-    { "sentence": "Hay pan ___ no hay queso.", "options": ["pero", "y", "porque"], "correct": "pero", "explanation": "\"Pero\" contrasta lo que hay con lo que falta.", "level": "coordinante_adversativo" },
-    { "sentence": "El gato come ___ bebe leche.", "options": ["y", "pero", "porque"], "correct": "y", "explanation": "\"Y\" une dos acciones seguidas.", "level": "coordinante_copulativo" },
-    { "sentence": "La niña llora ___ se cayó.", "options": ["porque", "pero", "y"], "correct": "porque", "explanation": "\"Porque\" explica el motivo del llanto.", "level": "subordinante_causal" },
-    { "sentence": "Tengo sueño ___ no puedo dormir.", "options": ["pero", "porque", "y"], "correct": "pero", "explanation": "\"Pero\" muestra la contradicción.", "level": "coordinante_adversativo" }
-  ],
-  "opposites": [],
-  "definitions": [],
-  "narrativeSequences": [],
-  "inferences": []
+  "minimalPairs": {
+    "inicial": [
+      {
+        "word": "PALA",
+        "emoji": "🪣",
+        "distractor": {
+          "word": "BALA",
+          "emoji": "🎱"
+        }
+      },
+      {
+        "word": "CAMA",
+        "emoji": "🛏️",
+        "distractor": {
+          "word": "RAMA",
+          "emoji": "🌿"
+        }
+      },
+      {
+        "word": "LUNA",
+        "emoji": "🌙",
+        "distractor": {
+          "word": "TUNA",
+          "emoji": "🌵"
+        }
+      },
+      {
+        "word": "FOCA",
+        "emoji": "🦭",
+        "distractor": {
+          "word": "BOCA",
+          "emoji": "👄"
+        }
+      },
+      {
+        "word": "PENA",
+        "emoji": "😢",
+        "distractor": {
+          "word": "VENA",
+          "emoji": "💉"
+        }
+      },
+      {
+        "word": "BOLA",
+        "emoji": "⚽",
+        "distractor": {
+          "word": "COLA",
+          "emoji": "🦊"
+        }
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "PISO",
+        "emoji": "🏠",
+        "distractor": {
+          "word": "LISO",
+          "emoji": "✨"
+        }
+      },
+      {
+        "word": "MANO",
+        "emoji": "✋",
+        "distractor": {
+          "word": "SANO",
+          "emoji": "💚"
+        }
+      },
+      {
+        "word": "GATO",
+        "emoji": "🐱",
+        "distractor": {
+          "word": "RATO",
+          "emoji": "🐭"
+        }
+      },
+      {
+        "word": "CARRO",
+        "emoji": "🚗",
+        "distractor": {
+          "word": "BARRO",
+          "emoji": "🌱"
+        }
+      },
+      {
+        "word": "VELA",
+        "emoji": "🕯️",
+        "distractor": {
+          "word": "TELA",
+          "emoji": "🧵"
+        }
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "NOCHE",
+        "emoji": "🌙",
+        "distractor": {
+          "word": "COCHE",
+          "emoji": "🚗"
+        }
+      },
+      {
+        "word": "JOYA",
+        "emoji": "💍",
+        "distractor": {
+          "word": "BOYA",
+          "emoji": "🪝"
+        }
+      },
+      {
+        "word": "PERA",
+        "emoji": "🍐",
+        "distractor": {
+          "word": "PENA",
+          "emoji": "😢"
+        }
+      },
+      {
+        "word": "BESO",
+        "emoji": "😘",
+        "distractor": {
+          "word": "PESO",
+          "emoji": "⚖️"
+        }
+      },
+      {
+        "word": "SALA",
+        "emoji": "🛋️",
+        "distractor": {
+          "word": "BALA",
+          "emoji": "🎱"
+        }
+      }
+    ]
+  },
+  "buildWords": {
+    "inicial": [
+      {
+        "word": "GATO",
+        "emoji": "🐱",
+        "syllables": [
+          "GA",
+          "TO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "NENE",
+        "emoji": "👶",
+        "syllables": [
+          "NE",
+          "NE"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "JUGO",
+        "emoji": "🧃",
+        "syllables": [
+          "JU",
+          "GO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "BOCA",
+        "emoji": "👄",
+        "syllables": [
+          "BO",
+          "CA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "NUBE",
+        "emoji": "☁️",
+        "syllables": [
+          "NU",
+          "BE"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "VELA",
+        "emoji": "🕯️",
+        "syllables": [
+          "VE",
+          "LA"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "BESO",
+        "emoji": "😘",
+        "syllables": [
+          "BE",
+          "SO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "CARRO",
+        "emoji": "🚗",
+        "syllables": [
+          "CA",
+          "RRO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "ÁRBOL",
+        "emoji": "🌳",
+        "syllables": [
+          "ÁR",
+          "BOL"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "QUESO",
+        "emoji": "🧀",
+        "syllables": [
+          "QUE",
+          "SO"
+        ],
+        "hint": "2 sílabas"
+      },
+      {
+        "word": "PERA",
+        "emoji": "🍐",
+        "syllables": [
+          "PE",
+          "RA"
+        ],
+        "hint": "2 sílabas"
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "MANZANA",
+        "emoji": "🍎",
+        "syllables": [
+          "MAN",
+          "ZA",
+          "NA"
+        ],
+        "hint": "3 sílabas"
+      },
+      {
+        "word": "PLÁTANO",
+        "emoji": "🍌",
+        "syllables": [
+          "PLÁ",
+          "TA",
+          "NO"
+        ],
+        "hint": "3 sílabas"
+      },
+      {
+        "word": "CAMISA",
+        "emoji": "👕",
+        "syllables": [
+          "CA",
+          "MI",
+          "SA"
+        ],
+        "hint": "3 sílabas"
+      },
+      {
+        "word": "PELOTA",
+        "emoji": "⚽",
+        "syllables": [
+          "PE",
+          "LO",
+          "TA"
+        ],
+        "hint": "3 sílabas"
+      },
+      {
+        "word": "PALOMA",
+        "emoji": "🕊️",
+        "syllables": [
+          "PA",
+          "LO",
+          "MA"
+        ],
+        "hint": "3 sílabas"
+      }
+    ],
+    "avanzado": []
+  },
+  "listenRounds": {
+    "inicial": [
+      {
+        "sound": "GATO",
+        "correct": "🐱",
+        "label": "Gato",
+        "options": [
+          {
+            "e": "🐱",
+            "l": "Gato"
+          },
+          {
+            "e": "🐶",
+            "l": "Perro"
+          },
+          {
+            "e": "🐸",
+            "l": "Rana"
+          }
+        ]
+      },
+      {
+        "sound": "MANZANA",
+        "correct": "🍎",
+        "label": "Manzana",
+        "options": [
+          {
+            "e": "🍌",
+            "l": "Plátano"
+          },
+          {
+            "e": "🍎",
+            "l": "Manzana"
+          },
+          {
+            "e": "🍊",
+            "l": "Naranja"
+          }
+        ]
+      },
+      {
+        "sound": "ÁRBOL",
+        "correct": "🌳",
+        "label": "Árbol",
+        "options": [
+          {
+            "e": "🌳",
+            "l": "Árbol"
+          },
+          {
+            "e": "🌸",
+            "l": "Flor"
+          },
+          {
+            "e": "🌿",
+            "l": "Planta"
+          }
+        ]
+      },
+      {
+        "sound": "NUBE",
+        "correct": "☁️",
+        "label": "Nube",
+        "options": [
+          {
+            "e": "🌙",
+            "l": "Luna"
+          },
+          {
+            "e": "☁️",
+            "l": "Nube"
+          },
+          {
+            "e": "⭐",
+            "l": "Estrella"
+          }
+        ]
+      },
+      {
+        "sound": "JUGO",
+        "correct": "🧃",
+        "label": "Jugo",
+        "options": [
+          {
+            "e": "🥛",
+            "l": "Leche"
+          },
+          {
+            "e": "💧",
+            "l": "Agua"
+          },
+          {
+            "e": "🧃",
+            "l": "Jugo"
+          }
+        ]
+      },
+      {
+        "sound": "QUESO",
+        "correct": "🧀",
+        "label": "Queso",
+        "options": [
+          {
+            "e": "🧀",
+            "l": "Queso"
+          },
+          {
+            "e": "🍞",
+            "l": "Pan"
+          },
+          {
+            "e": "🥚",
+            "l": "Huevo"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "sound": "UVA",
+        "correct": "🍇",
+        "label": "Uva",
+        "options": [
+          {
+            "e": "🍐",
+            "l": "Pera"
+          },
+          {
+            "e": "🍇",
+            "l": "Uva"
+          },
+          {
+            "e": "🍎",
+            "l": "Manzana"
+          }
+        ]
+      },
+      {
+        "sound": "PERA",
+        "correct": "🍐",
+        "label": "Pera",
+        "options": [
+          {
+            "e": "🍐",
+            "l": "Pera"
+          },
+          {
+            "e": "🍇",
+            "l": "Uva"
+          },
+          {
+            "e": "🍌",
+            "l": "Plátano"
+          }
+        ]
+      },
+      {
+        "sound": "LLUVIA",
+        "correct": "🌧️",
+        "label": "Lluvia",
+        "options": [
+          {
+            "e": "🌧️",
+            "l": "Lluvia"
+          },
+          {
+            "e": "☁️",
+            "l": "Nube"
+          },
+          {
+            "e": "☀️",
+            "l": "Sol"
+          }
+        ]
+      },
+      {
+        "sound": "FUEGO",
+        "correct": "🔥",
+        "label": "Fuego",
+        "options": [
+          {
+            "e": "💧",
+            "l": "Agua"
+          },
+          {
+            "e": "🔥",
+            "l": "Fuego"
+          },
+          {
+            "e": "☀️",
+            "l": "Sol"
+          }
+        ]
+      },
+      {
+        "sound": "PLÁTANO",
+        "correct": "🍌",
+        "label": "Plátano",
+        "options": [
+          {
+            "e": "🍌",
+            "l": "Plátano"
+          },
+          {
+            "e": "🍎",
+            "l": "Manzana"
+          },
+          {
+            "e": "🍊",
+            "l": "Naranja"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "sound": "CARRO",
+        "correct": "🚗",
+        "label": "Carro",
+        "options": [
+          {
+            "e": "🚗",
+            "l": "Carro"
+          },
+          {
+            "e": "🚌",
+            "l": "Bus"
+          },
+          {
+            "e": "✈️",
+            "l": "Avión"
+          }
+        ]
+      },
+      {
+        "sound": "SOL",
+        "correct": "☀️",
+        "label": "Sol",
+        "options": [
+          {
+            "e": "🌙",
+            "l": "Luna"
+          },
+          {
+            "e": "⭐",
+            "l": "Estrella"
+          },
+          {
+            "e": "☀️",
+            "l": "Sol"
+          }
+        ]
+      },
+      {
+        "sound": "FLOR",
+        "correct": "🌸",
+        "label": "Flor",
+        "options": [
+          {
+            "e": "🌸",
+            "l": "Flor"
+          },
+          {
+            "e": "🌿",
+            "l": "Planta"
+          },
+          {
+            "e": "🌳",
+            "l": "Árbol"
+          }
+        ]
+      },
+      {
+        "sound": "VELA",
+        "correct": "🕯️",
+        "label": "Vela",
+        "options": [
+          {
+            "e": "💡",
+            "l": "Lámpara"
+          },
+          {
+            "e": "🕯️",
+            "l": "Vela"
+          },
+          {
+            "e": "🔦",
+            "l": "Linterna"
+          }
+        ]
+      },
+      {
+        "sound": "JOYA",
+        "correct": "💍",
+        "label": "Joya",
+        "options": [
+          {
+            "e": "💍",
+            "l": "Joya"
+          },
+          {
+            "e": "⌚",
+            "l": "Reloj"
+          },
+          {
+            "e": "🎀",
+            "l": "Lazo"
+          }
+        ]
+      }
+    ]
+  },
+  "connectors": {
+    "inicial": [
+      {
+        "sentence": "El nene come ___ duerme.",
+        "options": [
+          "y",
+          "pero",
+          "porque"
+        ],
+        "correct": "y",
+        "explanation": "\"Y\" une dos acciones que hace el mismo personaje.",
+        "level": "coordinante_copulativo"
+      },
+      {
+        "sentence": "El gato maúlla ___ el perro ladra.",
+        "options": [
+          "y",
+          "pero",
+          "porque"
+        ],
+        "correct": "y",
+        "explanation": "\"Y\" une dos cosas que ocurren juntas.",
+        "level": "coordinante_copulativo"
+      },
+      {
+        "sentence": "Quiero jugar ___ está lloviendo.",
+        "options": [
+          "pero",
+          "y",
+          "porque"
+        ],
+        "correct": "pero",
+        "explanation": "\"Pero\" muestra que hay algo que impide o contrasta.",
+        "level": "coordinante_adversativo"
+      },
+      {
+        "sentence": "El bebé llora ___ tiene hambre.",
+        "options": [
+          "porque",
+          "pero",
+          "y"
+        ],
+        "correct": "porque",
+        "explanation": "\"Porque\" explica el motivo del llanto.",
+        "level": "subordinante_causal"
+      },
+      {
+        "sentence": "Mamá canta ___ baila.",
+        "options": [
+          "y",
+          "porque",
+          "pero"
+        ],
+        "correct": "y",
+        "explanation": "\"Y\" une dos cosas que hace mamá.",
+        "level": "coordinante_copulativo"
+      }
+    ],
+    "intermedio": [
+      {
+        "sentence": "Quiero el jugo ___ no hay.",
+        "options": [
+          "pero",
+          "y",
+          "porque"
+        ],
+        "correct": "pero",
+        "explanation": "\"Pero\" muestra el obstáculo.",
+        "level": "coordinante_adversativo"
+      },
+      {
+        "sentence": "El pato nada ___ tiene patas palmeadas.",
+        "options": [
+          "porque",
+          "pero",
+          "y"
+        ],
+        "correct": "porque",
+        "explanation": "\"Porque\" da la razón de que el pato pueda nadar.",
+        "level": "subordinante_causal"
+      },
+      {
+        "sentence": "No puedo salir ___ llueve mucho.",
+        "options": [
+          "porque",
+          "y",
+          "pero"
+        ],
+        "correct": "porque",
+        "explanation": "\"Porque\" explica el motivo de no poder salir.",
+        "level": "subordinante_causal"
+      },
+      {
+        "sentence": "Quiero dulces ___ mamá dice no.",
+        "options": [
+          "pero",
+          "y",
+          "porque"
+        ],
+        "correct": "pero",
+        "explanation": "\"Pero\" introduce la oposición.",
+        "level": "coordinante_adversativo"
+      },
+      {
+        "sentence": "El sol sale ___ es de día.",
+        "options": [
+          "y",
+          "porque",
+          "pero"
+        ],
+        "correct": "y",
+        "explanation": "\"Y\" une el hecho con la consecuencia inmediata.",
+        "level": "coordinante_copulativo"
+      }
+    ],
+    "avanzado": [
+      {
+        "sentence": "El niño tiene frío ___ se pone el abrigo.",
+        "options": [
+          "y",
+          "pero",
+          "porque"
+        ],
+        "correct": "y",
+        "explanation": "\"Y\" une la causa con la acción que sigue.",
+        "level": "coordinante_copulativo"
+      },
+      {
+        "sentence": "Hay pan ___ no hay queso.",
+        "options": [
+          "pero",
+          "y",
+          "porque"
+        ],
+        "correct": "pero",
+        "explanation": "\"Pero\" contrasta lo que hay con lo que falta.",
+        "level": "coordinante_adversativo"
+      },
+      {
+        "sentence": "El gato come ___ bebe leche.",
+        "options": [
+          "y",
+          "pero",
+          "porque"
+        ],
+        "correct": "y",
+        "explanation": "\"Y\" une dos acciones seguidas.",
+        "level": "coordinante_copulativo"
+      },
+      {
+        "sentence": "La niña llora ___ se cayó.",
+        "options": [
+          "porque",
+          "pero",
+          "y"
+        ],
+        "correct": "porque",
+        "explanation": "\"Porque\" explica el motivo del llanto.",
+        "level": "subordinante_causal"
+      },
+      {
+        "sentence": "Tengo sueño ___ no puedo dormir.",
+        "options": [
+          "pero",
+          "porque",
+          "y"
+        ],
+        "correct": "pero",
+        "explanation": "\"Pero\" muestra la contradicción.",
+        "level": "coordinante_adversativo"
+      }
+    ]
+  },
+  "opposites": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "definitions": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "narrativeSequences": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "inferences": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "rhymes": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "pointImages": {
+    "inicial": [
+      {
+        "word": "CORRER",
+        "options": [
+          {
+            "word": "CORRER",
+            "emoji": "🏃"
+          },
+          {
+            "word": "DORMIR",
+            "emoji": "😴"
+          },
+          {
+            "word": "COMER",
+            "emoji": "🍽️"
+          },
+          {
+            "word": "SALTAR",
+            "emoji": "🦘"
+          }
+        ]
+      },
+      {
+        "word": "DORMIR",
+        "options": [
+          {
+            "word": "DORMIR",
+            "emoji": "😴"
+          },
+          {
+            "word": "CORRER",
+            "emoji": "🏃"
+          },
+          {
+            "word": "BAÑARSE",
+            "emoji": "🛁"
+          },
+          {
+            "word": "JUGAR",
+            "emoji": "🎮"
+          }
+        ]
+      },
+      {
+        "word": "COMER",
+        "options": [
+          {
+            "word": "COMER",
+            "emoji": "🍽️"
+          },
+          {
+            "word": "BEBER",
+            "emoji": "🥤"
+          },
+          {
+            "word": "COCINAR",
+            "emoji": "👨‍🍳"
+          },
+          {
+            "word": "LAVAR",
+            "emoji": "🧼"
+          }
+        ]
+      },
+      {
+        "word": "BEBER",
+        "options": [
+          {
+            "word": "BEBER",
+            "emoji": "🥤"
+          },
+          {
+            "word": "COMER",
+            "emoji": "🍽️"
+          },
+          {
+            "word": "JUGAR",
+            "emoji": "🎮"
+          },
+          {
+            "word": "PINTAR",
+            "emoji": "🎨"
+          }
+        ]
+      },
+      {
+        "word": "GRANDE",
+        "options": [
+          {
+            "word": "GRANDE",
+            "emoji": "🐘"
+          },
+          {
+            "word": "PEQUEÑO",
+            "emoji": "🐭"
+          },
+          {
+            "word": "ALTO",
+            "emoji": "🦒"
+          },
+          {
+            "word": "GORDO",
+            "emoji": "🐷"
+          }
+        ]
+      },
+      {
+        "word": "PEQUEÑO",
+        "options": [
+          {
+            "word": "PEQUEÑO",
+            "emoji": "🐭"
+          },
+          {
+            "word": "GRANDE",
+            "emoji": "🐘"
+          },
+          {
+            "word": "LARGO",
+            "emoji": "🐍"
+          },
+          {
+            "word": "REDONDO",
+            "emoji": "🌕"
+          }
+        ]
+      },
+      {
+        "word": "CALIENTE",
+        "options": [
+          {
+            "word": "CALIENTE",
+            "emoji": "🔥"
+          },
+          {
+            "word": "FRÍO",
+            "emoji": "❄️"
+          },
+          {
+            "word": "MOJADO",
+            "emoji": "💦"
+          },
+          {
+            "word": "SECO",
+            "emoji": "🏜️"
+          }
+        ]
+      },
+      {
+        "word": "FRÍO",
+        "options": [
+          {
+            "word": "FRÍO",
+            "emoji": "❄️"
+          },
+          {
+            "word": "CALIENTE",
+            "emoji": "🔥"
+          },
+          {
+            "word": "SUAVE",
+            "emoji": "🪶"
+          },
+          {
+            "word": "DURO",
+            "emoji": "🪨"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "word": "CONTENTO",
+        "options": [
+          {
+            "word": "CONTENTO",
+            "emoji": "😊"
+          },
+          {
+            "word": "TRISTE",
+            "emoji": "😢"
+          },
+          {
+            "word": "ENFADADO",
+            "emoji": "😠"
+          },
+          {
+            "word": "ASUSTADO",
+            "emoji": "😨"
+          }
+        ]
+      },
+      {
+        "word": "TRISTE",
+        "options": [
+          {
+            "word": "TRISTE",
+            "emoji": "😢"
+          },
+          {
+            "word": "CONTENTO",
+            "emoji": "😊"
+          },
+          {
+            "word": "SORPRENDIDO",
+            "emoji": "😲"
+          },
+          {
+            "word": "ABURRIDO",
+            "emoji": "😑"
+          }
+        ]
+      },
+      {
+        "word": "JUGAR",
+        "options": [
+          {
+            "word": "JUGAR",
+            "emoji": "🎮"
+          },
+          {
+            "word": "ESTUDIAR",
+            "emoji": "📚"
+          },
+          {
+            "word": "PINTAR",
+            "emoji": "🎨"
+          },
+          {
+            "word": "CANTAR",
+            "emoji": "🎵"
+          }
+        ]
+      },
+      {
+        "word": "PINTAR",
+        "options": [
+          {
+            "word": "PINTAR",
+            "emoji": "🎨"
+          },
+          {
+            "word": "CONSTRUIR",
+            "emoji": "🧱"
+          },
+          {
+            "word": "LEER",
+            "emoji": "📖"
+          },
+          {
+            "word": "ESCRIBIR",
+            "emoji": "✏️"
+          }
+        ]
+      },
+      {
+        "word": "ARRIBA",
+        "options": [
+          {
+            "word": "ARRIBA",
+            "emoji": "⬆️"
+          },
+          {
+            "word": "ABAJO",
+            "emoji": "⬇️"
+          },
+          {
+            "word": "DENTRO",
+            "emoji": "📦"
+          },
+          {
+            "word": "FUERA",
+            "emoji": "🚪"
+          }
+        ]
+      },
+      {
+        "word": "ABAJO",
+        "options": [
+          {
+            "word": "ABAJO",
+            "emoji": "⬇️"
+          },
+          {
+            "word": "ARRIBA",
+            "emoji": "⬆️"
+          },
+          {
+            "word": "AL LADO",
+            "emoji": "↔️"
+          },
+          {
+            "word": "LEJOS",
+            "emoji": "🌄"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "word": "ESCUELA",
+        "options": [
+          {
+            "word": "ESCUELA",
+            "emoji": "🏫"
+          },
+          {
+            "word": "HOSPITAL",
+            "emoji": "🏥"
+          },
+          {
+            "word": "MERCADO",
+            "emoji": "🏪"
+          },
+          {
+            "word": "PARQUE",
+            "emoji": "🌳"
+          }
+        ]
+      },
+      {
+        "word": "MÉDICO",
+        "options": [
+          {
+            "word": "MÉDICO",
+            "emoji": "👨‍⚕️"
+          },
+          {
+            "word": "MAESTRO",
+            "emoji": "👨‍🏫"
+          },
+          {
+            "word": "COCINERO",
+            "emoji": "👨‍🍳"
+          },
+          {
+            "word": "BOMBERO",
+            "emoji": "👨‍🚒"
+          }
+        ]
+      },
+      {
+        "word": "COCINA",
+        "options": [
+          {
+            "word": "COCINA",
+            "emoji": "🍳"
+          },
+          {
+            "word": "BAÑO",
+            "emoji": "🛁"
+          },
+          {
+            "word": "DORMITORIO",
+            "emoji": "🛏️"
+          },
+          {
+            "word": "SALÓN",
+            "emoji": "🛋️"
+          }
+        ]
+      },
+      {
+        "word": "PESADO",
+        "options": [
+          {
+            "word": "PESADO",
+            "emoji": "🏋️"
+          },
+          {
+            "word": "LIGERO",
+            "emoji": "🪶"
+          },
+          {
+            "word": "BLANDO",
+            "emoji": "🧸"
+          },
+          {
+            "word": "RUIDOSO",
+            "emoji": "📢"
+          }
+        ]
+      }
+    ]
+  },
+  "categories": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  },
+  "instructions": {
+    "inicial": [
+      {
+        "instruction": "Señala la luna",
+        "simplified": "Luna",
+        "elements": 1,
+        "correct": "LUNA",
+        "options": [
+          {
+            "word": "LUNA",
+            "emoji": "🌙"
+          },
+          {
+            "word": "SOL",
+            "emoji": "☀️"
+          },
+          {
+            "word": "NUBE",
+            "emoji": "☁️"
+          },
+          {
+            "word": "ESTRELLA",
+            "emoji": "⭐"
+          }
+        ]
+      },
+      {
+        "instruction": "Señala el pan",
+        "simplified": "Pan",
+        "elements": 1,
+        "correct": "PAN",
+        "options": [
+          {
+            "word": "PAN",
+            "emoji": "🍞"
+          },
+          {
+            "word": "MANZANA",
+            "emoji": "🍎"
+          },
+          {
+            "word": "HUEVO",
+            "emoji": "🥚"
+          },
+          {
+            "word": "GALLETA",
+            "emoji": "🍪"
+          }
+        ]
+      }
+    ],
+    "intermedio": [
+      {
+        "instruction": "Toca el animal grande",
+        "simplified": "Grande",
+        "elements": 2,
+        "correct": "ELEFANTE",
+        "options": [
+          {
+            "word": "ELEFANTE",
+            "emoji": "🐘"
+          },
+          {
+            "word": "RATÓN",
+            "emoji": "🐭"
+          },
+          {
+            "word": "PÁJARO",
+            "emoji": "🐦"
+          },
+          {
+            "word": "GATO",
+            "emoji": "🐈"
+          }
+        ]
+      },
+      {
+        "instruction": "Señala la fruta roja",
+        "simplified": "Roja",
+        "elements": 2,
+        "correct": "MANZANA",
+        "options": [
+          {
+            "word": "MANZANA",
+            "emoji": "🍎"
+          },
+          {
+            "word": "PLÁTANO",
+            "emoji": "🍌"
+          },
+          {
+            "word": "UVA",
+            "emoji": "🍇"
+          },
+          {
+            "word": "PERA",
+            "emoji": "🍐"
+          }
+        ]
+      },
+      {
+        "instruction": "Toca el vehículo que vuela",
+        "simplified": "Vuela",
+        "elements": 2,
+        "correct": "AVIÓN",
+        "options": [
+          {
+            "word": "AVIÓN",
+            "emoji": "✈️"
+          },
+          {
+            "word": "COCHE",
+            "emoji": "🚗"
+          },
+          {
+            "word": "BICI",
+            "emoji": "🚲"
+          },
+          {
+            "word": "BARCO",
+            "emoji": "⛵"
+          }
+        ]
+      },
+      {
+        "instruction": "Señala el animal del mar",
+        "simplified": "Mar",
+        "elements": 2,
+        "correct": "PEZ",
+        "options": [
+          {
+            "word": "PEZ",
+            "emoji": "🐟"
+          },
+          {
+            "word": "PERRO",
+            "emoji": "🐕"
+          },
+          {
+            "word": "GATO",
+            "emoji": "🐈"
+          },
+          {
+            "word": "CONEJO",
+            "emoji": "🐰"
+          }
+        ]
+      },
+      {
+        "instruction": "Toca la ropa de abrigo",
+        "simplified": "Abrigo",
+        "elements": 2,
+        "correct": "CHAQUETA",
+        "options": [
+          {
+            "word": "CHAQUETA",
+            "emoji": "🧥"
+          },
+          {
+            "word": "CAMISETA",
+            "emoji": "👕"
+          },
+          {
+            "word": "BAÑADOR",
+            "emoji": "🩱"
+          },
+          {
+            "word": "SANDALIA",
+            "emoji": "👡"
+          }
+        ]
+      }
+    ],
+    "avanzado": [
+      {
+        "instruction": "Toca el animal pequeño que vuela y hace miel",
+        "simplified": "Miel",
+        "elements": 3,
+        "correct": "ABEJA",
+        "options": [
+          {
+            "word": "ABEJA",
+            "emoji": "🐝"
+          },
+          {
+            "word": "MARIPOSA",
+            "emoji": "🦋"
+          },
+          {
+            "word": "PÁJARO",
+            "emoji": "🐦"
+          },
+          {
+            "word": "MOSCA",
+            "emoji": "🪰"
+          }
+        ]
+      },
+      {
+        "instruction": "Señala la fruta amarilla que se pela",
+        "simplified": "Amarilla",
+        "elements": 3,
+        "correct": "PLÁTANO",
+        "options": [
+          {
+            "word": "PLÁTANO",
+            "emoji": "🍌"
+          },
+          {
+            "word": "LIMÓN",
+            "emoji": "🍋"
+          },
+          {
+            "word": "MANZANA",
+            "emoji": "🍎"
+          },
+          {
+            "word": "NARANJA",
+            "emoji": "🍊"
+          }
+        ]
+      },
+      {
+        "instruction": "Toca el vehículo grande que va por el agua",
+        "simplified": "Agua grande",
+        "elements": 3,
+        "correct": "BARCO",
+        "options": [
+          {
+            "word": "BARCO",
+            "emoji": "⛵"
+          },
+          {
+            "word": "AVIÓN",
+            "emoji": "✈️"
+          },
+          {
+            "word": "TREN",
+            "emoji": "🚂"
+          },
+          {
+            "word": "COCHE",
+            "emoji": "🚗"
+          }
+        ]
+      }
+    ]
+  },
+  "communicativeIntents": {
+    "inicial": [],
+    "intermedio": [],
+    "avanzado": []
+  }
 }

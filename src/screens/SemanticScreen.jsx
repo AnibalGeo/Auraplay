@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback } from '../utils/audioFeedback'
+import { getDifficultyForActivity } from '../utils/componentMap'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -15,10 +16,11 @@ function speak(text, rate = 0.82) {
 
 function SemanticScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const content = getContent(patient.levelId)
+  const contentData = getContent(patient.levelId)
+  const difficulty = getDifficultyForActivity('semantic', patient.componentLevels)
 
-  const opposites = content.opposites ?? []
-  const definitions = content.definitions ?? []
+  const opposites = contentData.opposites?.[difficulty] ?? contentData.opposites?.inicial ?? []
+  const definitions = contentData.definitions?.[difficulty] ?? contentData.definitions?.inicial ?? []
 
   const _allExercises = [
     ...opposites.map(o => ({ type: 'opposite', data: o })),
@@ -37,7 +39,6 @@ function SemanticScreen({ onFinish, onBack }) {
   const nextAction = useRef(null)
 
   const current = allExercises[idx]
-  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   useEffect(() => {
     if (!current) return

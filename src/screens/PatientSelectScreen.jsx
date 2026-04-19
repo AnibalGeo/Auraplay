@@ -73,7 +73,7 @@ function NewPatientForm({ onSaved, onBack }) {
   const { loadPatient, setLevelById } = usePatient()
   const [form, setForm] = useState({
     rut: '', name: '', birthDate: '', phone: '', guardianName: '',
-    diagnosis: 'tdl', levelId: 'N4',
+    diagnosis: 'tel', levelId: 'N4',
   })
   const [errors, setErrors] = useState({})
 
