@@ -21,8 +21,6 @@ function ListenScreen({ onFinish, onBack }) {
   const _rounds = contentData.listenRounds?.[difficulty] ?? contentData.listenRounds?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['listen'] ?? 12
   const rounds = _rounds.slice(0, n)
-  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
-
   const [idx, setIdx] = useState(0)
   const [answered, setAnswered] = useState(false)
   const [selected, setSelected] = useState(null)
@@ -122,11 +120,11 @@ function ListenScreen({ onFinish, onBack }) {
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
-        <span className="activity-title">Escucha Atento</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
-          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {rounds.length}</span>
-        </div>
+        <h2 className="activity-title">Escucha Atento</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {rounds.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/rounds.length)*100}%`,background:'#7c6bb0'}}/>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>

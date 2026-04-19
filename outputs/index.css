@@ -255,10 +255,6 @@ body {
   text-align: center;
 }
 
-.word-target-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
-.word-target-img   { font-size: 60px; display: block; margin-bottom: 4px; }
-.word-target-hint  { font-size: 13px; color: var(--text2); }
-
 .syllable-slots {
   display: flex;
   gap: 8px;
@@ -638,18 +634,6 @@ body {
   color: var(--text2);
   flex: 1;
 }
-
-/* ── Results screen ───────────────────────────────────────── */
-.results-screen  { background: #f4f6f4; }
-.results-area    { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; gap: 16px; text-align: center; }
-.trophy          { font-size: 80px; animation: bounce 0.6s ease; }
-.results-title   { font-size: 26px; font-weight: 700; color: var(--text); }
-.stars-row       { font-size: 40px; letter-spacing: 4px; }
-.results-stats   { background: #fff; border-radius: var(--radius); border: var(--border); padding: 16px 24px; width: 100%; max-width: 320px; box-shadow: var(--shadow); }
-.stat-row        { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--mint2); }
-.stat-row:last-child { border-bottom: none; }
-.stat-label      { font-size: 13px; color: var(--text2); }
-.stat-value      { font-size: 14px; font-weight: 700; color: var(--teal); }
 
 /* ── Animations ───────────────────────────────────────── */
 @keyframes celebrate {

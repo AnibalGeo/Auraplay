@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { LEVELS } from '../data/levels'
-import TherapistPanel from './TherapistPanel'
 
 function hasContent(obj) {
   if (!obj) return false
@@ -102,9 +100,8 @@ function calcWeekProgress(sessionHistory, groupId) {
   return Math.round(avg * 100)
 }
 
-export default function HomeScreen({ onNavigate }) {
+export default function HomeScreen({ onNavigate, onOpenPanel }) {
   const { patient, stimulusConfig } = usePatient()
-  const [showPanel, setShowPanel] = useState(false)
   const level = LEVELS[patient.levelId]
 
   const diagColors = {
@@ -128,14 +125,6 @@ export default function HomeScreen({ onNavigate }) {
           <span>{patient.stars ?? 0}</span>
         </div>
       </div>
-
-      {showPanel && (
-        <TherapistPanel
-          onClose={() => setShowPanel(false)}
-          onViewProgress={() => { setShowPanel(false); onNavigate('progress') }}
-          onViewHistory={() => { setShowPanel(false); onNavigate('session-history') }}
-        />
-      )}
 
       <div className="home-scroll">
 
@@ -221,7 +210,7 @@ export default function HomeScreen({ onNavigate }) {
         </div>
 
         {/* Therapist panel */}
-        <button className="therapist-btn" onClick={() => setShowPanel(true)}>
+        <button className="therapist-btn" onClick={onOpenPanel}>
           <span style={{ fontSize: 18 }}>🔒</span>
           <span className="therapist-label">Panel del terapeuta</span>
           <span style={{ fontSize: 16, color: '#ccc' }}>›</span>

@@ -21,8 +21,6 @@ function MinimalPairsScreen({ onFinish, onBack }) {
   const _pairs = contentData.minimalPairs?.[difficulty] ?? contentData.minimalPairs?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['minimal-pairs'] ?? 12
   const pairs = _pairs.slice(0, n)
-  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
-
   const [idx, setIdx] = useState(0)
   const [score, setScore] = useState(0)
   const [answered, setAnswered] = useState(false)
@@ -93,11 +91,11 @@ function MinimalPairsScreen({ onFinish, onBack }) {
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
-        <span className="activity-title">Palabras Similares</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
-          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {pairs.length}</span>
-        </div>
+        <h2 className="activity-title">Palabras Similares</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {pairs.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/pairs.length)*100}%`,background:'#4aab8a'}}/>
       </div>
 
       <div className="game-area">

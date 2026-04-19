@@ -88,11 +88,11 @@ function SyntaxScreen({ onFinish, onBack }) {
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
-        <span className="activity-title">Completar Frases</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
-          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {exercises.length}</span>
-        </div>
+        <h2 className="activity-title">Completar Frases</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {exercises.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/exercises.length)*100}%`,background:'#e07a5f'}}/>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>
@@ -102,33 +102,24 @@ function SyntaxScreen({ onFinish, onBack }) {
             : 'Elige la palabra que completa mejor la oración'}
         </p>
 
-        <div style={{ background: 'white', borderRadius: '18px', padding: '20px 24px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
-          <p style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text)', lineHeight: '1.7' }}>
+        <div className="prompt-card">
+          <p className="syntax-sentence">
             {parts[0]}
-            <span style={{ display: 'inline-block', minWidth: '80px', borderBottom: '3px solid var(--teal)', marginInline: '8px', verticalAlign: 'bottom', color: selected ? 'var(--teal)' : 'transparent', fontWeight: '700' }}>
-              {selected || '___'}
-            </span>
+            <span className="syntax-blank">{selected || '___'}</span>
             {parts[1]}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '400px' }}>
+        <div className="connector-options">
           {visibleOptions.map(option => {
-            let bg = 'white'
-            let border = '2px solid var(--mint2)'
-            let color = 'var(--text)'
+            let cls = 'connector-opt'
             if (selected === option) {
-              if (option === current.correct) { bg = '#f0faf6'; border = '2px solid var(--teal)'; color = 'var(--teal-dark)' }
-              else { bg = '#fef4f2'; border = '2px solid var(--coral)'; color = 'var(--coral)' }
+              cls += option === current.correct ? ' correct' : ' wrong'
             } else if (answered && option === current.correct) {
-              bg = '#f0faf6'; border = '2px solid var(--teal)'; color = 'var(--teal-dark)'
+              cls += ' correct'
             }
             return (
-              <button
-                key={option}
-                onClick={() => handleAnswer(option)}
-                style={{ padding: '12px 24px', background: bg, border, borderRadius: '14px', cursor: answered ? 'default' : 'pointer', fontSize: '16px', fontWeight: '700', color, transition: noAnim ? 'none' : 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
-              >
+              <button key={option} className={cls} onClick={() => handleAnswer(option)}>
                 {option}
               </button>
             )

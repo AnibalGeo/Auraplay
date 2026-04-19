@@ -173,8 +173,8 @@ const styles = {
   },
   scenarioCard: {
     width: '100%', maxWidth: 480, background: '#fff',
-    borderRadius: 20, padding: '24px', textAlign: 'center',
-    boxShadow: '0 2px 16px rgba(232,160,32,0.10)', marginBottom: 24,
+    borderRadius: 16, padding: '24px', textAlign: 'center',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: 24,
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
   },
   sceneEmoji: { fontSize: 64 },
@@ -193,14 +193,14 @@ const styles = {
   optionsGrid: {
     width: '100%', maxWidth: 480,
     display: 'grid', gridTemplateColumns: '1fr 1fr',
-    gap: 12,
+    gap: 10,
   },
   optBtn: {
     borderRadius: 16, padding: '16px 8px',
     cursor: 'pointer', transition: 'all 0.15s ease',
     display: 'flex', flexDirection: 'column',
     alignItems: 'center', gap: 6,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
   },
   intentEmoji: { fontSize: 36 },
   intentLabel: { fontSize: 14, fontWeight: 700 },

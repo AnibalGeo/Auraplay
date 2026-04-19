@@ -153,8 +153,8 @@ const styles = {
   },
   promptCard: {
     width: '100%', maxWidth: 480, background: '#fff',
-    borderRadius: 20, padding: '20px 24px', textAlign: 'center',
-    boxShadow: '0 2px 16px rgba(124,107,176,0.10)', marginBottom: 24,
+    borderRadius: 16, padding: '20px 24px', textAlign: 'center',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: 24,
   },
   instruction: { fontSize: 15, color: '#888', marginBottom: 8 },
   wordRow: {
@@ -168,14 +168,14 @@ const styles = {
   },
   imageGrid: {
     width: '100%', maxWidth: 480,
-    display: 'grid', gap: 16,
+    display: 'grid', gap: 10,
   },
   imageCard: {
-    borderRadius: 20, padding: '28px 16px',
+    borderRadius: 16, padding: '28px 16px',
     cursor: 'pointer', transition: 'all 0.15s ease',
     display: 'flex', flexDirection: 'column',
     alignItems: 'center', justifyContent: 'center',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
   },
   imageEmoji: { fontSize: 72 },
   empty: { color: '#999', marginTop: 60, fontSize: 16 },

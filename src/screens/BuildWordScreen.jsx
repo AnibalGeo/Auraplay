@@ -21,8 +21,6 @@ function BuildWordScreen({ onFinish, onBack }) {
   const _words = contentData.buildWords?.[difficulty] ?? contentData.buildWords?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['build-word'] ?? 12
   const words = _words.slice(0, n)
-  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
-
   const [idx, setIdx] = useState(0)
   const [score, setScore] = useState(0)
   const [selected, setSelected] = useState([])
@@ -114,11 +112,11 @@ function BuildWordScreen({ onFinish, onBack }) {
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
-        <span className="activity-title">Armar Palabras</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
-          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {words.length}</span>
-        </div>
+        <h2 className="activity-title">Armar Palabras</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {words.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/words.length)*100}%`,background:'#4aab8a'}}/>
       </div>
 
       <div className="game-area" style={{ gap: '14px' }}>

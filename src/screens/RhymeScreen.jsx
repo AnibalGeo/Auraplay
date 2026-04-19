@@ -150,8 +150,8 @@ const styles = {
   },
   card: {
     width: '100%', maxWidth: 480, background: '#fff',
-    borderRadius: 20, padding: '28px 24px', textAlign: 'center',
-    boxShadow: '0 2px 16px rgba(74,171,138,0.10)', marginBottom: 24,
+    borderRadius: 16, padding: '28px 24px', textAlign: 'center',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: 24,
   },
   instruction: { fontSize: 16, color: '#666', marginBottom: 12 },
   wordBox: {
@@ -168,7 +168,7 @@ const styles = {
   optionsGrid: {
     width: '100%', maxWidth: 480,
     display: 'grid', gridTemplateColumns: '1fr 1fr',
-    gap: 12,
+    gap: 10,
   },
   optionBtn: {
     borderRadius: 16, padding: '20px 8px', fontSize: 20,

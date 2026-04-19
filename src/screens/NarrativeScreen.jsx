@@ -22,7 +22,6 @@ function NarrativeScreen({ onFinish, onBack }) {
   const nextAction = useRef(null)
 
   const story = stories[idx]
-  const exposureMs = estimulusSettings.slideTransitionDelay ?? 1500
 
   useEffect(() => {
     if (!story) return
@@ -108,11 +107,11 @@ function NarrativeScreen({ onFinish, onBack }) {
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
-        <span className="activity-title">Ordenar Historia</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
-          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {stories.length}</span>
-        </div>
+        <h2 className="activity-title">Ordenar Historia</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {stories.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/stories.length)*100}%`,background:'#e07a5f'}}/>
       </div>
 
       <div className="game-area" style={{ gap: '14px' }}>
@@ -126,48 +125,19 @@ function NarrativeScreen({ onFinish, onBack }) {
             : 'Toca una tarjeta para seleccionarla y luego toca otra para intercambiarlas. Ordena la historia.'}
         </p>
 
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          width: '100%',
-          maxWidth: '360px',
-        }}>
-          {cards.map((card, i) => (
-            <div
-              key={i}
-              onClick={() => handleCardClick(i)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                padding: '14px 16px',
-                borderRadius: '16px',
-                border: `2px solid ${selected === i ? 'var(--teal)' : 'var(--mint2)'}`,
-                background: selected === i ? 'var(--mint)' : 'white',
-                cursor: answered ? 'default' : 'pointer',
-                transition: noAnim ? 'none' : 'all 0.15s',
-                boxShadow: selected === i ? '0 0 0 3px var(--teal)33' : '0 2px 6px rgba(0,0,0,0.06)',
-              }}
-            >
-              <span style={{ fontSize: '32px', flexShrink: 0 }}>{card.emoji}</span>
-              <span style={{
-                fontSize: estimulusSettings.largerText ? '16px' : '14px',
-                color: 'var(--text)',
-                lineHeight: '1.4',
-              }}>
-                {card.text}
-              </span>
-              <span style={{
-                marginLeft: 'auto',
-                fontSize: '18px',
-                color: 'var(--text2)',
-                flexShrink: 0,
-              }}>
-                {selected === i ? '✋' : '↕'}
-              </span>
-            </div>
-          ))}
+        <div className="narrative-grid">
+          {cards.map((card, i) => {
+            let cls = 'narrative-card'
+            if (selected === i) cls += ' selected'
+            if (answered && card.originalIndex === story.correctOrder[i]) cls += ' correct'
+            return (
+              <div key={i} className={cls} onClick={() => handleCardClick(i)}>
+                <span className="narrative-num">{i + 1}</span>
+                <span className="narrative-emoji">{card.emoji}</span>
+                <p className="narrative-text">{card.text}</p>
+              </div>
+            )
+          })}
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>

@@ -84,11 +84,11 @@ function PragmaticScreen({ onFinish, onBack }) {
     <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
       <div className="activity-header">
         <button className="back-btn" onClick={onBack}>←</button>
-        <span className="activity-title">Inferencias</span>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#aaa', fontWeight: '500' }}>{level.label}</span>
-          <span style={{ fontSize: '11px', color: 'var(--teal)', fontWeight: '600' }}>{idx + 1} de {exercises.length}</span>
-        </div>
+        <h2 className="activity-title">Inferencias</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {exercises.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/exercises.length)*100}%`,background:'#e8a020'}}/>
       </div>
 
       <div className="game-area" style={{ gap: '20px' }}>

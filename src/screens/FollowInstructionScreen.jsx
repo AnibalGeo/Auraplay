@@ -190,8 +190,8 @@ const styles = {
   },
   promptCard: {
     width: '100%', maxWidth: 480, background: '#fff',
-    borderRadius: 20, padding: '20px 24px', textAlign: 'center',
-    boxShadow: '0 2px 16px rgba(224,122,95,0.10)', marginBottom: 24,
+    borderRadius: 16, padding: '20px 24px', textAlign: 'center',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: 24,
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
   },
   complexityRow: {
@@ -218,14 +218,14 @@ const styles = {
   grid: {
     width: '100%', maxWidth: 480,
     display: 'grid', gridTemplateColumns: '1fr 1fr',
-    gap: 12,
+    gap: 10,
   },
   optCard: {
-    borderRadius: 18, padding: '20px 8px',
+    borderRadius: 16, padding: '20px 8px',
     cursor: 'pointer', transition: 'all 0.15s ease',
     display: 'flex', flexDirection: 'column',
     alignItems: 'center', gap: 8,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
   },
   optEmoji: { fontSize: 52 },
   optWord: { fontSize: 14, fontWeight: 600, color: 'inherit' },
