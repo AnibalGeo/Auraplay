@@ -4,7 +4,8 @@ import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
 import { savePatient, searchPatients, updatePatient as persistPatient, getPatientById } from '../data/patients'
 import { analyzeText } from '../utils/textAnalyzer'
 
-const PIN = '1234'
+const STORAGE_KEY = 'auraplay_pin'
+const getPin = () => localStorage.getItem(STORAGE_KEY) ?? '1234'
 
 function isNote(e) { return e.type === 'note' || e.type === 'nota_clinica' }
 
@@ -60,7 +61,7 @@ function PinScreen({ onUnlock, onClose }) {
     setPin(next)
     setError(false)
     if (next.length === 4) {
-      if (next === PIN) {
+      if (next === getPin()) {
         onUnlock()
       } else {
         setError(true)
@@ -933,6 +934,65 @@ function MilestonesSection() {
   )
 }
 
+// ── Cambiar PIN ───────────────────────────────────────────────────────────────
+
+function ChangePinSection() {
+  const [newPin, setNewPin] = useState('')
+  const [confirmPin, setConfirmPin] = useState('')
+  const [msg, setMsg] = useState(null) // { text, ok }
+
+  function handleSave() {
+    if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+      setMsg({ text: 'El PIN debe tener exactamente 4 dígitos', ok: false })
+      return
+    }
+    if (newPin !== confirmPin) {
+      setMsg({ text: 'Los PINs no coinciden', ok: false })
+      return
+    }
+    localStorage.setItem(STORAGE_KEY, newPin)
+    setNewPin('')
+    setConfirmPin('')
+    setMsg({ text: 'PIN actualizado', ok: true })
+  }
+
+  return (
+    <div style={{ background: '#f8f8f6', borderRadius: '14px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', margin: 0 }}>CAMBIAR PIN</p>
+      <div>
+        <label style={labelStyle}>NUEVO PIN</label>
+        <input
+          type="password"
+          maxLength={4}
+          value={newPin}
+          onChange={e => { setNewPin(e.target.value.replace(/\D/g, '')); setMsg(null) }}
+          placeholder="4 dígitos"
+          style={inputStyle}
+        />
+      </div>
+      <div>
+        <label style={labelStyle}>CONFIRMAR PIN</label>
+        <input
+          type="password"
+          maxLength={4}
+          value={confirmPin}
+          onChange={e => { setConfirmPin(e.target.value.replace(/\D/g, '')); setMsg(null) }}
+          placeholder="4 dígitos"
+          style={inputStyle}
+        />
+      </div>
+      {msg && (
+        <p style={{ fontSize: '12px', fontWeight: '600', color: msg.ok ? '#2d7a62' : '#e07a5f', margin: 0 }}>
+          {msg.text}
+        </p>
+      )}
+      <button onClick={handleSave} style={{ ...primaryBtnStyle, background: '#4aab8a' }}>
+        Guardar PIN
+      </button>
+    </div>
+  )
+}
+
 // ── Config tabs (panel original) ──────────────────────────────────────────────
 
 function ConfigPanel({ onViewProgress, onViewHistory }) {
@@ -1032,6 +1092,8 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
               📊 Ver progreso completo
             </button>
           )}
+
+          <ChangePinSection />
 
           {!confirmReset ? (
             <button onClick={() => setConfirmReset(true)} style={{ ...primaryBtnStyle, background: 'white', color: '#e07a5f', border: '2px solid #fde8e3' }}>
