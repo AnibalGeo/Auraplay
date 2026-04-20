@@ -125,7 +125,7 @@ export default function HomeScreen({ onNavigate }) {
     <div className="screen">
       {/* Header */}
       <div className="home-header">
-        <span className="logo-text">AuraPlay</span>
+        <span className="logo-text">NexiaPlay</span>
         <div className="star-count">
           <span>⭐</span>
           <span>{patient.stars ?? 0}</span>

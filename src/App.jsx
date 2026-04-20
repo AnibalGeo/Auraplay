@@ -77,7 +77,7 @@ function WelcomeScreen({ onDone }) {
       <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '56px', marginBottom: '8px' }}>🌟</div>
-          <h1 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>AuraPlay</h1>
+          <h1 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>NexiaPlay</h1>
           <p style={{ fontSize: '14px', color: 'var(--text2)' }}>Configura el perfil del paciente para comenzar</p>
         </div>
 

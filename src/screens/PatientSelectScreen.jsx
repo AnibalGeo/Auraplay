@@ -351,7 +351,7 @@ function PatientSelectScreen({ onDone }) {
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{ fontSize: '48px', marginBottom: '6px' }}>🌟</div>
-          <h1 style={{ fontSize: '22px', fontWeight: '800', color: '#2d2d2d' }}>AuraPlay</h1>
+          <h1 style={{ fontSize: '22px', fontWeight: '800', color: '#2d2d2d' }}>NexiaPlay</h1>
           <p style={{ fontSize: '13px', color: '#aaa' }}>Selecciona un paciente para comenzar</p>
         </div>
 
