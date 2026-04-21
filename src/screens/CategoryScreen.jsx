@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import { playVoiceFeedback } from '../utils/audioFeedback'
 
 export default function CategoryScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -65,6 +66,7 @@ export default function CategoryScreen({ onFinish }) {
     const isCorrect = opt.word === current.intruder.word
     setSelected(opt.word)
     speak(isCorrect ? '¡Muy bien!' : `El que no pertenece es ${current.intruder.word}`)
+    playVoiceFeedback(isCorrect, estimulusSettings?.voiceFeedback ?? true)
 
     const newScore = isCorrect ? score + 1 : score
 

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import { playVoiceFeedback } from '../utils/audioFeedback'
 
 export default function PointImageScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -49,6 +50,7 @@ export default function PointImageScreen({ onFinish }) {
     const isCorrect = option.word === current.word
     setSelected(option.word)
     speak(isCorrect ? '¡Muy bien!' : current.word)
+    playVoiceFeedback(isCorrect, estimulusSettings?.voiceFeedback ?? true)
 
     const newScore = isCorrect ? score + 1 : score
 

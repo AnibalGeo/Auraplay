@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import { playVoiceFeedback } from '../utils/audioFeedback'
 
 export default function RhymeScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -50,6 +51,7 @@ export default function RhymeScreen({ onFinish }) {
     const isCorrect = option === current.correct
     setSelected(option)
     speak(isCorrect ? '¡Muy bien!' : `La respuesta es ${current.correct}`)
+    playVoiceFeedback(isCorrect, estimulusSettings?.voiceFeedback ?? true)
 
     const newScore = isCorrect ? score + 1 : score
 

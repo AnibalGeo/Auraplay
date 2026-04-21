@@ -36,3 +36,13 @@ export function playFeedback(type, enabled) {
     // AudioContext no disponible — silencio
   }
 }
+
+export function playVoiceFeedback(isCorrect, enabled) {
+  if (!enabled) return
+  window.speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(isCorrect ? '¡Muy bien!' : 'Inténtalo de nuevo')
+  u.lang = 'es-ES'
+  u.rate = 0.9
+  u.pitch = 1.1
+  window.speechSynthesis.speak(u)
+}

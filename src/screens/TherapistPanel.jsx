@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
-import { savePatient, searchPatients, updatePatient as persistPatient, getPatientById } from '../data/patients'
+import { savePatient, searchPatients, updatePatient as persistPatient, getPatientById, deletePatient } from '../data/patients'
 import { analyzeText } from '../utils/textAnalyzer'
+import NewPatientForm from '../components/NewPatientForm'
 
 const STORAGE_KEY = 'auraplay_pin'
 const getPin = () => localStorage.getItem(STORAGE_KEY) ?? '1234'
@@ -106,135 +107,6 @@ const numBtnStyle = {
   background: 'white', fontSize: '20px', fontWeight: '600', cursor: 'pointer', color: '#3a3a3a',
 }
 
-// ── Nuevo Paciente ────────────────────────────────────────────────────────────
-
-function NewPatientForm({ onBack, onSaved }) {
-  const { loadPatient, setLevelById } = usePatient()
-  const [form, setForm] = useState({
-    rut: '', name: '', birthDate: '', phone: '', guardianName: '',
-    diagnosis: 'tel', levelId: 'N4',
-  })
-  const [errors, setErrors] = useState({})
-
-  const ageMonths = calcAgeMonths(form.birthDate)
-
-  function set(field, value) {
-    setForm(f => ({ ...f, [field]: value }))
-    setErrors(e => ({ ...e, [field]: null }))
-  }
-
-  function handleRutChange(value) {
-    const formatted = formatRut(value)
-    setForm(f => ({ ...f, rut: formatted }))
-    if (formatted.length > 3) {
-      setErrors(e => ({ ...e, rut: validateRut(formatted) ? null : 'RUT inválido' }))
-    } else {
-      setErrors(e => ({ ...e, rut: null }))
-    }
-  }
-
-  function handleSave() {
-    const newErrors = {}
-    if (!form.name.trim()) newErrors.name = 'El nombre es obligatorio.'
-    if (!form.rut.trim()) newErrors.rut = 'El RUT es obligatorio.'
-    else if (!validateRut(form.rut)) newErrors.rut = 'RUT inválido.'
-    if (!form.birthDate) newErrors.birthDate = 'La fecha de nacimiento es obligatoria.'
-    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return }
-
-    const now = new Date().toISOString()
-    const saved = savePatient({ ...form, ageMonths, initialLevelId: form.levelId, createdAt: now, updatedAt: now })
-    loadPatient(saved)
-    setLevelById(saved.levelId)
-    onSaved()
-  }
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-        <button onClick={onBack} style={backBtnStyle}>←</button>
-        <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#3a3a3a' }}>Nuevo paciente</h3>
-      </div>
-
-      <div>
-        <label style={labelStyle}>RUT</label>
-        <input
-          value={form.rut}
-          onChange={e => handleRutChange(e.target.value)}
-          placeholder="Ej: 12.345.678-9"
-          style={{ ...inputStyle, borderColor: errors.rut ? '#e07a5f' : '#e8f5f0' }}
-        />
-        {errors.rut && <p style={errorStyle}>{errors.rut}</p>}
-      </div>
-
-      {[
-        { label: 'NOMBRE COMPLETO', field: 'name', placeholder: 'Ej: Mateo González' },
-        { label: 'TELÉFONO DE CONTACTO', field: 'phone', placeholder: 'Ej: +56 9 1234 5678' },
-        { label: 'NOMBRE DEL TUTOR', field: 'guardianName', placeholder: 'Ej: María González' },
-      ].map(({ label, field, placeholder }) => (
-        <div key={field}>
-          <label style={labelStyle}>{label}</label>
-          <input
-            value={form[field]}
-            onChange={e => set(field, e.target.value)}
-            placeholder={placeholder}
-            style={{ ...inputStyle, borderColor: errors[field] ? '#e07a5f' : '#e8f5f0' }}
-          />
-          {errors[field] && <p style={errorStyle}>{errors[field]}</p>}
-        </div>
-      ))}
-
-      <div>
-        <label style={labelStyle}>FECHA DE NACIMIENTO</label>
-        <input
-          type="date"
-          value={form.birthDate}
-          onChange={e => set('birthDate', e.target.value)}
-          style={{ ...inputStyle, borderColor: errors.birthDate ? '#e07a5f' : '#e8f5f0' }}
-        />
-        {errors.birthDate && <p style={errorStyle}>{errors.birthDate}</p>}
-        {form.birthDate && !errors.birthDate && (
-          <p style={{ fontSize: '11px', color: '#4aab8a', marginTop: '4px' }}>
-            {Math.floor(ageMonths / 12)},{ageMonths % 12} años ({ageMonths} meses)
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label style={labelStyle}>DIAGNÓSTICO</label>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {Object.entries(STIMULUS_CONFIG).map(([key, cfg]) => (
-            <button key={key} onClick={() => set('diagnosis', key)} style={{
-              flex: 1, padding: '11px 8px', borderRadius: '12px',
-              border: `2px solid ${form.diagnosis === key ? cfg.color : '#e8f5f0'}`,
-              background: form.diagnosis === key ? cfg.color + '15' : 'white',
-              cursor: 'pointer', fontSize: '11px', fontWeight: '700',
-              color: form.diagnosis === key ? cfg.color : '#666', transition: 'all 0.2s',
-            }}>{cfg.label}</button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <label style={labelStyle}>NIVEL INICIAL</label>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          {Object.values(LEVELS).map(lvl => (
-            <button key={lvl.id} onClick={() => set('levelId', lvl.id)} style={{
-              padding: '10px 14px', borderRadius: '10px', cursor: 'pointer',
-              border: `2px solid ${form.levelId === lvl.id ? '#4aab8a' : '#e8f5f0'}`,
-              background: form.levelId === lvl.id ? '#e8f5f0' : 'white',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            }}>
-              <span style={{ fontSize: '13px', fontWeight: '700', color: form.levelId === lvl.id ? '#2d7a62' : '#3a3a3a' }}>{lvl.label}</span>
-              <span style={{ fontSize: '11px', color: '#888' }}>{lvl.ageRange}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <button onClick={handleSave} style={primaryBtnStyle}>Guardar paciente</button>
-    </div>
-  )
-}
 
 // ── Buscar Paciente ───────────────────────────────────────────────────────────
 
@@ -325,6 +197,8 @@ function PatientSummary({ patient: p, onConfirm, onBack }) {
 function SearchPatient({ onBack, onSelected }) {
   const [query, setQuery] = useState('')
   const [preview, setPreview] = useState(null)
+  const [, setRefresh] = useState(0)
+  const { patient: activePatient, resetPatient } = usePatient()
   const results = searchPatients(query)
 
   if (preview) {
@@ -363,23 +237,37 @@ function SearchPatient({ onBack, onSelected }) {
           const lastNote = [...(p.sessionHistory || [])].reverse().find(e => isNote(e))
           const lvl = LEVELS[p.levelId]
           return (
-            <button key={p.id} onClick={() => setPreview(p)} style={{
-              padding: '14px 16px', borderRadius: '14px', border: '2px solid #e8f5f0',
-              background: 'white', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s',
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#3a3a3a', marginBottom: '2px' }}>{p.name}</p>
-                  <p style={{ fontSize: '11px', color: '#888' }}>{p.rut}</p>
+            <div key={p.id} style={{ display: 'flex', gap: '8px', alignItems: 'stretch' }}>
+              <button onClick={() => setPreview(p)} style={{
+                flex: 1, padding: '14px 16px', borderRadius: '14px', border: '2px solid #e8f5f0',
+                background: 'white', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <p style={{ fontSize: '14px', fontWeight: '700', color: '#3a3a3a', marginBottom: '2px' }}>{p.name}</p>
+                    <p style={{ fontSize: '11px', color: '#888' }}>{p.rut}</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ fontSize: '12px', fontWeight: '700', color: '#4aab8a' }}>{lvl?.label ?? p.levelId}</p>
+                    <p style={{ fontSize: '11px', color: '#bbb' }}>
+                      {lastNote ? formatDate(lastNote.date) : 'Sin sesiones'}
+                    </p>
+                  </div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontSize: '12px', fontWeight: '700', color: '#4aab8a' }}>{lvl?.label ?? p.levelId}</p>
-                  <p style={{ fontSize: '11px', color: '#bbb' }}>
-                    {lastNote ? formatDate(lastNote.date) : 'Sin sesiones'}
-                  </p>
-                </div>
-              </div>
-            </button>
+              </button>
+              <button
+                onClick={() => {
+                  if (window.confirm(`¿Eliminar a ${p.name}? Esta acción no se puede deshacer.`)) {
+                    deletePatient(p.id)
+                    if (activePatient.id === p.id) resetPatient()
+                    setRefresh(n => n + 1)
+                  }
+                }}
+                style={{ background: '#fdecea', border: 'none', borderRadius: '8px', padding: '4px 10px', color: '#c62828', cursor: 'pointer', fontSize: '12px' }}
+              >
+                Eliminar
+              </button>
+            </div>
           )
         })}
       </div>
@@ -1095,6 +983,16 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
           <ChangePinSection />
 
+          <button
+            style={primaryBtnStyle}
+            onClick={() => {
+              updatePatient({ ...patient })
+              alert('Cambios guardados')
+            }}
+          >
+            💾 Guardar cambios
+          </button>
+
           {!confirmReset ? (
             <button onClick={() => setConfirmReset(true)} style={{ ...primaryBtnStyle, background: 'white', color: '#e07a5f', border: '2px solid #fde8e3' }}>
               Nuevo paciente
@@ -1315,6 +1213,7 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
               { key: 'sequentialStimulus', label: 'Presentación secuencial', desc: 'Imagen primero (2s), luego habilita audio' },
               { key: 'extendedExposureTime', label: 'Tiempo extendido entre preguntas', desc: 'Aumenta pausa a 3.5s entre ejercicios' },
               { key: 'simplifiedInstructions', label: 'Instrucciones simplificadas', desc: 'Texto de guía más breve y directo' },
+              { key: 'voiceFeedback', label: 'Voz de feedback (¡Muy bien!)', desc: 'Reproduce voz al responder cada ejercicio' },
             ].map(item => (
               <StimulusToggle
                 key={item.key}

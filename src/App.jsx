@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { usePatient } from './context/PatientContext'
-import { STIMULUS_CONFIG, getLevelByAge, LEVELS } from './data/levels'
+import { LEVELS } from './data/levels'
 import HomeScreen from './screens/HomeScreen'
 import MinimalPairsScreen from './screens/MinimalPairsScreen'
 import BuildWordScreen from './screens/BuildWordScreen'
@@ -17,8 +17,9 @@ import FollowInstructionScreen from './screens/FollowInstructionScreen'
 import CommunicativeIntentScreen from './screens/CommunicativeIntentScreen'
 import ProgressScreen from './screens/ProgressScreen'
 import PatientSelectScreen from './screens/PatientSelectScreen'
+import NewPatientForm from './components/NewPatientForm'
 import SessionHistoryScreen from './screens/SessionHistoryScreen'
-import { updatePatient as persistPatient, getPatientById, getAllPatients, savePatient } from './data/patients'
+import { updatePatient as persistPatient, getPatientById, getAllPatients } from './data/patients'
 
 const ACTIVITY_LABELS = {
   'minimal-pairs': 'Palabras Similares',
@@ -40,149 +41,6 @@ const ACTIVITY_SCREENS = new Set(['minimal-pairs', 'build-word', 'listen', 'synt
 // Mostrar selector si ya hay pacientes guardados; si no, directo al formulario de nuevo paciente
 const hasPatients = getAllPatients().length > 0
 const isFirstRun = !localStorage.getItem('auraplay_patient')
-
-function WelcomeScreen({ onDone }) {
-  const { loadPatient, setLevelByAge } = usePatient()
-  const [name, setName] = useState('')
-  const [ageMonths, setAgeMonths] = useState('')
-  const [diagnosis, setDiagnosis] = useState('tel')
-  const [error, setError] = useState('')
-
-  function handleConfirm() {
-    const age = parseInt(ageMonths, 10)
-    if (!name.trim()) { setError('Ingresa el nombre del paciente.'); return }
-    if (!ageMonths || isNaN(age) || age < 18 || age > 120) { setError('Ingresa una edad válida (18–120 meses).'); return }
-    const now = new Date().toISOString()
-    const levelId = getLevelByAge(age).id
-    const saved = savePatient({
-      id: String(Date.now()),
-      name: name.trim(),
-      diagnosis,
-      ageMonths: age,
-      levelId,
-      initialLevelId: levelId,
-      stars: 0,
-      sessionsCompleted: 0,
-      sessionHistory: [],
-      createdAt: now,
-      updatedAt: now,
-    })
-    loadPatient(saved)
-    setLevelByAge(age)
-    onDone()
-  }
-
-  return (
-    <div className="screen" style={{ justifyContent: 'center', padding: '32px 24px' }}>
-      <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '56px', marginBottom: '8px' }}>🌟</div>
-          <h1 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>NexiaPlay</h1>
-          <p style={{ fontSize: '14px', color: 'var(--text2)' }}>Configura el perfil del paciente para comenzar</p>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div>
-            <label style={{ fontSize: '12px', fontWeight: '700', color: 'var(--text2)', display: 'block', marginBottom: '6px' }}>
-              NOMBRE DEL PACIENTE
-            </label>
-            <input
-              value={name}
-              onChange={e => { setName(e.target.value); setError('') }}
-              placeholder="Ej: Mateo"
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                borderRadius: '14px',
-                border: '2px solid var(--mint2)',
-                fontSize: '15px',
-                color: 'var(--text)',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ fontSize: '12px', fontWeight: '700', color: 'var(--text2)', display: 'block', marginBottom: '6px' }}>
-              EDAD (en meses)
-            </label>
-            <input
-              type="number"
-              value={ageMonths}
-              onChange={e => { setAgeMonths(e.target.value); setError('') }}
-              placeholder="Ej: 54 (4 años y medio)"
-              min={18}
-              max={120}
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                borderRadius: '14px',
-                border: '2px solid var(--mint2)',
-                fontSize: '15px',
-                color: 'var(--text)',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ fontSize: '12px', fontWeight: '700', color: 'var(--text2)', display: 'block', marginBottom: '8px' }}>
-              DIAGNÓSTICO
-            </label>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {Object.entries(STIMULUS_CONFIG).map(([key, cfg]) => (
-                <button
-                  key={key}
-                  onClick={() => setDiagnosis(key)}
-                  style={{
-                    flex: 1,
-                    padding: '14px 10px',
-                    borderRadius: '14px',
-                    border: `2px solid ${diagnosis === key ? cfg.color : 'var(--mint2)'}`,
-                    background: diagnosis === key ? cfg.color + '15' : 'white',
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                    fontWeight: '700',
-                    color: diagnosis === key ? cfg.color : 'var(--text2)',
-                    transition: 'all 0.2s',
-                    lineHeight: '1.4',
-                  }}
-                >
-                  {cfg.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {error && (
-          <p style={{ fontSize: '13px', color: 'var(--coral)', textAlign: 'center', marginTop: '-8px' }}>
-            {error}
-          </p>
-        )}
-
-        <button
-          onClick={handleConfirm}
-          style={{
-            width: '100%',
-            padding: '16px',
-            borderRadius: '16px',
-            border: 'none',
-            background: 'var(--teal)',
-            color: 'white',
-            fontSize: '16px',
-            fontWeight: '800',
-            cursor: 'pointer',
-          }}
-        >
-          Comenzar →
-        </button>
-      </div>
-    </div>
-  )
-}
 
 function App() {
   const [screen, setScreen] = useState('home')
@@ -252,7 +110,9 @@ function App() {
   if (!welcomed) {
     return (
       <div className="app-wrapper">
-        <WelcomeScreen onDone={() => setWelcomed(true)} />
+        <div className="screen" style={{ overflowY: 'auto', padding: '24px 20px' }}>
+          <NewPatientForm onSaved={() => setWelcomed(true)} />
+        </div>
       </div>
     )
   }

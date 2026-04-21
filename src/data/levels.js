@@ -519,6 +519,7 @@ export const DEFAULT_STIMULUS_SETTINGS = {
   sequentialStimulus: false,
   extendedExposureTime: false,
   simplifiedInstructions: false,
+  voiceFeedback: true,
   wordSpeakDelay: 1000,
   slideTransitionDelay: 1500,
   exerciseCount: {

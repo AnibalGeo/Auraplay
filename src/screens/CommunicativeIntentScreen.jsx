@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import { playVoiceFeedback } from '../utils/audioFeedback'
 
 export default function CommunicativeIntentScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -56,6 +57,7 @@ export default function CommunicativeIntentScreen({ onFinish }) {
     const isCorrect = opt === current.correct
     setSelected(opt)
     speak(isCorrect ? '¡Muy bien!' : `La respuesta es: ${current.correct}`)
+    playVoiceFeedback(isCorrect, estimulusSettings?.voiceFeedback ?? true)
 
     const newScore = isCorrect ? score + 1 : score
 

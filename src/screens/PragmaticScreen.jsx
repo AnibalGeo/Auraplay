@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import { playFeedback } from '../utils/audioFeedback'
+import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
 
 function PragmaticScreen({ onFinish, onBack }) {
@@ -44,6 +44,7 @@ function PragmaticScreen({ onFinish, onBack }) {
       else setIdx(i => i + 1)
     }
     playFeedback(correct ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
+    playVoiceFeedback(correct, estimulusSettings?.voiceFeedback ?? true)
     setTimeout(() => {
       setFeedback({
         type: correct ? 'correct' : 'wrong',

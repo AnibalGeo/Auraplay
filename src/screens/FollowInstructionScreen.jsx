@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import { playVoiceFeedback } from '../utils/audioFeedback'
 
 // Actividad: el terapeuta lee una instrucción y el niño selecciona
 // la imagen que corresponde a ejecutarla correctamente.
@@ -72,6 +73,7 @@ export default function FollowInstructionScreen({ onFinish }) {
     const isCorrect = opt.word === current.correct
     setSelected(opt.word)
     speak(isCorrect ? '¡Muy bien!' : `La respuesta correcta es: ${current.correct}`)
+    playVoiceFeedback(isCorrect, estimulusSettings?.voiceFeedback ?? true)
 
     const newScore = isCorrect ? score + 1 : score
 

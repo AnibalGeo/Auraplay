@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
-import { playFeedback } from '../utils/audioFeedback'
+import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
 
 function NarrativeScreen({ onFinish, onBack }) {
@@ -81,6 +81,7 @@ function NarrativeScreen({ onFinish, onBack }) {
       else setIdx(i => i + 1)
     }
     playFeedback(isCorrect ? 'correct' : 'wrong', estimulusSettings.animationsEnabled)
+    playVoiceFeedback(isCorrect, estimulusSettings?.voiceFeedback ?? true)
     setTimeout(() => {
       setFeedback({
         type: isCorrect ? 'correct' : 'wrong',
