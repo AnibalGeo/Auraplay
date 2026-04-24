@@ -4,6 +4,7 @@ import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
 import { savePatient, searchPatients, updatePatient as persistPatient, getPatientById, deletePatient } from '../data/patients'
 import { analyzeText } from '../utils/textAnalyzer'
 import NewPatientForm from '../components/NewPatientForm'
+import FamilyAccessSection from './FamilyAccessSection'
 
 const STORAGE_KEY = 'auraplay_pin'
 const getPin = () => localStorage.getItem(STORAGE_KEY) ?? '1234'
@@ -1308,6 +1309,7 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
           </div>
 
           <MilestonesSection />
+          <FamilyAccessSection />
           <ChangePinSection />
           <HomePinConfig />
 
