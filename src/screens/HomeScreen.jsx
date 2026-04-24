@@ -137,6 +137,8 @@ export default function HomeScreen({ onNavigate }) {
           onClose={() => setShowPanel(false)}
           onViewProgress={() => { setShowPanel(false); onNavigate('progress') }}
           onViewHistory={() => { setShowPanel(false); onNavigate('session-history') }}
+          onStartPlan={() => { setShowPanel(false); onNavigate('therapy-plan') }}
+          onOpenHomeMode={() => { setShowPanel(false); onNavigate('home-mode') }}
         />
       )}
 

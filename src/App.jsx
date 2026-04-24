@@ -16,40 +16,52 @@ import CategoryScreen from './screens/CategoryScreen'
 import FollowInstructionScreen from './screens/FollowInstructionScreen'
 import CommunicativeIntentScreen from './screens/CommunicativeIntentScreen'
 import ProgressScreen from './screens/ProgressScreen'
+import TherapyPlanScreen from './screens/TherapyPlanScreen'
+import HomeModeScreen from './screens/HomeModeScreen'
 import PatientSelectScreen from './screens/PatientSelectScreen'
 import NewPatientForm from './components/NewPatientForm'
 import SessionHistoryScreen from './screens/SessionHistoryScreen'
+import InitialAssessmentScreen from './screens/InitialAssessmentScreen'
 import { updatePatient as persistPatient, getPatientById, getAllPatients } from './data/patients'
 
 const ACTIVITY_LABELS = {
-  'minimal-pairs': 'Palabras Similares',
-  'build-word': 'Armar Palabras',
-  'listen': 'Escucha Atento',
-  'syntax': 'Completar Frases',
-  'semantic': 'Semántica',
-  'narrative': 'Ordenar Historia',
-  'pragmatic': 'Inferencias',
-  'rhyme': 'Rimas',
-  'point-image': 'Señala la Imagen',
-  'category': '¿Cuál no pertenece?',
-  'follow-instruction': 'Sigue la Instrucción',
-  'communicative-intent': '¿Para qué sirve?',
+  'minimal-pairs':       'Palabras Similares',
+  'build-word':          'Armar Palabras',
+  'listen':              'Escucha Atento',
+  'syntax':              'Completar Frases',
+  'semantic':            'Semántica',
+  'narrative':           'Ordenar Historia',
+  'pragmatic':           'Inferencias',
+  'rhyme':               'Rimas',
+  'point-image':         'Señala la Imagen',
+  'category':            '¿Cuál no pertenece?',
+  'follow-instruction':  'Sigue la Instrucción',
+  'communicative-intent':'¿Para qué sirve?',
 }
 
-const ACTIVITY_SCREENS = new Set(['minimal-pairs', 'build-word', 'listen', 'syntax', 'semantic', 'narrative', 'pragmatic', 'rhyme', 'point-image', 'category', 'follow-instruction', 'communicative-intent'])
+const ACTIVITY_SCREENS = new Set([
+  'minimal-pairs', 'build-word', 'listen', 'syntax', 'semantic',
+  'narrative', 'pragmatic', 'rhyme', 'point-image', 'category',
+  'follow-instruction', 'communicative-intent',
+])
 
-// Mostrar selector si ya hay pacientes guardados; si no, directo al formulario de nuevo paciente
+// ── Estado inicial de navegación ──────────────────────────────────────────────
+
+// Si ya hay pacientes en el roster → mostrar selector
+// Si no hay ninguno → mostrar formulario de nuevo paciente
 const hasPatients = getAllPatients().length > 0
-const isFirstRun = !localStorage.getItem('auraplay_patient')
+const isFirstRun  = !localStorage.getItem('auraplay_patient')
 
 function App() {
-  const [screen, setScreen] = useState('home')
-  const [lastResult, setLastResult] = useState(null)
-  // showSelect: pantalla de selección de paciente (si hay roster), showWelcome: formulario nuevo paciente (si no hay ninguno)
-  const [showSelect, setShowSelect] = useState(hasPatients)
-  const [welcomed, setWelcomed] = useState(!isFirstRun)
+  const [screen,      setScreen]      = useState('home')
+  const [lastResult,  setLastResult]  = useState(null)
+  const [showSelect,  setShowSelect]  = useState(hasPatients)
+  const [welcomed,    setWelcomed]    = useState(!isFirstRun)
+
   const { patient, estimulusSettings, addStars, addSessionEntry } = usePatient()
   const activityStartRef = useRef(null)
+
+  // ── Navegación ─────────────────────────────────────────────────────────────
 
   function goTo(screenName) {
     if (ACTIVITY_SCREENS.has(screenName)) {
@@ -58,38 +70,40 @@ function App() {
     setScreen(screenName)
   }
 
+  // ── Finalización de actividad ──────────────────────────────────────────────
+
   function finishActivity(score, total, activityId) {
-    const earned = score >= total ? 3 : score >= total * 0.6 ? 2 : 1
+    const earned   = score >= total ? 3 : score >= total * 0.6 ? 2 : 1
     const duration = activityStartRef.current
       ? Math.round((Date.now() - activityStartRef.current) / 1000)
       : 0
     activityStartRef.current = null
 
     const entry = {
-      id: String(Date.now()),
-      type: 'activity',
-      date: new Date().toISOString(),
+      id:             String(Date.now()),
+      type:           'activity',
+      date:           new Date().toISOString(),
       activityId,
-      activityLabel: ACTIVITY_LABELS[activityId] ?? activityId,
+      activityLabel:  ACTIVITY_LABELS[activityId] ?? activityId,
       score,
       total,
       earned,
-      levelId: patient.levelId,
-      levelLabel: LEVELS[patient.levelId]?.label ?? patient.levelId,
+      levelId:        patient.levelId,
+      levelLabel:     LEVELS[patient.levelId]?.label ?? patient.levelId,
       duration,
       stimulusSettings: { ...estimulusSettings },
     }
 
-    // 1. Actualiza el contexto (estado en memoria + localStorage 'auraplay_patient')
+    // Actualiza estado en memoria + localStorage 'auraplay_patient'
     addStars(earned)
     addSessionEntry(entry)
 
-    // 2. Persiste en el roster de pacientes (localStorage 'auraplay_patients')
+    // Persiste en el roster 'auraplay_patients'
     if (patient.id) {
       const current = getPatientById(patient.id)
       if (current) {
         persistPatient(patient.id, {
-          stars: (current.stars ?? 0) + earned,
+          stars:          (current.stars ?? 0) + earned,
           sessionHistory: [...(current.sessionHistory ?? []), entry],
         })
       }
@@ -99,14 +113,20 @@ function App() {
     setScreen('results')
   }
 
+  // ── Gates de navegación ────────────────────────────────────────────────────
+
+  // Gate 1: selector de paciente (si ya hay roster)
   if (showSelect) {
     return (
       <div className="app-wrapper">
-        <PatientSelectScreen onDone={() => { setShowSelect(false); setWelcomed(true) }} />
+        <PatientSelectScreen
+          onDone={() => { setShowSelect(false); setWelcomed(true) }}
+        />
       </div>
     )
   }
 
+  // Gate 2: formulario de nuevo paciente (primera vez)
   if (!welcomed) {
     return (
       <div className="app-wrapper">
@@ -116,6 +136,24 @@ function App() {
       </div>
     )
   }
+
+  // Gate 3 (nuevo): screening clínico inicial
+  // Se muestra cuando el paciente no tiene evaluación completada.
+  // El terapeuta puede omitirlo desde la propia pantalla.
+  if (!patient.assessmentCompleted) {
+    return (
+      <div className="app-wrapper" style={{ overflowY: 'auto' }}>
+        <InitialAssessmentScreen onDone={() => {
+          // No necesitamos setear nada extra aquí —
+          // el wizard ya llamó updatePatient({ assessmentCompleted: true })
+          // El re-render de App leerá el nuevo valor del contexto
+          // y caerá en el flujo normal.
+        }} />
+      </div>
+    )
+  }
+
+  // ── Flujo normal (sin cambios) ─────────────────────────────────────────────
 
   return (
     <div className="app-wrapper">
@@ -184,6 +222,15 @@ function App() {
       )}
       {screen === 'session-history' && (
         <SessionHistoryScreen onBack={() => goTo('home')} />
+      )}
+      {screen === 'therapy-plan' && (
+        <TherapyPlanScreen
+          onBack={() => goTo('home')}
+          onNavigate={goTo}
+        />
+      )}
+      {screen === 'home-mode' && (
+        <HomeModeScreen onBack={() => goTo('home')} />
       )}
       {screen === 'results' && (
         <ResultsScreen

@@ -51,6 +51,337 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
+function timeAgo(iso) {
+  if (!iso) return null
+  const diff = Date.now() - new Date(iso).getTime()
+  const days = Math.floor(diff / 86400000)
+  if (days === 0) return 'hoy'
+  if (days === 1) return 'ayer'
+  if (days < 7) return `hace ${days} días`
+  if (days < 30) return `hace ${Math.floor(days / 7)} sem.`
+  if (days < 365) return `hace ${Math.floor(days / 30)} meses`
+  return `hace ${Math.floor(days / 365)} año${Math.floor(days / 365) > 1 ? 's' : ''}`
+}
+
+// ── CLINICAL PROFILE CARD ─────────────────────────────────────────────────────
+// Componente nuevo. Va en view === 'menu', antes de los botones de acción.
+// Lee directamente de patient — no recibe props adicionales.
+
+const COMPONENT_LABELS = {
+  fonologico:      'Fonológico',
+  lexico:          'Léxico-Semántico',
+  morfosintactico: 'Morfosintáctico',
+  pragmatico:      'Pragmático',
+}
+
+const DIAGNOSIS_LABELS = {
+  tel:         'TEL / TDL',
+  tl_tea:      'TL + TEA',
+  tl_tdah:     'TL + TDAH',
+  tl_tea_tdah: 'TL + TEA + TDAH',
+}
+
+const CONFIDENCE_STYLES = {
+  Alta:  { bg: '#e6f7f1', color: '#1a7a54', dot: '#4aab8a' },
+  Media: { bg: '#fff8e6', color: '#9a6d0a', dot: '#e8a020' },
+  Baja:  { bg: '#fef0ef', color: '#c0392b', dot: '#e07a5f' },
+}
+
+function ClinicalProfileCard({ onStartPlan, onReassess }) {
+  const { patient } = usePatient()
+  const [expanded, setExpanded] = useState(false)
+
+  const profile = patient.clinicalProfile
+  const hasAssessment = patient.assessmentCompleted && profile
+
+  // Datos de sesión para el card
+  const allHistory = patient.sessionHistory || []
+  const lastActivity = [...allHistory].reverse().find(e => !isNote(e))
+  const lastNote = [...allHistory].reverse().find(e => isNote(e))
+  const lastSessionDate = lastNote?.date || lastActivity?.date || null
+  const totalSessions = patient.sessionsCompleted || 0
+
+  // ── Sin evaluación completada ─────────────────────────────────────────────
+  if (!hasAssessment) {
+    return (
+      <div style={{
+        background: 'linear-gradient(135deg, #fff8e6 0%, #fef0ef 100%)',
+        borderRadius: 16,
+        padding: '16px',
+        border: '2px dashed #e8a020',
+        marginBottom: 4,
+      }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+          <span style={{ fontSize: 24 }}>📋</span>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#7a5c00', margin: '0 0 4px' }}>
+              Evaluación inicial pendiente
+            </p>
+            <p style={{ fontSize: 12, color: '#9a6d0a', margin: '0 0 12px', lineHeight: 1.5 }}>
+              Completa el screening para que AuraPlay sugiera nivel, componente prioritario y frecuencia de trabajo.
+            </p>
+            <button
+              onClick={onReassess}
+              style={{
+                padding: '8px 16px',
+                background: '#e8a020',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 10,
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              Iniciar evaluación →
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Con evaluación completada ─────────────────────────────────────────────
+  const confStyle = CONFIDENCE_STYLES[profile.confidence] ?? CONFIDENCE_STYLES['Media']
+  const diagLabel = DIAGNOSIS_LABELS[patient.diagnosis] ?? patient.diagnosis
+  const focusItems = (profile.priorityAreas || []).slice(0, 3)
+
+  return (
+    <div style={{
+      background: 'linear-gradient(160deg, #f0faf6 0%, #f5f0fa 100%)',
+      borderRadius: 16,
+      border: '1.5px solid #c8e8dc',
+      overflow: 'hidden',
+      marginBottom: 4,
+    }}>
+      {/* ── Header siempre visible ── */}
+      <div style={{ padding: '14px 16px' }}>
+
+        {/* Fila superior: nivel + diagnóstico */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          {/* Badge nivel */}
+          <div style={{
+            background: 'linear-gradient(135deg, #4aab8a, #7c6bb0)',
+            color: '#fff',
+            fontSize: 18,
+            fontWeight: 900,
+            padding: '8px 14px',
+            borderRadius: 12,
+            letterSpacing: '-0.5px',
+            flexShrink: 0,
+            lineHeight: 1,
+          }}>
+            {profile.levelId}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#2d7a62', margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Perfil Clínico
+            </p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#3a3a3a', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {diagLabel}
+            </p>
+          </div>
+          {/* Badge confianza */}
+          <div style={{
+            background: confStyle.bg,
+            color: confStyle.color,
+            fontSize: 11,
+            fontWeight: 700,
+            padding: '4px 10px',
+            borderRadius: 99,
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: confStyle.dot, display: 'inline-block' }} />
+            {profile.confidence}
+          </div>
+        </div>
+
+        {/* Foco inicial — siempre visible, máx 3 items */}
+        {focusItems.length > 0 && (
+          <div style={{ marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#666', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Foco inicial
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {focusItems.map(area => (
+                <span key={area} style={{
+                  background: '#fff',
+                  border: '1.5px solid #c8e8dc',
+                  color: '#2d7a62',
+                  fontSize: 12,
+                  fontWeight: 600,
+                  padding: '4px 10px',
+                  borderRadius: 99,
+                }}>
+                  {area}
+                </span>
+              ))}
+              {(profile.priorityAreas || []).length > 3 && (
+                <span style={{ fontSize: 12, color: '#888', alignSelf: 'center' }}>
+                  +{profile.priorityAreas.length - 3} más
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Fila de stats: última sesión + total */}
+        <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{
+            flex: 1,
+            background: '#fff',
+            borderRadius: 10,
+            padding: '8px 12px',
+            border: '1px solid #e8f5f0',
+          }}>
+            <p style={{ fontSize: 10, color: '#999', fontWeight: 700, margin: '0 0 2px', textTransform: 'uppercase' }}>Última sesión</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#3a3a3a', margin: 0 }}>
+              {lastSessionDate ? timeAgo(lastSessionDate) : 'Sin sesiones'}
+            </p>
+          </div>
+          <div style={{
+            flex: 1,
+            background: '#fff',
+            borderRadius: 10,
+            padding: '8px 12px',
+            border: '1px solid #e8f5f0',
+          }}>
+            <p style={{ fontSize: 10, color: '#999', fontWeight: 700, margin: '0 0 2px', textTransform: 'uppercase' }}>Total sesiones</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#3a3a3a', margin: 0 }}>
+              {totalSessions} {totalSessions === 1 ? 'sesión' : 'sesiones'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Detalle expandible ── */}
+      {expanded && (
+        <div style={{
+          padding: '0 16px 14px',
+          borderTop: '1px solid #e0f0e8',
+          marginTop: 0,
+        }}>
+          {/* Componente prioritario */}
+          <div style={{ paddingTop: 14, marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#666', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Componente prioritario
+            </p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#2d7a62', margin: 0 }}>
+              {COMPONENT_LABELS[profile.primaryComponent] ?? profile.primaryComponent}
+            </p>
+          </div>
+
+          {/* Frecuencia sugerida */}
+          <div style={{ marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#666', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Recomendación
+            </p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ flex: 1, background: '#f8faf9', borderRadius: 10, padding: '8px 12px' }}>
+                <p style={{ fontSize: 10, color: '#999', margin: '0 0 2px' }}>Frecuencia</p>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#3a3a3a', margin: 0 }}>{profile.suggestedFrequency}</p>
+              </div>
+              <div style={{ flex: 1, background: '#f8faf9', borderRadius: 10, padding: '8px 12px' }}>
+                <p style={{ fontSize: 10, color: '#999', margin: '0 0 2px' }}>Duración</p>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#3a3a3a', margin: 0 }}>{profile.sessionDuration}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Hito DIR */}
+          <div style={{ marginBottom: 14 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#666', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Hito DIR estimado
+            </p>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {[1,2,3,4,5,6].map(n => (
+                <div key={n} style={{
+                  flex: 1,
+                  height: 6,
+                  borderRadius: 99,
+                  background: n <= (profile.dirLevel || 0) ? '#7c6bb0' : '#e8e0f0',
+                  transition: 'background 0.2s',
+                }} />
+              ))}
+            </div>
+            <p style={{ fontSize: 11, color: '#7c6bb0', fontWeight: 600, margin: '4px 0 0' }}>
+              Nivel {profile.dirLevel}/6 · {profile.dirLabel}
+            </p>
+          </div>
+
+          {/* Fecha de evaluación + re-evaluar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: 11, color: '#bbb', margin: 0 }}>
+              Evaluado {timeAgo(profile.assessmentDate)}
+            </p>
+            <button
+              onClick={onReassess}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#888',
+                fontSize: 12,
+                cursor: 'pointer',
+                textDecoration: 'underline',
+                padding: 0,
+              }}
+            >
+              Re-evaluar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Footer: expandir + CTA ── */}
+      <div style={{
+        padding: '10px 16px',
+        borderTop: '1px solid #e0f0e8',
+        display: 'flex',
+        gap: 8,
+        alignItems: 'center',
+        background: 'rgba(255,255,255,0.6)',
+      }}>
+        <button
+          onClick={() => setExpanded(p => !p)}
+          style={{
+            flex: 1,
+            background: 'none',
+            border: '1.5px solid #c8e8dc',
+            borderRadius: 10,
+            padding: '8px',
+            fontSize: 12,
+            fontWeight: 600,
+            color: '#2d7a62',
+            cursor: 'pointer',
+          }}
+        >
+          {expanded ? '▲ Menos detalle' : '▼ Ver detalle'}
+        </button>
+        <button
+          onClick={onStartPlan}
+          style={{
+            flex: 2,
+            background: 'linear-gradient(135deg, #4aab8a 0%, #3d9478 100%)',
+            border: 'none',
+            borderRadius: 10,
+            padding: '8px 12px',
+            fontSize: 13,
+            fontWeight: 700,
+            color: '#fff',
+            cursor: 'pointer',
+            letterSpacing: '-0.2px',
+          }}
+        >
+          Iniciar Plan Terapéutico →
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ── sub-views ─────────────────────────────────────────────────────────────────
 
 function PinScreen({ onUnlock, onClose }) {
@@ -134,7 +465,6 @@ function PatientSummary({ patient: p, onConfirm, onBack }) {
         <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#3a3a3a' }}>Resumen clínico</h3>
       </div>
 
-      {/* Encabezado */}
       <div style={{ background: '#f0faf6', borderRadius: '16px', padding: '16px', border: '1px solid #c8e8dc' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
@@ -152,7 +482,6 @@ function PatientSummary({ patient: p, onConfirm, onBack }) {
         </div>
       </div>
 
-      {/* Datos clínicos */}
       <div style={{ background: 'white', borderRadius: '16px', padding: '16px', border: '2px solid #e8f5f0' }}>
         {row('Edad', `${ageMonths} meses (${Math.floor(ageMonths / 12)} a ${ageMonths % 12} m)`)}
         {row('Nivel actual', `${lvl?.label ?? p.levelId} · ${lvl?.ageRange ?? ''}`)}
@@ -167,7 +496,6 @@ function PatientSummary({ patient: p, onConfirm, onBack }) {
         </div>
       </div>
 
-      {/* Última nota clínica */}
       {lastNote?.notes && (
         <div>
           <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '8px' }}>ÚLTIMA NOTA CLÍNICA</p>
@@ -320,7 +648,6 @@ function SessionTab() {
   const wc = wordCount(notes)
   const MAX_WORDS = 300
 
-  // Debounce análisis 800ms
   useEffect(() => {
     clearTimeout(debounceRef.current)
     if (!notes.trim()) { setAnalysis(null); return }
@@ -364,7 +691,6 @@ function SessionTab() {
       clinicalNoteDuration: parseInt(duration) || 0,
     }
 
-    // Check if there's an activity entry for this date in context history
     const contextHistory = [...(patient.sessionHistory || [])]
     let activityIdx = -1
     for (let i = contextHistory.length - 1; i >= 0; i--) {
@@ -375,7 +701,6 @@ function SessionTab() {
     }
 
     if (activityIdx !== -1) {
-      // Attach note to existing activity entry
       contextHistory[activityIdx] = { ...contextHistory[activityIdx], ...noteData }
       updatePatient({ sessionHistory: contextHistory })
       if (patient.id) {
@@ -436,7 +761,6 @@ function SessionTab() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {/* Formulario */}
       <div style={{ display: 'flex', gap: '10px' }}>
         <div style={{ flex: 1 }}>
           <label style={labelStyle}>FECHA</label>
@@ -509,10 +833,8 @@ function SessionTab() {
         />
       </div>
 
-      {/* ── Panel de análisis lingüístico ── */}
       {analysis && (
         <div style={{ border: '2px solid #f0d080', borderRadius: '14px', overflow: 'hidden' }}>
-          {/* Encabezado colapsable */}
           <button
             onClick={() => setAnalysisOpen(o => !o)}
             style={{
@@ -585,7 +907,6 @@ function SessionTab() {
         {saved ? '✓ Registro guardado' : '💾 Guardar registro'}
       </button>
 
-      {/* Historial */}
       {history.length > 0 && (
         <div>
           <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>
@@ -642,20 +963,17 @@ function SessionTab() {
 // ── Sensory Profile ───────────────────────────────────────────────────────────
 
 const SENSORY_BADGES = [
-  // [key, label, type]  type: 'enrich' | 'reduce' | 'toggle'
-  { key: 'animationsEnabled',       label: 'Animaciones',       type: 'enrich'  },
-  { key: 'simultaneousAudioVisual', label: 'Audio + Visual',    type: 'enrich'  },
-  { key: 'backgroundElements',      label: 'Fondo',             type: 'enrich'  },
-  { key: 'sequentialStimulus',      label: 'Secuencial',        type: 'reduce'  },
-  { key: 'extendedExposureTime',    label: 'Tiempo extendido',  type: 'reduce'  },
-  { key: 'reducedOptions',          label: 'Opciones reducidas',type: 'reduce'  },
-  { key: 'largerText',              label: 'Texto grande',      type: 'reduce'  },
+  { key: 'animationsEnabled',       label: 'Animaciones',           type: 'enrich' },
+  { key: 'simultaneousAudioVisual', label: 'Audio + Visual',        type: 'enrich' },
+  { key: 'backgroundElements',      label: 'Fondo',                 type: 'enrich' },
+  { key: 'sequentialStimulus',      label: 'Secuencial',            type: 'reduce' },
+  { key: 'extendedExposureTime',    label: 'Tiempo extendido',      type: 'reduce' },
+  { key: 'reducedOptions',          label: 'Opciones reducidas',    type: 'reduce' },
+  { key: 'largerText',              label: 'Texto grande',          type: 'reduce' },
   { key: 'simplifiedInstructions',  label: 'Instrucciones simples', type: 'reduce' },
 ]
 
 function SensoryProfile({ settings }) {
-  // Para 'enrich': activo=verde, desactivo=gris
-  // Para 'reduce': activo=amarillo, desactivo=gris
   function badgeStyle(key, type) {
     const active = settings[key]
     if (!active) return { bg: '#f0f0f0', color: '#aaa', border: '#e0e0e0' }
@@ -671,26 +989,12 @@ function SensoryProfile({ settings }) {
           const { bg, color, border } = badgeStyle(key, type)
           const active = settings[key]
           return (
-            <span
-              key={key}
-              style={{
-                padding: '4px 10px',
-                borderRadius: '20px',
-                fontSize: '11px',
-                fontWeight: '700',
-                background: bg,
-                color,
-                border: `1.5px solid ${border}`,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <span style={{ fontSize: '9px' }}>
-                {active
-                  ? (type === 'enrich' ? '●' : '▲')
-                  : '○'}
-              </span>
+            <span key={key} style={{
+              padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '700',
+              background: bg, color, border: `1.5px solid ${border}`,
+              display: 'flex', alignItems: 'center', gap: '4px',
+            }}>
+              <span style={{ fontSize: '9px' }}>{active ? (type === 'enrich' ? '●' : '▲') : '○'}</span>
               {label}
             </span>
           )
@@ -827,7 +1131,7 @@ function MilestonesSection() {
 function ChangePinSection() {
   const [newPin, setNewPin] = useState('')
   const [confirmPin, setConfirmPin] = useState('')
-  const [msg, setMsg] = useState(null) // { text, ok }
+  const [msg, setMsg] = useState(null)
 
   function handleSave() {
     if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
@@ -849,57 +1153,91 @@ function ChangePinSection() {
       <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', margin: 0 }}>CAMBIAR PIN</p>
       <div>
         <label style={labelStyle}>NUEVO PIN</label>
-        <input
-          type="password"
-          maxLength={4}
-          value={newPin}
-          onChange={e => { setNewPin(e.target.value.replace(/\D/g, '')); setMsg(null) }}
-          placeholder="4 dígitos"
-          style={inputStyle}
-        />
+        <input type="password" maxLength={4} value={newPin} onChange={e => { setNewPin(e.target.value.replace(/\D/g, '')); setMsg(null) }} placeholder="4 dígitos" style={inputStyle} />
       </div>
       <div>
         <label style={labelStyle}>CONFIRMAR PIN</label>
-        <input
-          type="password"
-          maxLength={4}
-          value={confirmPin}
-          onChange={e => { setConfirmPin(e.target.value.replace(/\D/g, '')); setMsg(null) }}
-          placeholder="4 dígitos"
-          style={inputStyle}
-        />
+        <input type="password" maxLength={4} value={confirmPin} onChange={e => { setConfirmPin(e.target.value.replace(/\D/g, '')); setMsg(null) }} placeholder="4 dígitos" style={inputStyle} />
+      </div>
+      {msg && <p style={{ fontSize: '12px', fontWeight: '600', color: msg.ok ? '#2d7a62' : '#e07a5f', margin: 0 }}>{msg.text}</p>}
+      <button onClick={handleSave} style={{ ...primaryBtnStyle, background: '#4aab8a' }}>Guardar PIN</button>
+    </div>
+  )
+}
+
+// ── PIN Modo Padres ───────────────────────────────────────────────────────────
+
+function HomePinConfig() {
+  const [newPin, setNewPin] = useState('')
+  const [confirmPin, setConfirmPin] = useState('')
+  const [msg, setMsg] = useState(null)
+  const currentPin = localStorage.getItem('auraplay_home_pin')
+
+  function handleSave() {
+    if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+      setMsg({ text: 'El PIN debe tener exactamente 4 dígitos', ok: false })
+      return
+    }
+    if (newPin !== confirmPin) {
+      setMsg({ text: 'Los PINs no coinciden', ok: false })
+      return
+    }
+    localStorage.setItem('auraplay_home_pin', newPin)
+    setNewPin('')
+    setConfirmPin('')
+    setMsg({ text: 'PIN del modo padres configurado', ok: true })
+  }
+
+  return (
+    <div style={{ background: '#f0faf6', borderRadius: '14px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <p style={{ fontSize: '12px', fontWeight: '700', color: '#2d7a62', margin: 0 }}>
+          👨‍👩‍👧 PIN MODO PADRES
+        </p>
+        {currentPin && (
+          <span style={{ fontSize: '11px', color: '#4aab8a', fontWeight: '600' }}>✓ Configurado</span>
+        )}
+      </div>
+      <p style={{ fontSize: '11px', color: '#666', margin: 0, lineHeight: 1.5 }}>
+        PIN separado para que los padres accedan a sus rutinas en casa. Distinto al PIN del terapeuta.
+      </p>
+      <div>
+        <label style={labelStyle}>NUEVO PIN (4 dígitos)</label>
+        <input type="password" maxLength={4} value={newPin} onChange={e => { setNewPin(e.target.value.replace(/\D/g, '')); setMsg(null) }} placeholder="Ej: 5678" style={inputStyle} />
+      </div>
+      <div>
+        <label style={labelStyle}>CONFIRMAR PIN</label>
+        <input type="password" maxLength={4} value={confirmPin} onChange={e => { setConfirmPin(e.target.value.replace(/\D/g, '')); setMsg(null) }} placeholder="Repetir PIN" style={inputStyle} />
       </div>
       {msg && (
-        <p style={{ fontSize: '12px', fontWeight: '600', color: msg.ok ? '#2d7a62' : '#e07a5f', margin: 0 }}>
-          {msg.text}
-        </p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: msg.ok ? '#2d7a62' : '#e07a5f', margin: 0 }}>{msg.text}</p>
       )}
       <button onClick={handleSave} style={{ ...primaryBtnStyle, background: '#4aab8a' }}>
-        Guardar PIN
+        Guardar PIN del modo padres
       </button>
     </div>
   )
 }
 
-// ── Config tabs (panel original) ──────────────────────────────────────────────
+// ── Config tabs ───────────────────────────────────────────────────────────────
 
 function ConfigPanel({ onViewProgress, onViewHistory }) {
   const {
     patient, level, stimulusConfig,
     estimulusSettings, updateStimulusSettings,
     updatePatient, setLevelById, setDiagnosis, advanceLevel, decreaseLevel, loadStimulusSettings,
+    resetPatient,
   } = usePatient()
   const [activeTab, setActiveTab] = useState('patient')
   const [confirmReset, setConfirmReset] = useState(false)
   const [previewLevelId, setPreviewLevelId] = useState(patient.levelId)
-  const { resetPatient } = usePatient()
 
   return (
     <div>
       <div style={{ display: 'flex', borderBottom: '1px solid #e8f5f0', marginBottom: '20px' }}>
         {[
           { id: 'patient', label: '👤 Paciente' },
-          { id: 'level', label: '📊 Nivel' },
+          { id: 'level',   label: '📊 Nivel' },
           { id: 'stimuli', label: '⚙️ Estímulos' },
           { id: 'session', label: '📋 Registro' },
         ].map(tab => (
@@ -931,6 +1269,7 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
               }} />
             </label>
           </div>
+
           <div>
             <label style={labelStyle}>NOMBRE DEL PACIENTE</label>
             <input value={patient.name} onChange={e => updatePatient({ name: e.target.value })} style={inputStyle} />
@@ -958,278 +1297,126 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
           <div style={{ background: '#f8f8f6', borderRadius: '14px', padding: '14px' }}>
             <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '8px' }}>RESUMEN DE SESIÓN</p>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '13px', color: '#666' }}>Estrellas acumuladas</span>
-              <span style={{ fontSize: '13px', fontWeight: '700', color: '#e8a020' }}>⭐ {patient.stars}</span>
-            </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '13px', color: '#666' }}>Nivel actual</span>
-              <span style={{ fontSize: '13px', fontWeight: '700', color: '#4aab8a' }}>{level.label} · {level.ageRange}</span>
+              <span style={{ fontSize: '13px', color: '#888' }}>Sesiones completadas</span>
+              <span style={{ fontSize: '13px', fontWeight: '700' }}>{patient.sessionsCompleted ?? 0}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
+              <span style={{ fontSize: '13px', color: '#888' }}>Estrellas acumuladas</span>
+              <span style={{ fontSize: '13px', fontWeight: '700' }}>⭐ {patient.stars ?? 0}</span>
             </div>
           </div>
 
           <MilestonesSection />
-
-          {onViewHistory && (
-            <button onClick={onViewHistory} style={{ ...primaryBtnStyle, background: '#f0ecfa', color: '#6a4c9c', border: '2px solid #d4c8f0' }}>
-              📋 Ver historial completo
-            </button>
-          )}
-          {onViewProgress && (
-            <button onClick={onViewProgress} style={{ ...primaryBtnStyle, background: '#f0faf6', color: '#2d7a62', border: '2px solid #c8e8dc' }}>
-              📊 Ver progreso completo
-            </button>
-          )}
-
           <ChangePinSection />
+          <HomePinConfig />
 
-          <button
-            style={primaryBtnStyle}
-            onClick={() => {
-              updatePatient({ ...patient })
-              alert('Cambios guardados')
-            }}
-          >
-            💾 Guardar cambios
-          </button>
-
-          {!confirmReset ? (
-            <button onClick={() => setConfirmReset(true)} style={{ ...primaryBtnStyle, background: 'white', color: '#e07a5f', border: '2px solid #fde8e3' }}>
-              Nuevo paciente
-            </button>
-          ) : (
-            <div style={{ background: '#fef4f2', borderRadius: '14px', padding: '16px', border: '2px solid #fde8e3', textAlign: 'center' }}>
-              <p style={{ fontSize: '14px', fontWeight: '700', color: '#3a3a3a', marginBottom: '8px' }}>¿Confirmas esta acción?</p>
-              <p style={{ fontSize: '12px', color: '#888', marginBottom: '16px', lineHeight: '1.5' }}>
-                Se borrarán los datos del paciente actual.
-              </p>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button onClick={() => setConfirmReset(false)} style={{ flex: 1, padding: '11px', borderRadius: '12px', border: '2px solid #e8f5f0', background: 'white', cursor: 'pointer', fontSize: '14px', fontWeight: '700', color: '#666' }}>Cancelar</button>
-                <button onClick={resetPatient} style={{ flex: 1, padding: '11px', borderRadius: '12px', border: 'none', background: '#e07a5f', cursor: 'pointer', fontSize: '14px', fontWeight: '700', color: 'white' }}>Confirmar</button>
+          <div>
+            {!confirmReset ? (
+              <button onClick={() => setConfirmReset(true)} style={{ ...primaryBtnStyle, background: '#fef4f2', color: '#e07a5f', border: '2px solid #fde0da' }}>
+                🗑 Resetear sesión del paciente
+              </button>
+            ) : (
+              <div style={{ background: '#fef4f2', borderRadius: '14px', padding: '14px' }}>
+                <p style={{ fontSize: '13px', color: '#c0392b', marginBottom: '12px', fontWeight: '600' }}>
+                  ¿Resetear todas las estrellas y sesiones de {patient.name}?
+                </p>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button onClick={() => { updatePatient({ stars: 0, sessionsCompleted: 0, sessionHistory: [] }); setConfirmReset(false) }} style={{ ...primaryBtnStyle, background: '#e07a5f', flex: 1 }}>
+                    Sí, resetear
+                  </button>
+                  <button onClick={() => setConfirmReset(false)} style={{ ...primaryBtnStyle, background: 'white', color: '#666', border: '2px solid #eee', flex: 1 }}>
+                    Cancelar
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
       {activeTab === 'level' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
-          {/* ── Sección 1: Nivel del paciente ── */}
-          <div>
-            <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', marginBottom: '10px', letterSpacing: '0.05em' }}>NIVEL CRONOLÓGICO DEL PACIENTE</p>
-            <div style={{ background: '#e8f5f0', borderRadius: '14px', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <div>
-                <p style={{ fontSize: '18px', fontWeight: '800', color: '#2d7a62' }}>{level.label}</p>
-                <p style={{ fontSize: '12px', color: '#4aab8a' }}>{level.ageRange}</p>
-                {level.description && <p style={{ fontSize: '11px', color: '#888', fontStyle: 'italic', marginTop: '2px' }}>{level.description}</p>}
-              </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button onClick={decreaseLevel} style={{ padding: '8px 14px', borderRadius: '10px', border: '2px solid #c8e8dc', background: 'white', cursor: 'pointer', fontSize: '13px', fontWeight: '700', color: '#666' }}>←</button>
-                <button onClick={advanceLevel} style={{ padding: '8px 14px', borderRadius: '10px', border: '2px solid #4aab8a', background: '#4aab8a', cursor: 'pointer', fontSize: '13px', fontWeight: '700', color: 'white' }}>→</button>
-              </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {Object.values(LEVELS).map(lvl => (
-                <button
-                  key={lvl.id}
-                  onClick={() => { setLevelById(lvl.id); setPreviewLevelId(lvl.id) }}
-                  onMouseEnter={() => setPreviewLevelId(lvl.id)}
-                  onMouseLeave={() => setPreviewLevelId(patient.levelId)}
-                  style={{
-                    padding: '10px 14px', borderRadius: '10px', cursor: 'pointer',
-                    border: `2px solid ${patient.levelId === lvl.id ? '#4aab8a' : previewLevelId === lvl.id ? '#b0ddd0' : '#e8f5f0'}`,
-                    background: patient.levelId === lvl.id ? '#e8f5f0' : previewLevelId === lvl.id ? '#f4faf8' : 'white',
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.15s',
-                  }}
-                >
-                  <span style={{ fontSize: '13px', fontWeight: '700', color: patient.levelId === lvl.id ? '#2d7a62' : '#3a3a3a' }}>{lvl.label}</span>
-                  <span style={{ fontSize: '11px', color: '#888' }}>{lvl.ageRange}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ── Sección 2: Componentes del lenguaje ── */}
-          <div>
-            <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', marginBottom: '10px', letterSpacing: '0.05em' }}>NIVEL DE DIFICULTAD POR COMPONENTE</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {[
-                { key: 'fonologico',      name: 'Fonético-Fonológico', emoji: '🔊', color: '#4aab8a' },
-                { key: 'lexico',          name: 'Léxico-Semántico',    emoji: '📚', color: '#7c6bb0' },
-                { key: 'morfosintactico', name: 'Morfosintáctico',     emoji: '🧩', color: '#e07a5f' },
-                { key: 'pragmatico',      name: 'Pragmático',          emoji: '💬', color: '#e8a020' },
-              ].map(comp => {
-                const current = patient.componentLevels?.[comp.key] ?? 'inicial'
-                return (
-                  <div key={comp.key} style={{ border: `1.5px solid ${comp.color}33`, borderRadius: '14px', padding: '12px 14px', background: comp.color + '08' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                      <span style={{ fontSize: '18px' }}>{comp.emoji}</span>
-                      <span style={{ fontSize: '13px', fontWeight: '700', color: '#3a3a3a' }}>{comp.name}</span>
-                    </div>
-                    <div style={{ display: 'flex', gap: '6px' }}>
-                      {['inicial', 'intermedio', 'avanzado'].map(lvl => (
-                        <button
-                          key={lvl}
-                          onClick={() => updatePatient({ componentLevels: { ...patient.componentLevels, [comp.key]: lvl } })}
-                          style={{
-                            flex: 1, padding: '8px 4px', borderRadius: '10px', cursor: 'pointer',
-                            border: `2px solid ${current === lvl ? comp.color : comp.color + '33'}`,
-                            background: current === lvl ? comp.color : 'white',
-                            fontSize: '12px', fontWeight: '700',
-                            color: current === lvl ? 'white' : comp.color,
-                            transition: 'all 0.15s', textTransform: 'capitalize',
-                          }}
-                        >
-                          {lvl.charAt(0).toUpperCase() + lvl.slice(1)}
-                        </button>
-                      ))}
-                    </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.6' }}>
+            Selecciona el nivel terapéutico para {patient.name}. El nivel determina el vocabulario, complejidad y objetivos de cada actividad.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {Object.entries(LEVELS).map(([id, lvl]) => (
+              <button key={id} onClick={() => { setPreviewLevelId(id); setLevelById(id) }} style={{
+                padding: '14px 16px', borderRadius: '14px', cursor: 'pointer', textAlign: 'left',
+                border: `2px solid ${previewLevelId === id ? '#4aab8a' : '#e8f5f0'}`,
+                background: previewLevelId === id ? '#e8f5f0' : 'white', transition: 'all 0.2s',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <p style={{ fontSize: '14px', fontWeight: '700', color: previewLevelId === id ? '#2d7a62' : '#3a3a3a', marginBottom: '2px' }}>
+                      {lvl.label}
+                    </p>
+                    <p style={{ fontSize: '12px', color: '#888' }}>{lvl.ageRange}</p>
                   </div>
-                )
-              })}
-            </div>
+                  {previewLevelId === id && <span style={{ fontSize: '16px' }}>✓</span>}
+                </div>
+              </button>
+            ))}
           </div>
 
-          {/* ── Sección 3: Vista previa de ejercicios ── */}
-          {(() => {
-            const pl = LEVELS[previewLevelId]
-            if (!pl) return null
-            function countItems(obj) {
-              if (!obj) return 0
-              if (Array.isArray(obj)) return obj.length
-              return Object.values(obj).reduce((s, v) => s + (Array.isArray(v) ? v.length : 0), 0)
-            }
-            const semTotal = countItems(pl.semantica?.opposites) + countItems(pl.semantica?.definitions)
-            const groups = [
-              {
-                compName: 'Fonético-Fonológico', color: '#4aab8a',
-                items: [
-                  { id: 'minimal-pairs', label: 'Pares mínimos',  available: countItems(pl.fonologia?.minimalPairs) },
-                  { id: 'build-word',    label: 'Armar palabras', available: countItems(pl.fonologia?.buildWords) },
-                  { id: 'rhyme',         label: 'Rimas',          available: countItems(pl.rhymes) },
-                ],
-              },
-              {
-                compName: 'Léxico-Semántico', color: '#7c6bb0',
-                items: [
-                  { id: 'listen',       label: 'Escucha',           available: countItems(pl.semantica?.listen) },
-                  { id: 'semantic',     label: 'Semántica',         available: semTotal },
-                  { id: 'point-image',  label: 'Señala imagen',     available: countItems(pl.pointImages) },
-                  { id: 'category',     label: '¿Cuál no pertenece?', available: countItems(pl.categories) },
-                ],
-              },
-              {
-                compName: 'Morfosintáctico', color: '#e07a5f',
-                items: [
-                  { id: 'syntax',              label: 'Conectores',         available: countItems(pl.morfosintaxis?.connectors) },
-                  { id: 'narrative',           label: 'Narrativa',          available: countItems(pl.morfosintaxis?.narrativeSequence) },
-                  { id: 'follow-instruction',  label: 'Sigue instrucción',  available: countItems(pl.instructions) },
-                ],
-              },
-              {
-                compName: 'Pragmático', color: '#e8a020',
-                items: [
-                  { id: 'pragmatic',            label: 'Inferencias',      available: countItems(pl.pragmatica?.inferences) },
-                  { id: 'communicative-intent', label: '¿Para qué sirve?', available: countItems(pl.communicativeIntents) },
-                ],
-              },
-            ]
-
-            return (
-              <div>
-                <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', marginBottom: '10px', letterSpacing: '0.05em' }}>
-                  EJERCICIOS POR ACTIVIDAD · {pl.label} · {pl.ageRange}
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {groups.map(g => {
-                    const available = g.items.filter(i => i.available > 0)
-                    if (available.length === 0) return null
-                    return (
-                      <div key={g.compName} style={{ background: 'white', borderRadius: '12px', border: `1.5px solid ${g.color}33`, padding: '10px 12px' }}>
-                        <p style={{ fontSize: '11px', fontWeight: '700', color: g.color, marginBottom: '8px' }}>{g.compName}</p>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                          {available.map(i => {
-                            const val = estimulusSettings.exerciseCount?.[i.id] ?? 12
-                            return (
-                              <div key={i.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '76px' }}>
-                                <span style={{ fontSize: '11px', color: '#666', fontWeight: '600', textAlign: 'center' }}>{i.label}</span>
-                                <input
-                                  type="number" min={8} max={20} step={1} value={val}
-                                  onChange={e => {
-                                    let v = Number(e.target.value)
-                                    if (v < 8) v = 8
-                                    if (v > 20) v = 20
-                                    updateStimulusSettings('exerciseCount', { ...estimulusSettings.exerciseCount, [i.id]: v })
-                                  }}
-                                  style={{ width: '60px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: g.color, border: `2px solid ${g.color}44`, borderRadius: '10px', padding: '6px 4px', background: 'white', outline: 'none' }}
-                                />
-                                <span style={{ fontSize: '10px', color: '#bbb' }}>máx {i.available}</span>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )
-                  })}
+          <div>
+            <label style={labelStyle}>NIVELES POR COMPONENTE</label>
+            {[
+              { key: 'fonologico',      label: 'Fonológico 🔊' },
+              { key: 'lexico',          label: 'Léxico-Semántico 📚' },
+              { key: 'morfosintactico', label: 'Morfosintáctico 🧩' },
+              { key: 'pragmatico',      label: 'Pragmático 💬' },
+            ].map(comp => (
+              <div key={comp.key} style={{ marginBottom: '12px' }}>
+                <p style={{ fontSize: '12px', color: '#666', marginBottom: '6px', fontWeight: '600' }}>{comp.label}</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {['inicial', 'intermedio', 'avanzado'].map(lvl => (
+                    <button key={lvl} onClick={() => updatePatient({ componentLevels: { ...patient.componentLevels, [comp.key]: lvl } })} style={{
+                      flex: 1, padding: '8px', borderRadius: '10px', cursor: 'pointer',
+                      border: `2px solid ${patient.componentLevels?.[comp.key] === lvl ? '#4aab8a' : '#e8f5f0'}`,
+                      background: patient.componentLevels?.[comp.key] === lvl ? '#e8f5f0' : 'white',
+                      fontSize: '12px', fontWeight: '600',
+                      color: patient.componentLevels?.[comp.key] === lvl ? '#2d7a62' : '#888',
+                    }}>
+                      {lvl.charAt(0).toUpperCase() + lvl.slice(1)}
+                    </button>
+                  ))}
                 </div>
               </div>
-            )
-          })()}
+            ))}
+          </div>
         </div>
       )}
 
       {activeTab === 'stimuli' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
-          {/* Visual */}
           <div>
-            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>
-              CONFIGURACIÓN VISUAL
-            </p>
+            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>🔁 PRESENTACIÓN</p>
             {[
-              { key: 'animationsEnabled', label: 'Animaciones', desc: 'Efectos de movimiento en respuestas' },
-              { key: 'backgroundElements', label: 'Elementos de fondo', desc: 'Color de fondo e íconos decorativos' },
-              { key: 'reducedOptions', label: 'Reducir opciones (máx. 2)', desc: 'Limita las alternativas por pantalla' },
-              { key: 'largerText', label: 'Texto más grande', desc: 'Instrucciones en tamaño 18px' },
+              { key: 'simultaneousAudioVisual', label: 'Audio + Visual simultáneo',    desc: 'Presenta imagen y audio al mismo tiempo' },
+              { key: 'animationsEnabled',       label: 'Animaciones activadas',         desc: 'Transiciones y efectos visuales' },
+              { key: 'backgroundElements',      label: 'Elementos de fondo',            desc: 'Decoración visual de contexto' },
+              { key: 'sequentialStimulus',      label: 'Estímulo secuencial',           desc: 'Presenta opciones una a una, no todas juntas' },
+              { key: 'extendedExposureTime',    label: 'Tiempo de exposición extendido',desc: 'Más tiempo para observar el estímulo' },
             ].map(item => (
-              <StimulusToggle
-                key={item.key}
-                label={item.label}
-                desc={item.desc}
-                value={estimulusSettings[item.key]}
-                onChange={v => updateStimulusSettings(item.key, v)}
-              />
+              <StimulusToggle key={item.key} label={item.label} desc={item.desc} value={estimulusSettings[item.key]} onChange={v => updateStimulusSettings(item.key, v)} />
             ))}
           </div>
 
-          {/* Auditivo */}
           <div>
-            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>
-              CONFIGURACIÓN AUDITIVA
-            </p>
+            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>🎯 DIFICULTAD</p>
             {[
-              { key: 'simultaneousAudioVisual', label: 'Audio y visual simultáneos', desc: 'Presenta ambos canales al mismo tiempo' },
-              { key: 'sequentialStimulus', label: 'Presentación secuencial', desc: 'Imagen primero (2s), luego habilita audio' },
-              { key: 'extendedExposureTime', label: 'Tiempo extendido entre preguntas', desc: 'Aumenta pausa a 3.5s entre ejercicios' },
-              { key: 'simplifiedInstructions', label: 'Instrucciones simplificadas', desc: 'Texto de guía más breve y directo' },
-              { key: 'voiceFeedback', label: 'Voz de feedback (¡Muy bien!)', desc: 'Reproduce voz al responder cada ejercicio' },
+              { key: 'reducedOptions',         label: 'Opciones reducidas',       desc: 'Menos alternativas por ejercicio' },
+              { key: 'largerText',              label: 'Texto más grande',         desc: 'Aumenta tamaño de fuente' },
+              { key: 'simplifiedInstructions', label: 'Instrucciones simples',    desc: 'Lenguaje simplificado en consignas' },
             ].map(item => (
-              <StimulusToggle
-                key={item.key}
-                label={item.label}
-                desc={item.desc}
-                value={estimulusSettings[item.key]}
-                onChange={v => updateStimulusSettings(item.key, v)}
-              />
+              <StimulusToggle key={item.key} label={item.label} desc={item.desc} value={estimulusSettings[item.key]} onChange={v => updateStimulusSettings(item.key, v)} />
             ))}
           </div>
 
-          {/* Velocidad */}
           <div>
-            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>
-              ⏱ VELOCIDAD
-            </p>
+            <p style={{ fontSize: '12px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>⏱ VELOCIDAD</p>
             {[
               { key: 'wordSpeakDelay',       label: 'Tiempo para pronunciar palabra', defaultVal: 1000 },
               { key: 'slideTransitionDelay', label: 'Tiempo entre ejercicios',         defaultVal: 1500 },
@@ -1241,13 +1428,7 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
                     <span style={{ fontSize: '13px', fontWeight: '600', color: '#3a3a3a' }}>{label}</span>
                     <span style={{ fontSize: '13px', fontWeight: '700', color: '#4aab8a' }}>{(val / 1000).toFixed(1)}s</span>
                   </div>
-                  <input
-                    type="range"
-                    min={300} max={2100} step={300}
-                    value={val}
-                    onChange={e => updateStimulusSettings(key, Number(e.target.value))}
-                    style={{ width: '100%', accentColor: '#4aab8a' }}
-                  />
+                  <input type="range" min={300} max={2100} step={300} value={val} onChange={e => updateStimulusSettings(key, Number(e.target.value))} style={{ width: '100%', accentColor: '#4aab8a' }} />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2px' }}>
                     <span style={{ fontSize: '11px', color: '#999' }}>0.3s</span>
                     <span style={{ fontSize: '11px', color: '#999' }}>2.1s</span>
@@ -1270,11 +1451,16 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-function TherapistPanel({ onClose, onViewProgress, onViewHistory }) {
-  const { patient, level, loadPatient, setLevelById, estimulusSettings } = usePatient()
+function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, onOpenHomeMode }) {
+  const { patient, level, loadPatient, setLevelById, estimulusSettings, resetAssessment } = usePatient()
   const [unlocked, setUnlocked] = useState(false)
-  const [view, setView] = useState('menu') // 'menu' | 'new' | 'search' | 'config'
+  const [view, setView]         = useState('menu')
   const [savedMsg, setSavedMsg] = useState(false)
+
+  function handleOpenHomeMode() {
+    if (onOpenHomeMode) onOpenHomeMode()
+    onClose()
+  }
 
   function handleSelectPatient(p) {
     loadPatient(p)
@@ -1285,16 +1471,35 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory }) {
   function handleSaveSession() {
     if (!patient.id) return
     persistPatient(patient.id, {
-      name: patient.name,
-      diagnosis: patient.diagnosis,
-      levelId: patient.levelId,
-      stars: patient.stars,
+      name:              patient.name,
+      diagnosis:         patient.diagnosis,
+      levelId:           patient.levelId,
+      stars:             patient.stars,
       sessionsCompleted: patient.sessionsCompleted,
-      sessionHistory: patient.sessionHistory,
+      sessionHistory:    patient.sessionHistory,
       estimulusSettings,
     })
     setSavedMsg(true)
     setTimeout(() => setSavedMsg(false), 2000)
+  }
+
+  /**
+   * Re-evaluar: resetea el assessment para que App.jsx muestre el wizard.
+   * El panel se cierra y el gate en App lo intercepta automáticamente.
+   */
+  function handleReassess() {
+    resetAssessment()
+    onClose()
+  }
+
+  /**
+   * Iniciar Plan Terapéutico: cierra el panel y va directo a home
+   * para que el terapeuta seleccione la primera actividad.
+   * Si el padre pasa onStartPlan, lo usa; si no, simplemente cierra.
+   */
+  function handleStartPlan() {
+    if (onStartPlan) onStartPlan()
+    else onClose()
   }
 
   return (
@@ -1315,13 +1520,21 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory }) {
           <div style={{ padding: '20px' }}>
             {view === 'menu' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {/* Paciente activo */}
+
+                {/* ── Paciente activo (sin cambios) ── */}
                 <div style={{ background: '#f0faf6', borderRadius: '14px', padding: '14px 16px', border: '1px solid #c8e8dc', marginBottom: '4px' }}>
                   <p style={{ fontSize: '11px', fontWeight: '700', color: '#2d7a62', marginBottom: '4px' }}>PACIENTE ACTIVO</p>
                   <p style={{ fontSize: '15px', fontWeight: '700', color: '#3a3a3a' }}>{patient.name}</p>
                   <p style={{ fontSize: '12px', color: '#666' }}>{level.label} · {level.ageRange} · ⭐ {patient.stars}</p>
                 </div>
 
+                {/* ── TARJETA DE PERFIL CLÍNICO (nuevo) ── */}
+                <ClinicalProfileCard
+                  onStartPlan={handleStartPlan}
+                  onReassess={handleReassess}
+                />
+
+                {/* ── Botones de acción (sin cambios) ── */}
                 <button onClick={() => setView('new')} style={primaryBtnStyle}>
                   ➕ Nuevo paciente
                 </button>
@@ -1342,23 +1555,34 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory }) {
                     📊 Ver progreso completo
                   </button>
                 )}
+                {onOpenHomeMode && (
+                  <button
+                    onClick={handleOpenHomeMode}
+                    style={{
+                      ...primaryBtnStyle,
+                      background: 'linear-gradient(135deg, #f0faf6, #e8f5f0)',
+                      color: '#2d7a62',
+                      border: '2px solid #c8e8dc',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                    }}
+                  >
+                    <span style={{ fontSize: 18 }}>👨‍👩‍👧</span>
+                    <span>Modo Padres</span>
+                    <span style={{ marginLeft: 'auto', fontSize: 14, opacity: 0.6 }}>›</span>
+                  </button>
+                )}
               </div>
             )}
 
             {view === 'new' && (
-              <NewPatientForm
-                onBack={() => setView('menu')}
-                onSaved={onClose}
-              />
+              <NewPatientForm onBack={() => setView('menu')} onSaved={onClose} />
             )}
-
             {view === 'search' && (
-              <SearchPatient
-                onBack={() => setView('menu')}
-                onSelected={handleSelectPatient}
-              />
+              <SearchPatient onBack={() => setView('menu')} onSelected={handleSelectPatient} />
             )}
-
             {view === 'config' && (
               <div>
                 <button onClick={() => setView('menu')} style={{ ...backBtnStyle, marginBottom: '16px' }}>← Volver</button>
