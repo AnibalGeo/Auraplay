@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import ActivityScreen from '../components/ActivityScreen'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -118,48 +119,47 @@ function ListenScreen({ onFinish, onBack }) {
   }
 
   return (
-    <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <div className="activity-header">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <h2 className="activity-title">Escucha Atento</h2>
-        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {rounds.length}</span>
-      </div>
-      <div className="progress-track-thin">
-        <div className="progress-fill-thin" style={{width:`${(idx/rounds.length)*100}%`,background:'#7c6bb0'}}/>
-      </div>
-
-      <div className="game-area" style={{ gap: '20px' }}>
-        <p className="instruction" style={{ fontSize: instrSize }}>
-          {estimulusSettings.simplifiedInstructions
-            ? 'Escucha y elige la imagen'
-            : estimulusSettings.sequentialStimulus
-              ? 'Mira las imágenes. Cuando el botón esté activo, escucha y elige.'
-              : estimulusSettings.simultaneousAudioVisual
-                ? 'Escucha el sonido y toca la imagen correcta'
-                : 'Primero escucha con atención. Luego elige la imagen.'}
-        </p>
-
-        <button
-          onClick={handleAudioBtn}
-          disabled={!audioEnabled}
-          style={{
-            width: '90px', height: '90px', borderRadius: '50%', border: 'none',
-            cursor: audioEnabled ? 'pointer' : 'not-allowed',
-            fontSize: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: !audioEnabled
-              ? '#e8e8e8'
-              : playing
-                ? 'linear-gradient(135deg, #7c6bb0, #9b7fd4)'
-                : 'linear-gradient(135deg, #c8b8e8, #e8e0f5)',
-            boxShadow: playing ? '0 6px 20px rgba(124,107,176,0.4)' : '0 4px 12px rgba(124,107,176,0.2)',
-            transition: noAnim ? 'none' : 'all 0.3s',
-            animation: (!noAnim && playing) ? 'pulse 0.8s ease-in-out infinite' : 'none',
-            opacity: audioEnabled ? 1 : 0.5,
-          }}
-        >
-          {audioEnabled ? '🔊' : '⏳'}
-        </button>
-
+    <ActivityScreen
+      title="Escucha Atento"
+      componentType="fonologico"
+      current={idx + 1}
+      total={rounds.length}
+      onBack={onBack}
+      stimulusKey={idx}
+      stimulus={
+        <>
+          <p className="instruction" style={{ fontSize: instrSize }}>
+            {estimulusSettings.simplifiedInstructions
+              ? 'Escucha y elige la imagen'
+              : estimulusSettings.sequentialStimulus
+                ? 'Mira las imágenes. Cuando el botón esté activo, escucha y elige.'
+                : estimulusSettings.simultaneousAudioVisual
+                  ? 'Escucha el sonido y toca la imagen correcta'
+                  : 'Primero escucha con atención. Luego elige la imagen.'}
+          </p>
+          <button
+            onClick={handleAudioBtn}
+            disabled={!audioEnabled}
+            style={{
+              width: '90px', height: '90px', borderRadius: '50%', border: 'none',
+              cursor: audioEnabled ? 'pointer' : 'not-allowed',
+              fontSize: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: !audioEnabled
+                ? '#e8e8e8'
+                : playing
+                  ? 'linear-gradient(135deg, #7c6bb0, #9b7fd4)'
+                  : 'linear-gradient(135deg, #c8b8e8, #e8e0f5)',
+              boxShadow: playing ? '0 6px 20px rgba(124,107,176,0.4)' : '0 4px 12px rgba(124,107,176,0.2)',
+              transition: noAnim ? 'none' : 'all 0.3s',
+              animation: (!noAnim && playing) ? 'pulse 0.8s ease-in-out infinite' : 'none',
+              opacity: audioEnabled ? 1 : 0.5,
+            }}
+          >
+            {audioEnabled ? '🔊' : '⏳'}
+          </button>
+        </>
+      }
+      response={
         <div style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${Math.min(cols, 3)}, 1fr)`,
@@ -192,17 +192,14 @@ function ListenScreen({ onFinish, onBack }) {
             )
           })}
         </div>
-
-        {feedback && (
-          <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
-        )}
-
-        {showNext && (
-          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
-        )}
-
-      </div>
-    </div>
+      }
+      feedback={feedback && (
+        <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
+      )}
+      action={showNext && (
+        <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+      )}
+    />
   )
 }
 

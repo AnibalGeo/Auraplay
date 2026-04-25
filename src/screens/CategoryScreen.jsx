@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
 import { playVoiceFeedback } from '../utils/audioFeedback'
+import ActivityScreen from '../components/ActivityScreen'
 
 export default function CategoryScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -84,61 +85,56 @@ export default function CategoryScreen({ onFinish }) {
   const progress = (index / items.length) * 100
 
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button style={styles.backBtn} onClick={() => onFinish(score, items.length)}>←</button>
-        <span style={styles.title}>🔍 ¿Cuál no pertenece?</span>
-        <span style={styles.counter}>{index + 1} / {items.length}</span>
-      </div>
-
-      {/* Progreso */}
-      <div style={styles.progressTrack}>
-        <div style={{ ...styles.progressFill, width: `${progress}%` }} />
-      </div>
-
-      {/* Instrucción */}
-      <div style={styles.promptCard}>
-        <p style={styles.instruction}>
-          {estimulusSettings?.simplifiedInstructions
-            ? '¿Cuál es diferente?'
-            : `¿Cuál NO pertenece al grupo?`}
-        </p>
-        <span style={styles.categoryBadge}>📦 {current.category}</span>
-        <button
-          style={styles.audioBtn}
-          onClick={() => speak(`¿Cuál no pertenece al grupo de ${current.category}?`)}
-        >
-          🔊 Escuchar
-        </button>
-      </div>
-
-      {/* Opciones */}
-      <div style={styles.grid}>
-        {shuffled.map((opt, i) => {
-          const isIntruder = opt.word === current.intruder.word
-          const isSelected = selected === opt.word
-          let bg = '#fff'
-          let border = '2px solid #e0e0e0'
-          let color = '#333'
-          if (selected !== null) {
-            if (isIntruder)       { bg = '#e8f5e9'; border = '2px solid #4aab8a'; color = '#2e7d5e' }
-            else if (isSelected)  { bg = '#fdecea'; border = '2px solid #e57373'; color = '#c62828' }
-          }
-          return (
-            <button
-              key={i}
-              style={{ ...styles.optCard, background: bg, border, color }}
-              onClick={() => handleSelect(opt)}
-              disabled={selected !== null}
-            >
-              <span style={styles.optEmoji}>{opt.emoji}</span>
-              <span style={styles.optWord}>{opt.word}</span>
-            </button>
-          )
-        })}
-      </div>
-    </div>
+    <ActivityScreen
+      title="🔍 ¿Cuál no pertenece?"
+      componentType="lexico"
+      current={index + 1}
+      total={items.length}
+      onBack={() => onFinish(score, items.length)}
+      stimulusKey={index}
+      stimulus={
+        <div style={styles.promptCard}>
+          <p style={styles.instruction}>
+            {estimulusSettings?.simplifiedInstructions
+              ? '¿Cuál es diferente?'
+              : `¿Cuál NO pertenece al grupo?`}
+          </p>
+          <span style={styles.categoryBadge}>📦 {current.category}</span>
+          <button
+            style={styles.audioBtn}
+            onClick={() => speak(`¿Cuál no pertenece al grupo de ${current.category}?`)}
+          >
+            🔊 Escuchar
+          </button>
+        </div>
+      }
+      response={
+        <div style={styles.grid}>
+          {shuffled.map((opt, i) => {
+            const isIntruder = opt.word === current.intruder.word
+            const isSelected = selected === opt.word
+            let bg = '#fff'
+            let border = '2px solid #e0e0e0'
+            let color = '#333'
+            if (selected !== null) {
+              if (isIntruder)       { bg = '#e8f5e9'; border = '2px solid #4aab8a'; color = '#2e7d5e' }
+              else if (isSelected)  { bg = '#fdecea'; border = '2px solid #e57373'; color = '#c62828' }
+            }
+            return (
+              <button
+                key={i}
+                style={{ ...styles.optCard, background: bg, border, color }}
+                onClick={() => handleSelect(opt)}
+                disabled={selected !== null}
+              >
+                <span style={styles.optEmoji}>{opt.emoji}</span>
+                <span style={styles.optWord}>{opt.word}</span>
+              </button>
+            )
+          })}
+        </div>
+      }
+    />
   )
 }
 

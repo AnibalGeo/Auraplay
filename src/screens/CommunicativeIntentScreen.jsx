@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
 import { playVoiceFeedback } from '../utils/audioFeedback'
+import ActivityScreen from '../components/ActivityScreen'
 
 export default function CommunicativeIntentScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -75,76 +76,75 @@ export default function CommunicativeIntentScreen({ onFinish }) {
   const progress = (index / items.length) * 100
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <button style={styles.backBtn} onClick={() => onFinish(score, items.length)}>←</button>
-        <span style={styles.title}>💬 ¿Para qué sirve?</span>
-        <span style={styles.counter}>{index + 1} / {items.length}</span>
-      </div>
+    <ActivityScreen
+      title="💬 ¿Para qué sirve?"
+      componentType="pragmatico"
+      current={index + 1}
+      total={items.length}
+      onBack={() => onFinish(score, items.length)}
+      stimulusKey={index}
+      stimulus={
+        <div style={styles.scenarioCard}>
+          <span style={styles.sceneEmoji}>{current.emoji}</span>
+          <p style={styles.scenarioText}>{current.scenario}</p>
+          <p style={styles.question}>
+            {estimulusSettings?.simplifiedInstructions
+              ? '¿Qué hace?'
+              : current.question ?? '¿Para qué sirve lo que dice?'}
+          </p>
+          <button style={styles.audioBtn} onClick={() => speak(current.scenario)}>
+            🔊 Escuchar
+          </button>
+        </div>
+      }
+      response={
+        <div style={styles.optionsGrid}>
+          {shuffled.map((opt, i) => {
+            const isCorrect = opt === current.correct
+            const isSelected = selected === opt
+            let bg = '#fff'
+            let border = '2px solid #e0e0e0'
+            let color = '#333'
+            if (selected !== null) {
+              if (isCorrect)       { bg = '#fff8e1'; border = '2px solid #e8a020'; color = '#b56a00' }
+              else if (isSelected) { bg = '#fdecea'; border = '2px solid #e57373'; color = '#c62828' }
+            }
+            const intentEmoji = {
+              'Pedir':        '🙏',
+              'Rechazar':     '🙅',
+              'Saludar':      '👋',
+              'Agradecer':    '😊',
+              'Disculparse':  '😔',
+              'Informar':     '📢',
+              'Preguntar':    '🤔',
+              'Invitar':      '🎉',
+              'Advertir':     '⚠️',
+              'Consolar':     '🤗',
+              'Protestar':    '😤',
+              'Proponer':     '💡',
+              'Negarse':      '🚫',
+              'Animar':       '🌟',
+              'Quejarse':     '😒',
+              'Ordenar':      '👆',
+              'Felicitar':    '🎊',
+              'Reprochar':    '😠',
+            }[opt] ?? '💬'
 
-      <div style={styles.progressTrack}>
-        <div style={{ ...styles.progressFill, width: `${progress}%` }} />
-      </div>
-
-      <div style={styles.scenarioCard}>
-        <span style={styles.sceneEmoji}>{current.emoji}</span>
-        <p style={styles.scenarioText}>{current.scenario}</p>
-        <p style={styles.question}>
-          {estimulusSettings?.simplifiedInstructions
-            ? '¿Qué hace?'
-            : current.question ?? '¿Para qué sirve lo que dice?'}
-        </p>
-        <button style={styles.audioBtn} onClick={() => speak(current.scenario)}>
-          🔊 Escuchar
-        </button>
-      </div>
-
-      <div style={styles.optionsGrid}>
-        {shuffled.map((opt, i) => {
-          const isCorrect = opt === current.correct
-          const isSelected = selected === opt
-          let bg = '#fff'
-          let border = '2px solid #e0e0e0'
-          let color = '#333'
-          if (selected !== null) {
-            if (isCorrect)       { bg = '#fff8e1'; border = '2px solid #e8a020'; color = '#b56a00' }
-            else if (isSelected) { bg = '#fdecea'; border = '2px solid #e57373'; color = '#c62828' }
-          }
-          const intentEmoji = {
-            'Pedir':        '🙏',
-            'Rechazar':     '🙅',
-            'Saludar':      '👋',
-            'Agradecer':    '😊',
-            'Disculparse':  '😔',
-            'Informar':     '📢',
-            'Preguntar':    '🤔',
-            'Invitar':      '🎉',
-            'Advertir':     '⚠️',
-            'Consolar':     '🤗',
-            'Protestar':    '😤',
-            'Proponer':     '💡',
-            'Negarse':      '🚫',
-            'Animar':       '🌟',
-            'Quejarse':     '😒',
-            'Ordenar':      '👆',
-            'Felicitar':    '🎊',
-            'Reprochar':    '😠',
-          }[opt] ?? '💬'
-
-          return (
-            <button
-              key={i}
-              style={{ ...styles.optBtn, background: bg, border, color }}
-              onClick={() => handleSelect(opt)}
-              disabled={selected !== null}
-            >
-              <span style={styles.intentEmoji}>{intentEmoji}</span>
-              <span style={styles.intentLabel}>{opt}</span>
-            </button>
-          )
-        })}
-      </div>
-    </div>
+            return (
+              <button
+                key={i}
+                style={{ ...styles.optBtn, background: bg, border, color }}
+                onClick={() => handleSelect(opt)}
+                disabled={selected !== null}
+              >
+                <span style={styles.intentEmoji}>{intentEmoji}</span>
+                <span style={styles.intentLabel}>{opt}</span>
+              </button>
+            )
+          })}
+        </div>
+      }
+    />
   )
 }
 

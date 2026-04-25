@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import ActivityScreen from '../components/ActivityScreen'
 
 function speak(text, rate = 0.82) {
   const synth = window.speechSynthesis
@@ -118,106 +119,100 @@ function SemanticScreen({ onFinish, onBack }) {
   }
 
   return (
-    <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <div className="activity-header">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <h2 className="activity-title">Semántica</h2>
-        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {allExercises.length}</span>
-      </div>
-      <div className="progress-track-thin">
-        <div className="progress-fill-thin" style={{width:`${(idx/allExercises.length)*100}%`,background:'#7c6bb0'}}/>
-      </div>
-
-      <div className="game-area" style={{ gap: '20px' }}>
-
-        {current.type === 'opposite' && (
-          <>
-            <p className="instruction" style={{ fontSize: instrSize }}>
-              {estimulusSettings.simplifiedInstructions ? '¿Cuál es el contrario?' : '¿Cuál es el contrario de esta palabra?'}
-            </p>
-            <div style={{ background: 'white', borderRadius: '18px', padding: '20px 28px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', textAlign: 'center', position: 'relative' }}>
-              <span style={{ fontSize: '52px', display: 'block', marginBottom: '8px' }}>{current.data.emoji}</span>
-              <span style={{ fontSize: '22px', fontWeight: '700', color: 'var(--text)', letterSpacing: '1px' }}>
-                {current.data.word}
-              </span>
-              <button
-                onClick={() => speak(current.data.word)}
-                style={{ position: 'absolute', top: '10px', right: '12px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', padding: '4px', lineHeight: 1 }}
-              >🔊</button>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${gridCols}, 1fr)`, gap: '12px', width: '100%', maxWidth: '380px' }}>
-              {options.map(opt => {
-                let border = '3px solid transparent'
-                let bg = 'white'
-                if (selected === opt.word) {
-                  border = opt.word === current.data.opposite ? '3px solid var(--teal)' : '3px solid var(--coral)'
-                  bg = opt.word === current.data.opposite ? '#f0faf6' : '#fef4f2'
-                } else if (answered && opt.word === current.data.opposite) {
-                  border = '3px solid var(--teal)'; bg = '#f0faf6'
-                }
-                return (
-                  <div key={opt.word} onClick={() => handleAnswer(opt.word)} style={{ background: bg, borderRadius: '16px', padding: '16px 8px', textAlign: 'center', cursor: answered ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.06)', border, transition: noAnim ? 'none' : 'all 0.2s', position: 'relative' }}>
-                    <button
-                      onClick={e => { e.stopPropagation(); speak(opt.word) }}
-                      style={{ position: 'absolute', top: '6px', right: '8px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', padding: '2px', lineHeight: 1 }}
-                    >🔊</button>
-                    <span style={{ fontSize: '32px', display: 'block', marginBottom: '4px' }}>{opt.emoji}</span>
-                    <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text)' }}>{opt.word}</span>
-                  </div>
-                )
-              })}
-            </div>
-          </>
-        )}
-
-        {current.type === 'definition' && (
-          <>
-            <p className="instruction" style={{ fontSize: instrSize }}>
-              {estimulusSettings.simplifiedInstructions ? 'Escucha y elige' : 'Escucha la descripción y elige la imagen correcta'}
-            </p>
-            <div style={{ background: 'white', borderRadius: '18px', padding: '18px 24px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
-              <p style={{ fontSize: '15px', color: 'var(--text)', lineHeight: '1.6', fontStyle: 'italic' }}>
-                "{current.data.definition}"
+    <ActivityScreen
+      title="Semántica"
+      componentType="lexico"
+      current={idx + 1}
+      total={allExercises.length}
+      onBack={onBack}
+      stimulusKey={idx}
+      stimulus={
+        <>
+          {current.type === 'opposite' && (
+            <>
+              <p className="instruction" style={{ fontSize: instrSize }}>
+                {estimulusSettings.simplifiedInstructions ? '¿Cuál es el contrario?' : '¿Cuál es el contrario de esta palabra?'}
               </p>
-              <button
-                onClick={() => speak(current.data.definition)}
-                style={{ marginTop: '10px', background: 'var(--mint)', border: '2px solid var(--mint2)', borderRadius: '10px', padding: '6px 14px', cursor: 'pointer', fontSize: '13px', color: 'var(--teal-dark)', fontWeight: '600' }}
-              >
-                🔊 Escuchar
-              </button>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${gridCols}, 1fr)`, gap: '12px', width: '100%', maxWidth: '380px' }}>
-              {options.map(opt => {
-                const word = typeof opt === 'string' ? opt : opt.word
-                let border = '3px solid transparent'
-                let bg = 'white'
-                if (selected === word) {
-                  border = word === current.data.correct ? '3px solid var(--teal)' : '3px solid var(--coral)'
-                  bg = word === current.data.correct ? '#f0faf6' : '#fef4f2'
-                } else if (answered && word === current.data.correct) {
-                  border = '3px solid var(--teal)'; bg = '#f0faf6'
-                }
-                return (
-                  <div key={word} onClick={() => handleAnswer(word)} style={{ background: bg, borderRadius: '16px', padding: '16px 8px', textAlign: 'center', cursor: answered ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.06)', border, transition: noAnim ? 'none' : 'all 0.2s' }}>
-                    <span style={{ fontSize: '32px', display: 'block', marginBottom: '4px' }}>{opt.emoji}</span>
-                    <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--text)' }}>{word}</span>
-                  </div>
-                )
-              })}
-            </div>
-          </>
-        )}
-
-        {feedback && (
-          <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
-        )}
-
-        {showNext && (
-          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
-        )}
-
-      </div>
-    </div>
+              <div style={{ background: 'white', borderRadius: '18px', padding: '20px 28px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', textAlign: 'center', position: 'relative' }}>
+                <span style={{ fontSize: '52px', display: 'block', marginBottom: '8px' }}>{current.data.emoji}</span>
+                <span style={{ fontSize: '22px', fontWeight: '700', color: 'var(--text)', letterSpacing: '1px' }}>
+                  {current.data.word}
+                </span>
+                <button
+                  onClick={() => speak(current.data.word)}
+                  style={{ position: 'absolute', top: '10px', right: '12px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', padding: '4px', lineHeight: 1 }}
+                >🔊</button>
+              </div>
+            </>
+          )}
+          {current.type === 'definition' && (
+            <>
+              <p className="instruction" style={{ fontSize: instrSize }}>
+                {estimulusSettings.simplifiedInstructions ? 'Escucha y elige' : 'Escucha la descripción y elige la imagen correcta'}
+              </p>
+              <div style={{ background: 'white', borderRadius: '18px', padding: '18px 24px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
+                <p style={{ fontSize: '15px', color: 'var(--text)', lineHeight: '1.6', fontStyle: 'italic' }}>
+                  "{current.data.definition}"
+                </p>
+                <button
+                  onClick={() => speak(current.data.definition)}
+                  style={{ marginTop: '10px', background: 'var(--mint)', border: '2px solid var(--mint2)', borderRadius: '10px', padding: '6px 14px', cursor: 'pointer', fontSize: '13px', color: 'var(--teal-dark)', fontWeight: '600' }}
+                >
+                  🔊 Escuchar
+                </button>
+              </div>
+            </>
+          )}
+        </>
+      }
+      response={
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${gridCols}, 1fr)`, gap: '12px', width: '100%', maxWidth: '380px' }}>
+          {current.type === 'opposite' && options.map(opt => {
+            let border = '3px solid transparent'
+            let bg = 'white'
+            if (selected === opt.word) {
+              border = opt.word === current.data.opposite ? '3px solid var(--teal)' : '3px solid var(--coral)'
+              bg = opt.word === current.data.opposite ? '#f0faf6' : '#fef4f2'
+            } else if (answered && opt.word === current.data.opposite) {
+              border = '3px solid var(--teal)'; bg = '#f0faf6'
+            }
+            return (
+              <div key={opt.word} onClick={() => handleAnswer(opt.word)} style={{ background: bg, borderRadius: '16px', padding: '16px 8px', textAlign: 'center', cursor: answered ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.06)', border, transition: noAnim ? 'none' : 'all 0.2s', position: 'relative' }}>
+                <button
+                  onClick={e => { e.stopPropagation(); speak(opt.word) }}
+                  style={{ position: 'absolute', top: '6px', right: '8px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', padding: '2px', lineHeight: 1 }}
+                >🔊</button>
+                <span style={{ fontSize: '32px', display: 'block', marginBottom: '4px' }}>{opt.emoji}</span>
+                <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text)' }}>{opt.word}</span>
+              </div>
+            )
+          })}
+          {current.type === 'definition' && options.map(opt => {
+            const word = typeof opt === 'string' ? opt : opt.word
+            let border = '3px solid transparent'
+            let bg = 'white'
+            if (selected === word) {
+              border = word === current.data.correct ? '3px solid var(--teal)' : '3px solid var(--coral)'
+              bg = word === current.data.correct ? '#f0faf6' : '#fef4f2'
+            } else if (answered && word === current.data.correct) {
+              border = '3px solid var(--teal)'; bg = '#f0faf6'
+            }
+            return (
+              <div key={word} onClick={() => handleAnswer(word)} style={{ background: bg, borderRadius: '16px', padding: '16px 8px', textAlign: 'center', cursor: answered ? 'default' : 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.06)', border, transition: noAnim ? 'none' : 'all 0.2s' }}>
+                <span style={{ fontSize: '32px', display: 'block', marginBottom: '4px' }}>{opt.emoji}</span>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--text)' }}>{word}</span>
+              </div>
+            )
+          })}
+        </div>
+      }
+      feedback={feedback && (
+        <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
+      )}
+      action={showNext && (
+        <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+      )}
+    />
   )
 }
 

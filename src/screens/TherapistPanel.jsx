@@ -1166,7 +1166,7 @@ function ChangePinSection() {
   )
 }
 
-// ── PIN Modo Padres ───────────────────────────────────────────────────────────
+// ── PIN Modo Familia ───────────────────────────────────────────────────────────
 
 function HomePinConfig() {
   const [newPin, setNewPin] = useState('')
@@ -1186,21 +1186,21 @@ function HomePinConfig() {
     localStorage.setItem('auraplay_home_pin', newPin)
     setNewPin('')
     setConfirmPin('')
-    setMsg({ text: 'PIN del modo padres configurado', ok: true })
+    setMsg({ text: 'PIN del modo familia configurado', ok: true })
   }
 
   return (
     <div style={{ background: '#f0faf6', borderRadius: '14px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <p style={{ fontSize: '12px', fontWeight: '700', color: '#2d7a62', margin: 0 }}>
-          👨‍👩‍👧 PIN MODO PADRES
+          👨‍👩‍👧 PIN MODO FAMILIA
         </p>
         {currentPin && (
           <span style={{ fontSize: '11px', color: '#4aab8a', fontWeight: '600' }}>✓ Configurado</span>
         )}
       </div>
       <p style={{ fontSize: '11px', color: '#666', margin: 0, lineHeight: 1.5 }}>
-        PIN separado para que los padres accedan a sus rutinas en casa. Distinto al PIN del terapeuta.
+        PIN separado para que la familia acceda a sus rutinas en casa. Distinto a la contraseña del terapeuta.
       </p>
       <div>
         <label style={labelStyle}>NUEVO PIN (4 dígitos)</label>
@@ -1214,7 +1214,7 @@ function HomePinConfig() {
         <p style={{ fontSize: '12px', fontWeight: '600', color: msg.ok ? '#2d7a62' : '#e07a5f', margin: 0 }}>{msg.text}</p>
       )}
       <button onClick={handleSave} style={{ ...primaryBtnStyle, background: '#4aab8a' }}>
-        Guardar PIN del modo padres
+        Guardar PIN del modo familia
       </button>
     </div>
   )
@@ -1235,15 +1235,16 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', borderBottom: '1px solid #e8f5f0', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', borderBottom: '1px solid #e8f5f0', marginBottom: '20px', overflowX: 'auto' }}>
         {[
           { id: 'patient', label: '👤 Paciente' },
           { id: 'level',   label: '📊 Nivel' },
           { id: 'stimuli', label: '⚙️ Estímulos' },
           { id: 'session', label: '📋 Registro' },
+          { id: 'family',  label: '👨‍👩‍👧 Familia' },
         ].map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
-            flex: 1, padding: '12px 8px', background: activeTab === tab.id ? '#e8f5f0' : 'white',
+            flexShrink: 0, padding: '12px 10px', background: activeTab === tab.id ? '#e8f5f0' : 'white',
             border: 'none', borderBottom: activeTab === tab.id ? '3px solid #4aab8a' : '3px solid transparent',
             cursor: 'pointer', fontSize: '12px', fontWeight: '600',
             color: activeTab === tab.id ? '#2d7a62' : '#666', transition: 'all 0.2s',
@@ -1311,7 +1312,6 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
           <MilestonesSection />
           <FamilyAccessSection />
           <ChangePinSection />
-          <HomePinConfig />
 
           <div>
             {!confirmReset ? (
@@ -1447,6 +1447,24 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
       )}
 
       {activeTab === 'session' && <SessionTab />}
+
+      {activeTab === 'family' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.6', marginBottom: '16px' }}>
+              Gestiona el acceso familiar de <strong>{patient.name}</strong>. La familia ingresa con el RUT del paciente y un PIN asignado aquí.
+            </p>
+            <FamilyAccessSection />
+          </div>
+
+          <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '20px' }}>
+            <p style={{ fontSize: '12px', fontWeight: '700', color: '#888', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Contraseña de acceso
+            </p>
+            <HomePinConfig />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -1455,7 +1473,6 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
 function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, onOpenHomeMode }) {
   const { patient, level, loadPatient, setLevelById, estimulusSettings, resetAssessment } = usePatient()
-  const [unlocked, setUnlocked] = useState(false)
   const [view, setView]         = useState('menu')
   const [savedMsg, setSavedMsg] = useState(false)
 
@@ -1505,15 +1522,12 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, o
   }
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: unlocked ? 'flex-end' : 'center', justifyContent: 'center', zIndex: 100 }}>
-      {!unlocked ? (
-        <PinScreen onUnlock={() => setUnlocked(true)} onClose={onClose} />
-      ) : (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', zIndex: 100 }}>
         <div style={{ background: 'white', borderRadius: '24px 24px 0 0', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '0 0 32px' }}>
           {/* Header */}
           <div style={{ padding: '16px 20px', borderBottom: '1px solid #e8f5f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: 'white', zIndex: 1 }}>
             <div>
-              <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#3a3a3a' }}>🔓 Panel del Terapeuta</h2>
+              <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#3a3a3a' }}>🔐 Panel del Terapeuta</h2>
               <p style={{ fontSize: '11px', color: '#666' }}>Gestión de pacientes</p>
             </div>
             <button onClick={onClose} style={{ background: '#fef4f2', border: 'none', borderRadius: '10px', padding: '8px 14px', cursor: 'pointer', fontSize: '13px', color: '#e07a5f', fontWeight: '600' }}>Cerrar</button>
@@ -1521,61 +1535,71 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, o
 
           <div style={{ padding: '20px' }}>
             {view === 'menu' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                {/* ── Paciente activo (sin cambios) ── */}
-                <div style={{ background: '#f0faf6', borderRadius: '14px', padding: '14px 16px', border: '1px solid #c8e8dc', marginBottom: '4px' }}>
-                  <p style={{ fontSize: '11px', fontWeight: '700', color: '#2d7a62', marginBottom: '4px' }}>PACIENTE ACTIVO</p>
-                  <p style={{ fontSize: '15px', fontWeight: '700', color: '#3a3a3a' }}>{patient.name}</p>
-                  <p style={{ fontSize: '12px', color: '#666' }}>{level.label} · {level.ageRange} · ⭐ {patient.stars}</p>
+                {/* ── Paciente activo ── */}
+                <div style={{ background: '#f0faf6', borderRadius: '14px', padding: '14px 16px', border: '1px solid #c8e8dc' }}>
+                  <p style={{ fontSize: '10px', fontWeight: '700', color: '#2d7a62', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Paciente activo</p>
+                  <p style={{ fontSize: '16px', fontWeight: '800', color: '#1a2a1a', margin: '0 0 2px' }}>{patient.name}</p>
+                  <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>{level.label} · {level.ageRange} · ⭐ {patient.stars}</p>
                 </div>
 
-                {/* ── TARJETA DE PERFIL CLÍNICO (nuevo) ── */}
+                {/* ── Perfil clínico ── */}
                 <ClinicalProfileCard
                   onStartPlan={handleStartPlan}
                   onReassess={handleReassess}
                 />
 
-                {/* ── Botones de acción (sin cambios) ── */}
-                <button onClick={() => setView('new')} style={primaryBtnStyle}>
-                  ➕ Nuevo paciente
-                </button>
-                <button onClick={() => setView('search')} style={{ ...primaryBtnStyle, background: '#f0ecfa', color: '#6a4c9c' }}>
-                  🔍 Buscar paciente
-                </button>
-                <button onClick={() => setView('config')} style={{ ...primaryBtnStyle, background: '#f8f8f6', color: '#555' }}>
-                  ⚙️ Configurar paciente actual
-                </button>
+                {/* ── Acciones: grid 2 columnas ── */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <button onClick={() => setView('new')} style={actionBtnStyle}>
+                    <span style={{ fontSize: 18 }}>➕</span>
+                    <span>Nuevo paciente</span>
+                  </button>
+                  <button onClick={() => setView('search')} style={{ ...actionBtnStyle, background: '#f0ecfa', color: '#6a4c9c', border: '1.5px solid #ddd6f5' }}>
+                    <span style={{ fontSize: 18 }}>🔍</span>
+                    <span>Buscar paciente</span>
+                  </button>
+                  <button onClick={() => setView('config')} style={{ ...actionBtnStyle, background: '#f5f5f5', color: '#555', border: '1.5px solid #e8e8e8' }}>
+                    <span style={{ fontSize: 18 }}>⚙️</span>
+                    <span>Configurar</span>
+                  </button>
+                  {onViewProgress && (
+                    <button onClick={onViewProgress} style={{ ...actionBtnStyle, background: '#fff8e8', color: '#b87000', border: '1.5px solid #fde8a0' }}>
+                      <span style={{ fontSize: 18 }}>📊</span>
+                      <span>Progreso</span>
+                    </button>
+                  )}
+                </div>
 
-                {patient.id && (
-                  <button onClick={handleSaveSession} style={{ ...primaryBtnStyle, background: savedMsg ? '#e8f5f0' : 'white', color: savedMsg ? '#2d7a62' : '#4aab8a', border: '2px solid #c8e8dc' }}>
-                    {savedMsg ? '✓ Sesión guardada' : '💾 Guardar sesión'}
-                  </button>
-                )}
-                {onViewProgress && (
-                  <button onClick={onViewProgress} style={{ ...primaryBtnStyle, background: '#fff8e8', color: '#b87000', border: '2px solid #fde8a0' }}>
-                    📊 Ver progreso completo
-                  </button>
-                )}
-                {onOpenHomeMode && (
-                  <button
-                    onClick={handleOpenHomeMode}
-                    style={{
-                      ...primaryBtnStyle,
+                {/* ── Acciones secundarias ── */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {patient.id && (
+                    <button onClick={handleSaveSession} style={{
+                      padding: '11px 16px', borderRadius: '12px', border: '1.5px solid #c8e8dc',
+                      background: savedMsg ? '#e8f5f0' : 'white',
+                      color: savedMsg ? '#2d7a62' : '#4aab8a',
+                      fontSize: '13px', fontWeight: '700', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: 8,
+                    }}>
+                      <span>{savedMsg ? '✓' : '💾'}</span>
+                      <span>{savedMsg ? 'Sesión guardada' : 'Guardar sesión'}</span>
+                    </button>
+                  )}
+                  {onOpenHomeMode && (
+                    <button onClick={handleOpenHomeMode} style={{
+                      padding: '11px 16px', borderRadius: '12px',
                       background: 'linear-gradient(135deg, #f0faf6, #e8f5f0)',
-                      color: '#2d7a62',
-                      border: '2px solid #c8e8dc',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 8,
-                    }}
-                  >
-                    <span style={{ fontSize: 18 }}>👨‍👩‍👧</span>
-                    <span>Modo Padres</span>
-                    <span style={{ marginLeft: 'auto', fontSize: 14, opacity: 0.6 }}>›</span>
-                  </button>
-                )}
+                      border: '1.5px solid #c8e8dc',
+                      color: '#2d7a62', fontSize: '13px', fontWeight: '700', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: 8,
+                    }}>
+                      <span style={{ fontSize: 16 }}>👨‍👩‍👧</span>
+                      <span>Modo Familia</span>
+                      <span style={{ marginLeft: 'auto', color: '#aaa' }}>›</span>
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
@@ -1593,7 +1617,6 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, o
             )}
           </div>
         </div>
-      )}
     </div>
   )
 }
@@ -1614,6 +1637,14 @@ const primaryBtnStyle = {
   width: '100%', padding: '14px', borderRadius: '14px', border: 'none',
   background: '#4aab8a', color: 'white', fontSize: '14px', fontWeight: '700',
   cursor: 'pointer', textAlign: 'center',
+}
+
+// Botón de acción compacto para el grid 2 columnas del menú
+const actionBtnStyle = {
+  padding: '14px 10px', borderRadius: '14px', border: '1.5px solid #c8e8dc',
+  background: '#4aab8a', color: 'white', fontSize: '12px', fontWeight: '700',
+  cursor: 'pointer', textAlign: 'center',
+  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
 }
 
 const backBtnStyle = {

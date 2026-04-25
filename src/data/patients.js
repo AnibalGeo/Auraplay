@@ -45,7 +45,7 @@ export function savePatient(patient) {
 
   const np = {
     id: String(Date.now()), rut: '', name: '', birthDate: '',
-    ageMonths: 0, phone: '', guardianName: '',
+    ageMonths: 0, ageCalculated: null, phone: '', guardianName: '',
     diagnosis: normalizeDiagnosis(patient.diagnosis),
     levelId: 'N1', stars: 0, sessionsCompleted: 0,
     sessionHistory: [], profilePhoto: null,
@@ -118,6 +118,7 @@ function migrateOne(p) {
   if (p.familyPin        === undefined) { p.familyPin        = '';    changed = true }
   if (p.familyFirstLogin === undefined) { p.familyFirstLogin = true;  changed = true }
   if (p.familyLastLogin  === undefined) { p.familyLastLogin  = null;  changed = true }
+  if (p.ageCalculated    === undefined) { p.ageCalculated    = null;  changed = true }
   return changed
 }
 

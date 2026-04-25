@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import ActivityScreen from '../components/ActivityScreen'
 
 function PragmaticScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
@@ -82,35 +83,34 @@ function PragmaticScreen({ onFinish, onBack }) {
   }
 
   return (
-    <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <div className="activity-header">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <h2 className="activity-title">Inferencias</h2>
-        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {exercises.length}</span>
-      </div>
-      <div className="progress-track-thin">
-        <div className="progress-fill-thin" style={{width:`${(idx/exercises.length)*100}%`,background:'#e8a020'}}/>
-      </div>
-
-      <div className="game-area" style={{ gap: '20px' }}>
-        <p className="instruction" style={{ fontSize: instrSize }}>
-          {estimulusSettings.simplifiedInstructions
-            ? 'Lee y elige la respuesta'
-            : 'Lee la situación y elige la mejor respuesta'}
-        </p>
-
-        <div style={{ background: 'white', borderRadius: '18px', padding: '20px 24px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
-          {current.emoji && (
-            <div style={{ fontSize: '48px', marginBottom: '12px' }}>{current.emoji}</div>
-          )}
-          <p style={{ fontSize: '16px', color: 'var(--text)', lineHeight: '1.6', marginBottom: '12px' }}>
-            {current.situation}
+    <ActivityScreen
+      title="Inferencias"
+      componentType="pragmatico"
+      current={idx + 1}
+      total={exercises.length}
+      onBack={onBack}
+      stimulusKey={idx}
+      stimulus={
+        <>
+          <p className="instruction" style={{ fontSize: instrSize }}>
+            {estimulusSettings.simplifiedInstructions
+              ? 'Lee y elige la respuesta'
+              : 'Lee la situación y elige la mejor respuesta'}
           </p>
-          <p style={{ fontSize: '16px', fontWeight: '700', color: 'var(--purple)' }}>
-            {current.question}
-          </p>
-        </div>
-
+          <div style={{ background: 'white', borderRadius: '18px', padding: '20px 24px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
+            {current.emoji && (
+              <div style={{ fontSize: '48px', marginBottom: '12px' }}>{current.emoji}</div>
+            )}
+            <p style={{ fontSize: '16px', color: 'var(--text)', lineHeight: '1.6', marginBottom: '12px' }}>
+              {current.situation}
+            </p>
+            <p style={{ fontSize: '16px', fontWeight: '700', color: 'var(--purple)' }}>
+              {current.question}
+            </p>
+          </div>
+        </>
+      }
+      response={
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', maxWidth: '400px' }}>
           {visibleOptions.map(option => {
             let bg = 'white'
@@ -133,19 +133,16 @@ function PragmaticScreen({ onFinish, onBack }) {
             )
           })}
         </div>
-
-        {feedback && (
-          <div className={`feedback-banner ${feedback.type}`} style={{ maxWidth: '400px', lineHeight: '1.5' }}>
-            {feedback.text}
-          </div>
-        )}
-
-        {showNext && (
-          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
-        )}
-
-      </div>
-    </div>
+      }
+      feedback={feedback && (
+        <div className={`feedback-banner ${feedback.type}`} style={{ maxWidth: '400px', lineHeight: '1.5' }}>
+          {feedback.text}
+        </div>
+      )}
+      action={showNext && (
+        <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+      )}
+    />
   )
 }
 

@@ -1,54 +1,183 @@
 /* ============================================================
-   NexiaPlay — Design System
-   Paleta clínica: teal (fonológico), purple (léxico),
-   coral (morfosintáctico), gold (pragmático)
+   AURAPLAY — Design System v3.0
+   Motor de temas: [data-theme] + Variables Funcionales
+   Arquitectura Bipolar: Terapeuta (glass) / Niño (orgánico)
    ============================================================ */
 
+/* ── Fuentes del sistema — data-light, carga <1s ─────────── */
+/* Display: usa Georgia/serif del sistema para elegancia premium */
+/* Body: system-ui stack para máxima velocidad LATAM           */
+
 :root {
-  --mint:       #e8f5f0;
-  --mint2:      #c8e8dc;
-  --teal:       #4aab8a;
-  --teal-dark:  #2d7a62;
-  --teal-light: #e8f5ee;
-  --peach:      #f5e6de;
-  --coral:      #e07a5f;
-  --coral-dark: #993C1D;
-  --coral-light:#fdf0ec;
-  --lavender:   #e8e0f5;
-  --purple:     #7c6bb0;
-  --purple-dark:#4a3880;
-  --purple-light:#f0edf8;
-  --yellow:     #fff3c4;
-  --gold:       #e8a020;
-  --gold-dark:  #854F0B;
-  --gold-light: #fff8e1;
-  --text:       #3a3a3a;
-  --text2:      #666666;
-  --shadow:     0 2px 12px rgba(0,0,0,0.07);
-  --radius:     16px;
-  --radius-sm:  10px;
-  --radius-xs:  8px;
-  --border:     0.5px solid rgba(0,0,0,0.10);
+  /* ── Paleta Maestra — nunca usar directamente en componentes */
+  --mint:         #e8f5f0;
+  --mint2:        #c8e8dc;
+  --teal:         #4aab8a;
+  --teal-dark:    #2d7a62;
+  --teal-light:   #e8f5ee;
+
+  --peach:        #f5e6de;
+  --coral:        #e07a5f;
+  --coral-dark:   #993C1D;
+  --coral-light:  #fdf0ec;
+
+  --lavender:     #e8e0f5;
+  --purple:       #7c6bb0;
+  --purple-dark:  #4a3880;
+  --purple-light: #f0edf8;
+
+  --yellow:       #fff3c4;
+  --gold:         #e8a020;
+  --gold-dark:    #854F0B;
+  --gold-light:   #fff8e1;
+
+  --text:         #3a3a3a;
+  --text2:        #666666;
+  --text3:        #999999;
+
+  /* ── Sombras por nivel de elevación ── */
+  --shadow-xs:    0 1px 4px rgba(0,0,0,0.05);
+  --shadow-sm:    0 2px 12px rgba(0,0,0,0.07);
+  --shadow-md:    0 4px 20px rgba(0,0,0,0.10);
+  --shadow-lg:    0 8px 40px rgba(0,0,0,0.14);
+
+  /* ── Radios — sistema de curvatura ── */
+  --radius-xs:    8px;
+  --radius-sm:    12px;
+  --radius:       16px;
+  --radius-lg:    20px;
+  --radius-xl:    24px;
+  --radius-pill:  999px;
+
+  /* ── Bordes ── */
+  --border:       0.5px solid rgba(0,0,0,0.10);
+  --border-md:    1px solid rgba(0,0,0,0.08);
+
+  /* ── Transiciones ── */
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+
+  /* ════════════════════════════════════════════════════════
+     VARIABLES FUNCIONALES — Capa de tema por defecto (teal)
+     Los componentes SOLO deben usar estas variables.
+     El data-theme las sobreescribe automáticamente.
+     ════════════════════════════════════════════════════════ */
+  --theme-main:      var(--teal);
+  --theme-dark:      var(--teal-dark);
+  --theme-light:     var(--teal-light);
+  --theme-surface:   var(--mint);
+  --theme-surface2:  var(--mint2);
+  --theme-shadow:    rgba(74, 171, 138, 0.12);
+  --theme-shadow-md: rgba(74, 171, 138, 0.20);
+  --theme-border:    rgba(74, 171, 138, 0.25);
+  /* Personalidad del tema: radio más grande = más orgánico */
+  --theme-radius:    var(--radius);
+  /* Glassmorphism del terapeuta: blur sutil */
+  --theme-blur:      blur(12px);
 }
 
-/* ── Reset & base ─────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+/* ════════════════════════════════════════════════════════════
+   MOTOR DE TEMAS — data-theme
+   Justificación clínica: el color crea anclaje cognitivo.
+   El niño sabe qué esfuerzo mental se espera solo con el color.
+   ════════════════════════════════════════════════════════════ */
+
+/* Fonológico — TEAL: técnico, limpio, "científico"
+   Psicología: azul-verde transmite precisión y claridad.
+   Es el color de la frecuencia sonora, del espectrograma. */
+[data-theme='fonologico'] {
+  --theme-main:      var(--teal);
+  --theme-dark:      var(--teal-dark);
+  --theme-light:     var(--teal-light);
+  --theme-surface:   var(--mint);
+  --theme-surface2:  var(--mint2);
+  --theme-shadow:    rgba(74, 171, 138, 0.12);
+  --theme-shadow-md: rgba(74, 171, 138, 0.22);
+  --theme-border:    rgba(74, 171, 138, 0.28);
+  --theme-radius:    var(--radius);      /* curvatura media = balance */
+}
+
+/* Léxico — PURPLE: creativo, cerebral, imaginativo
+   Psicología: el morado activa asociaciones semánticas.
+   Es el color del pensamiento divergente y el vocabulario. */
+[data-theme='lexico'] {
+  --theme-main:      var(--purple);
+  --theme-dark:      var(--purple-dark);
+  --theme-light:     var(--purple-light);
+  --theme-surface:   var(--lavender);
+  --theme-surface2:  #ddd6f5;
+  --theme-shadow:    rgba(124, 107, 176, 0.12);
+  --theme-shadow-md: rgba(124, 107, 176, 0.22);
+  --theme-border:    rgba(124, 107, 176, 0.28);
+  --theme-radius:    var(--radius-lg);   /* más redondeado = más lúdico */
+}
+
+/* Morfosintáctico — CORAL: cálido, estructurado, narrativo
+   Psicología: el naranja-rojo activa la energía verbal.
+   Es el color de la historia, la secuencia, el orden. */
+[data-theme='morfosintactico'] {
+  --theme-main:      var(--coral);
+  --theme-dark:      var(--coral-dark);
+  --theme-light:     var(--coral-light);
+  --theme-surface:   var(--peach);
+  --theme-surface2:  #f5c6b0;
+  --theme-shadow:    rgba(224, 122, 95, 0.12);
+  --theme-shadow-md: rgba(224, 122, 95, 0.22);
+  --theme-border:    rgba(224, 122, 95, 0.28);
+  --theme-radius:    var(--radius);
+}
+
+/* Pragmático — GOLD: cálido, social, relacional
+   Psicología: el dorado-ámbar activa calidez y conexión.
+   Es el color de la conversación, la intención, el vínculo. */
+[data-theme='pragmatico'] {
+  --theme-main:      var(--gold);
+  --theme-dark:      var(--gold-dark);
+  --theme-light:     var(--gold-light);
+  --theme-surface:   var(--yellow);
+  --theme-surface2:  #fde8a0;
+  --theme-shadow:    rgba(232, 160, 32, 0.12);
+  --theme-shadow-md: rgba(232, 160, 32, 0.22);
+  --theme-border:    rgba(232, 160, 32, 0.28);
+  --theme-radius:    var(--radius-lg);   /* más suave = más social */
+}
+
+/* ════════════════════════════════════════════════════════════
+   CAPA DEL TERAPEUTA — glassmorphism profesional
+   data-layer='professional' en TherapistPanel y ConfigPanel
+   ════════════════════════════════════════════════════════════ */
+[data-layer='professional'] {
+  --theme-main:      #3a4a5a;
+  --theme-dark:      #1a2a3a;
+  --theme-light:     #f0f4f8;
+  --theme-surface:   rgba(255,255,255,0.72);
+  --theme-surface2:  rgba(240,244,248,0.80);
+  --theme-shadow:    rgba(0,0,0,0.06);
+  --theme-shadow-md: rgba(0,0,0,0.10);
+  --theme-border:    rgba(0,0,0,0.08);
+  --theme-radius:    var(--radius-sm);   /* más cuadrado = más formal */
+}
+
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f4f6f4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: #f0f4f2;
   color: var(--text);
   display: flex;
   justify-content: center;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app-wrapper {
   width: 100%;
   max-width: 480px;
   min-height: 100vh;
-  background: #f4f6f4;
+  background: #f0f4f2;
   position: relative;
 }
 
@@ -58,13 +187,94 @@ body {
   min-height: 100vh;
 }
 
-/* ── Activity header ──────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   CLASES PREMIUM GLOBALES — consumen variables funcionales
+   Justificación económica: escribes una vez, funciona en
+   todas las pantallas automáticamente. Zero CSS redundante.
+   ════════════════════════════════════════════════════════════ */
+
+/* Tarjeta base — usa el tema activo automáticamente */
+.theme-card {
+  background: #fff;
+  border-radius: var(--theme-radius);
+  border: 1px solid var(--theme-border);
+  box-shadow: 0 4px 16px var(--theme-shadow);
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+.theme-card:active { transform: scale(0.985); }
+
+/* Superficie suave — para fondos de sección */
+.theme-surface {
+  background: var(--theme-surface);
+  border-radius: var(--theme-radius);
+  border: 1px solid var(--theme-border);
+}
+
+/* Botón primario temático */
+.theme-btn-primary {
+  background: var(--theme-main);
+  color: #fff;
+  border: none;
+  border-radius: var(--theme-radius);
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 14px var(--theme-shadow-md);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+  letter-spacing: -0.2px;
+}
+.theme-btn-primary:active { opacity: 0.88; transform: scale(0.98); }
+.theme-btn-primary:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+
+/* Botón ghost temático */
+.theme-btn-ghost {
+  background: var(--theme-surface);
+  color: var(--theme-dark);
+  border: 1.5px solid var(--theme-border);
+  border-radius: var(--theme-radius);
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background var(--duration-fast);
+}
+.theme-btn-ghost:active { background: var(--theme-surface2); }
+
+/* Badge temático */
+.theme-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--theme-surface);
+  color: var(--theme-dark);
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--theme-border);
+}
+
+/* Barra de progreso temática */
+.theme-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--theme-main);
+  transition: width 0.6s var(--ease-out);
+}
+
+/* ── Activity header ──────────────────────────────────────── */
 .activity-header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #fff;
-  border-bottom: var(--border);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: var(--theme-blur);
+  -webkit-backdrop-filter: var(--theme-blur);
+  border-bottom: 1px solid var(--theme-border);
   padding: 12px 16px 10px;
   display: flex;
   align-items: center;
@@ -75,16 +285,18 @@ body {
   width: 34px;
   height: 34px;
   border-radius: var(--radius-xs);
-  background: var(--mint);
+  background: var(--theme-surface);
   border: none;
   cursor: pointer;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--teal-dark);
+  color: var(--theme-dark);
   flex-shrink: 0;
+  transition: background var(--duration-fast);
 }
+.back-btn:active { background: var(--theme-surface2); }
 
 .activity-title {
   font-size: 15px;
@@ -93,20 +305,19 @@ body {
   color: var(--text);
 }
 
-/* ── Progress bar (barra delgada bajo el header) ─────── */
+/* ── Progress bar (barra delgada bajo el header) ─────────── */
 .progress-track-thin {
-  height: 4px;
-  background: #e8ede8;
+  height: 3px;
+  background: rgba(0,0,0,0.06);
   width: 100%;
 }
-
 .progress-fill-thin {
   height: 100%;
-  border-radius: 0;
-  transition: width 0.3s ease;
+  background: var(--theme-main);
+  transition: width 0.4s var(--ease-out);
 }
 
-/* ── Game area ────────────────────────────────────────── */
+/* ── Game area ────────────────────────────────────────────── */
 .game-area {
   display: flex;
   flex-direction: column;
@@ -116,7 +327,7 @@ body {
   flex: 1;
 }
 
-/* ── Instruction text ─────────────────────────────────── */
+/* ── Instruction text ─────────────────────────────────────── */
 .instruction {
   font-size: 14px;
   color: var(--text2);
@@ -125,45 +336,46 @@ body {
   line-height: 1.5;
 }
 
-/* ── Prompt card (tarjeta de estímulo) ────────────────── */
+/* ── Prompt card ──────────────────────────────────────────── */
 .prompt-card {
   width: 100%;
   background: #fff;
-  border-radius: var(--radius);
-  border: var(--border);
+  border-radius: var(--theme-radius);
+  border: 1px solid var(--theme-border);
   padding: 20px 16px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 16px var(--theme-shadow);
 }
-
 .prompt-emoji { font-size: 56px; line-height: 1; }
 .prompt-word  { font-size: 28px; font-weight: 700; letter-spacing: 1px; color: var(--text); }
 
-/* ── Audio button ─────────────────────────────────────── */
+/* ── Audio button ─────────────────────────────────────────── */
 .audio-btn-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 16px;
-  border-radius: 20px;
-  border: var(--border);
-  background: var(--mint);
-  color: var(--teal-dark);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--theme-border);
+  background: var(--theme-surface);
+  color: var(--theme-dark);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+  transition: background var(--duration-fast);
 }
+.audio-btn-pill:active { background: var(--theme-surface2); }
 
-/* ── Play button (circular, MinimalPairs) ─────────────── */
+/* ── Play button circular ─────────────────────────────────── */
 .play-btn {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--theme-main);
   border: none;
   cursor: pointer;
   font-size: 28px;
@@ -171,12 +383,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(74,171,138,0.35);
-  transition: transform 0.1s;
+  box-shadow: 0 4px 20px var(--theme-shadow-md);
+  transition: transform var(--duration-fast);
 }
-.play-btn:active { transform: scale(0.95); }
+.play-btn:active { transform: scale(0.94); }
 
-/* ── Options grid ─────────────────────────────────────── */
+/* ── Options grid ─────────────────────────────────────────── */
 .word-choices {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -184,10 +396,10 @@ body {
   width: 100%;
 }
 
-/* ── Option card ──────────────────────────────────────── */
+/* ── Option card ──────────────────────────────────────────── */
 .word-card {
   background: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--theme-radius);
   border: 2px solid transparent;
   padding: 16px 8px;
   text-align: center;
@@ -196,26 +408,25 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  box-shadow: var(--shadow);
-  transition: transform 0.1s, border-color 0.15s;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast), border-color var(--duration-fast);
   user-select: none;
 }
-.word-card:active { transform: scale(0.97); }
+.word-card:active { transform: scale(0.96); }
 .word-card.correct {
-  border-color: var(--teal);
-  background: var(--teal-light);
-  animation: celebrate 0.35s ease;
+  border-color: var(--theme-main);
+  background: var(--theme-light);
+  animation: celebrate 0.35s var(--ease-out);
 }
 .word-card.wrong {
   border-color: var(--coral);
   background: #fef4f2;
   animation: shake 0.35s ease;
 }
-
 .word-emoji { font-size: 48px; display: block; }
 .word-text  { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; color: var(--text); }
 
-/* ── Feedback banner ──────────────────────────────────── */
+/* ── Feedback banner ──────────────────────────────────────── */
 .feedback-banner {
   border-radius: var(--radius-sm);
   padding: 10px 20px;
@@ -224,37 +435,37 @@ body {
   text-align: center;
   width: 100%;
 }
-.feedback-banner.correct { background: #e8f8f2; color: var(--teal-dark); }
+.feedback-banner.correct { background: var(--theme-light); color: var(--theme-dark); }
 .feedback-banner.wrong   { background: #fef0ee; color: var(--coral-dark); }
 
-/* ── Check / Next button ──────────────────────────────── */
+/* ── Botón check/next ─────────────────────────────────────── */
 .check-btn {
   width: 100%;
   padding: 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--theme-radius);
   border: none;
-  background: var(--teal);
+  background: var(--theme-main);
   color: #fff;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  letter-spacing: 0.3px;
-  transition: opacity 0.15s;
+  letter-spacing: -0.2px;
+  box-shadow: 0 4px 14px var(--theme-shadow-md);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
 }
-.check-btn:active { opacity: 0.85; }
-.check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.check-btn:active { opacity: 0.88; transform: scale(0.98); }
+.check-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* ── BuildWord: syllable slots & buttons ──────────────── */
+/* ── BuildWord: syllable slots ────────────────────────────── */
 .word-target {
   background: #fff;
-  border-radius: var(--radius);
-  border: var(--border);
+  border-radius: var(--theme-radius);
+  border: 1px solid var(--theme-border);
   padding: 16px;
   width: 100%;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   text-align: center;
 }
-
 .word-target-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
 .word-target-img   { font-size: 60px; display: block; margin-bottom: 4px; }
 .word-target-hint  { font-size: 13px; color: var(--text2); }
@@ -266,25 +477,24 @@ body {
   flex-wrap: wrap;
   margin: 10px 0;
 }
-
 .syllable-slot {
   width: 52px;
   height: 52px;
-  border-radius: var(--radius-xs);
-  border: 1.5px dashed var(--mint2);
-  background: var(--mint);
+  border-radius: var(--radius-sm);
+  border: 1.5px dashed var(--theme-surface2);
+  background: var(--theme-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--teal-dark);
-  transition: background 0.15s, border-color 0.15s;
+  color: var(--theme-dark);
+  transition: background var(--duration-fast), border-color var(--duration-fast);
 }
 .syllable-slot.filled {
   background: #fff;
   border-style: solid;
-  border-color: var(--teal);
+  border-color: var(--theme-main);
 }
 
 .syllable-options {
@@ -293,62 +503,52 @@ body {
   justify-content: center;
   flex-wrap: wrap;
 }
-
 .syllable-btn {
   padding: 10px 16px;
-  border-radius: var(--radius-xs);
-  border: 1.5px solid var(--mint2);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--theme-surface2);
   background: #fff;
   font-size: 17px;
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
-  transition: background 0.12s, border-color 0.12s;
+  transition: background var(--duration-fast), border-color var(--duration-fast);
 }
-.syllable-btn:hover  { background: var(--mint); border-color: var(--teal); }
+.syllable-btn:active { background: var(--theme-surface); border-color: var(--theme-main); }
 .syllable-btn.used   { opacity: 0.28; pointer-events: none; }
 
-/* ── NarrativeScreen: sequence cards ─────────────────── */
+/* ── NarrativeScreen cards ────────────────────────────────── */
 .narrative-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
 }
-
 .narrative-card {
   background: #fff;
-  border-radius: var(--radius-sm);
+  border-radius: var(--theme-radius);
   border: 2px solid transparent;
   padding: 12px 8px;
   text-align: center;
   cursor: pointer;
   position: relative;
-  box-shadow: var(--shadow);
-  transition: border-color 0.15s;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast), transform var(--duration-fast);
 }
+.narrative-card:active { transform: scale(0.97); }
 .narrative-card.selected {
-  border-color: var(--purple);
-  background: var(--purple-light);
+  border-color: var(--theme-main);
+  background: var(--theme-light);
 }
 .narrative-card.correct {
   border-color: var(--teal);
   background: var(--teal-light);
 }
-
-.narrative-num {
-  position: absolute;
-  top: 5px;
-  left: 8px;
-  font-size: 10px;
-  color: var(--text2);
-  font-weight: 500;
-}
-
+.narrative-num   { position: absolute; top: 5px; left: 8px; font-size: 10px; color: var(--text2); font-weight: 500; }
 .narrative-emoji { font-size: 36px; display: block; }
 .narrative-text  { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.3; }
 
-/* ── SyntaxScreen: fill-in-blank ─────────────────────── */
+/* ── SyntaxScreen ─────────────────────────────────────────── */
 .syntax-sentence {
   font-size: 18px;
   font-weight: 500;
@@ -356,66 +556,61 @@ body {
   text-align: center;
   line-height: 1.6;
 }
-
 .syntax-blank {
   display: inline-block;
   min-width: 64px;
-  border-bottom: 2px solid var(--purple);
+  border-bottom: 2px solid var(--theme-main);
   padding: 0 4px;
-  color: var(--purple-dark);
+  color: var(--theme-dark);
   font-weight: 700;
   vertical-align: bottom;
 }
 
-.connector-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-}
-
+.connector-options { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 .connector-opt {
   background: #fff;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid transparent;
-  border-color: rgba(0,0,0,0.09);
+  border-radius: var(--theme-radius);
+  border: 1.5px solid rgba(0,0,0,0.09);
   padding: 12px 16px;
   font-size: 16px;
   font-weight: 600;
   color: var(--text);
   cursor: pointer;
   text-align: center;
-  transition: background 0.12s, border-color 0.12s;
+  transition: background var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast);
 }
-.connector-opt:hover   { background: var(--lavender); border-color: var(--purple); }
-.connector-opt.correct { background: var(--coral-light); border-color: var(--coral); color: var(--coral-dark); }
+.connector-opt:active   { background: var(--theme-surface); border-color: var(--theme-main); transform: scale(0.98); }
+.connector-opt.correct { background: var(--theme-light); border-color: var(--theme-main); color: var(--theme-dark); }
 .connector-opt.wrong   { background: #fef4f2; border-color: var(--coral); opacity: 0.6; }
 
-/* ── Complexity badge (FollowInstruction) ─────────────── */
+/* ── Category badge ───────────────────────────────────────── */
 .complexity-badge {
   display: inline-block;
   font-size: 11px;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   border: var(--border);
   color: var(--text2);
   background: #f5f5f5;
 }
-
-/* ── Category badge ───────────────────────────────────── */
 .category-badge {
   display: inline-block;
   font-size: 13px;
   font-weight: 600;
   padding: 5px 14px;
-  border-radius: 20px;
-  background: var(--purple-light);
-  color: var(--purple-dark);
+  border-radius: var(--radius-pill);
+  background: var(--theme-surface);
+  color: var(--theme-dark);
+  border: 1px solid var(--theme-border);
 }
 
-/* ── HomeScreen ───────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   HOME SCREEN
+   ════════════════════════════════════════════════════════════ */
 .home-header {
-  background: #fff;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: var(--border);
   padding: 14px 16px 12px;
   position: sticky;
@@ -427,10 +622,12 @@ body {
 }
 
 .logo-text {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: var(--teal-dark);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
+  /* Carácter serif para el logo — premium sin cargar fuente */
+  font-family: Georgia, 'Times New Roman', serif;
 }
 
 .star-count {
@@ -442,11 +639,11 @@ body {
   font-size: 13px;
   font-weight: 700;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
 }
 
 .home-scroll {
-  padding: 12px 12px 80px;
+  padding: 14px 14px 88px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -455,18 +652,17 @@ body {
 /* Patient card */
 .patient-card {
   background: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   border: var(--border);
-  padding: 12px 14px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: var(--shadow);
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
 }
-
 .patient-avatar {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--mint);
   display: flex;
@@ -474,61 +670,58 @@ body {
   justify-content: center;
   font-size: 24px;
   flex-shrink: 0;
+  border: 2px solid var(--mint2);
 }
-
-.patient-name { font-size: 15px; font-weight: 600; color: var(--text); }
-.patient-meta { font-size: 12px; color: var(--text2); margin-top: 1px; }
-
+.patient-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.patient-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
 .diag-badge {
   font-size: 11px;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 20px;
-  background: var(--teal-light);
-  color: var(--teal-dark);
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
 }
 
 /* Section label */
 .section-label {
   font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text2);
+  color: var(--text3);
   padding: 0 4px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 /* Activity group */
 .activity-group {
   background: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   border: var(--border);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-xs);
 }
-
 .group-header {
-  padding: 9px 14px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   gap: 8px;
   border-bottom: var(--border);
+  cursor: pointer;
+  transition: background var(--duration-fast);
 }
-
+.group-header:active { background: #fafafa; }
 .group-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
-
 .group-name {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text2);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -539,12 +732,11 @@ body {
   border-bottom: var(--border);
   cursor: pointer;
   gap: 10px;
-  transition: background 0.1s;
+  transition: background var(--duration-fast);
 }
 .activity-row:last-child { border-bottom: none; }
 .activity-row:active     { background: #f8f8f8; }
-.activity-row.disabled   { opacity: 0.35; cursor: not-allowed; }
-
+.activity-row.disabled   { opacity: 0.32; cursor: not-allowed; }
 .activity-icon {
   width: 36px;
   height: 36px;
@@ -555,33 +747,18 @@ body {
   font-size: 18px;
   flex-shrink: 0;
 }
-
-.activity-label {
-  flex: 1;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.activity-status {
-  font-size: 11px;
-  color: var(--text2);
-}
-
-.activity-arrow {
-  font-size: 16px;
-  color: #ccc;
-}
+.activity-label { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
+.activity-status { font-size: 11px; color: var(--text3); }
+.activity-arrow  { font-size: 16px; color: #d0d0d0; }
 
 /* Progress section */
 .progress-section {
   background: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   border: var(--border);
   padding: 14px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-xs);
 }
-
 .progress-row {
   display: flex;
   align-items: center;
@@ -589,14 +766,12 @@ body {
   margin-bottom: 8px;
 }
 .progress-row:last-child { margin-bottom: 0; }
-
 .progress-label {
   font-size: 11px;
   color: var(--text2);
-  width: 76px;
+  width: 78px;
   flex-shrink: 0;
 }
-
 .progress-bar {
   flex: 1;
   height: 6px;
@@ -604,74 +779,247 @@ body {
   border-radius: 3px;
   overflow: hidden;
 }
-
 .progress-fill {
   height: 100%;
   border-radius: 3px;
-  transition: width 0.6s ease;
+  transition: width 0.6s var(--ease-out);
 }
-
 .progress-pct {
   font-size: 12px;
-  font-weight: 600;
-  width: 32px;
+  font-weight: 700;
+  width: 34px;
   text-align: right;
 }
 
 /* Therapist button */
 .therapist-btn {
   background: #fff;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   border: var(--border);
-  padding: 12px 14px;
+  padding: 13px 16px;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-xs);
   width: 100%;
   text-align: left;
+  transition: background var(--duration-fast), box-shadow var(--duration-fast);
+}
+.therapist-btn:active { background: #f8f8f8; }
+.therapist-label { font-size: 13px; color: var(--text2); flex: 1; font-weight: 500; }
+
+/* ════════════════════════════════════════════════════════════
+   THERAPIST PANEL — Capa profesional (glassmorphism)
+   ════════════════════════════════════════════════════════════ */
+
+/* Panel contenedor */
+.panel-sheet {
+  background: #fff;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
-.therapist-label {
+/* Drag handle */
+.panel-handle {
+  width: 36px;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: var(--radius-pill);
+  margin: 12px auto 0;
+}
+
+/* Header sticky del panel */
+.panel-header {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.panel-subtitle {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+/* Botón cerrar del panel */
+.panel-close-btn {
+  background: #f5f5f5;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 7px 13px;
+  cursor: pointer;
   font-size: 13px;
   color: var(--text2);
-  flex: 1;
+  font-weight: 600;
+  transition: background var(--duration-fast);
+}
+.panel-close-btn:active { background: #ebebeb; }
+
+/* Paciente activo en panel */
+.panel-patient-card {
+  background: linear-gradient(135deg, #f0faf6 0%, #f5f0fa 100%);
+  border-radius: var(--radius);
+  border: 1px solid rgba(74,171,138,0.20);
+  padding: 14px 16px;
 }
 
-/* ── Results screen ───────────────────────────────────────── */
-.results-screen  { background: #f4f6f4; }
-.results-area    { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; gap: 16px; text-align: center; }
-.trophy          { font-size: 80px; animation: bounce 0.6s ease; }
-.results-title   { font-size: 26px; font-weight: 700; color: var(--text); }
-.stars-row       { font-size: 40px; letter-spacing: 4px; }
-.results-stats   { background: #fff; border-radius: var(--radius); border: var(--border); padding: 16px 24px; width: 100%; max-width: 320px; box-shadow: var(--shadow); }
-.stat-row        { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--mint2); }
-.stat-row:last-child { border-bottom: none; }
-.stat-label      { font-size: 13px; color: var(--text2); }
-.stat-value      { font-size: 14px; font-weight: 700; color: var(--teal); }
+/* Grid de acciones 2 columnas */
+.panel-action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
 
-/* ── Animations ───────────────────────────────────────── */
+/* Botón de acción del panel */
+.panel-action-btn {
+  padding: 16px 10px;
+  border-radius: var(--radius);
+  border: 1.5px solid transparent;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+}
+.panel-action-btn:active { opacity: 0.85; transform: scale(0.97); }
+
+/* Tabs del ConfigPanel */
+.config-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  background: #fafafa;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.config-tabs::-webkit-scrollbar { display: none; }
+
+.config-tab {
+  padding: 11px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  border: none;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color var(--duration-fast), border-color var(--duration-fast);
+  flex-shrink: 0;
+}
+.config-tab.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  background: #fff;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESULTS SCREEN
+   ════════════════════════════════════════════════════════════ */
+.results-screen  { background: var(--theme-light, #f0f4f2); }
+.results-area    {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  gap: 16px;
+  text-align: center;
+}
+.trophy        { font-size: 80px; animation: bounce 0.6s var(--ease-out); }
+.results-title { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+.stars-row     { font-size: 40px; letter-spacing: 4px; }
+.results-stats {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--theme-border);
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 4px 16px var(--theme-shadow);
+}
+.stat-row        { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--theme-surface2, var(--mint2)); }
+.stat-row:last-child { border-bottom: none; }
+.stat-label  { font-size: 13px; color: var(--text2); }
+.stat-value  { font-size: 14px; font-weight: 700; color: var(--theme-main); }
+
+/* ════════════════════════════════════════════════════════════
+   FEEDBACK DE ÉXITO — borde animado (no interrumpe el flujo)
+   Justificación clínica: evita sobre-estimulación en TEA.
+   El cambio de borde de pantalla es periférico, no central.
+   ════════════════════════════════════════════════════════════ */
+.screen-success-pulse {
+  box-shadow: 0 0 0 0 var(--theme-main);
+  animation: successRing 0.8s var(--ease-out) forwards;
+}
+
+@keyframes successRing {
+  0%   { box-shadow: 0 0 0 0 var(--theme-shadow-md); }
+  40%  { box-shadow: 0 0 0 10px var(--theme-shadow); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ── Animaciones base ─────────────────────────────────────── */
 @keyframes celebrate {
   0%   { transform: scale(1); }
-  50%  { transform: scale(1.05); }
+  45%  { transform: scale(1.06); }
   100% { transform: scale(1); }
 }
-
 @keyframes shake {
-  0%   { transform: translateX(0); }
-  25%  { transform: translateX(-5px); }
-  75%  { transform: translateX(5px); }
-  100% { transform: translateX(0); }
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-5px); }
+  75%     { transform: translateX(5px); }
 }
-
 @keyframes bounce {
-  0%   { transform: scale(0.5); opacity: 0; }
-  70%  { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
+  0%   { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  65%  { transform: scale(1.08) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.no-anim, .no-anim * {
-  animation: none !important;
-  transition: none !important;
+/* Animación de entrada — elementos de la actividad */
+.anim-slide-up {
+  animation: fadeSlideUp var(--duration-base) var(--ease-out) both;
+}
+
+/* Reducción de movimiento — accesibilidad y TEA */
+.no-anim,
+.no-anim *,
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

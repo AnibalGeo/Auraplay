@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
 import { playVoiceFeedback } from '../utils/audioFeedback'
+import ActivityScreen from '../components/ActivityScreen'
 
 // Actividad: el terapeuta lee una instrucción y el niño selecciona
 // la imagen que corresponde a ejecutarla correctamente.
@@ -95,73 +96,68 @@ export default function FollowInstructionScreen({ onFinish }) {
   const progress = (index / items.length) * 100
 
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button style={styles.backBtn} onClick={() => onFinish(score, items.length)}>←</button>
-        <span style={styles.title}>👂 Sigue la instrucción</span>
-        <span style={styles.counter}>{index + 1} / {items.length}</span>
-      </div>
-
-      {/* Progreso */}
-      <div style={styles.progressTrack}>
-        <div style={{ ...styles.progressFill, width: `${progress}%` }} />
-      </div>
-
-      {/* Instrucción */}
-      <div style={styles.promptCard}>
-        <div style={styles.complexityRow}>
-          <span style={styles.complexityBadge}>{complexityLabel}</span>
-          {estimulusSettings?.sequentialStimulus && !revealed && (
-            <span style={styles.listeningBadge}>🔊 Escuchando…</span>
-          )}
+    <ActivityScreen
+      title="👂 Sigue la instrucción"
+      componentType="morfosintactico"
+      current={index + 1}
+      total={items.length}
+      onBack={() => onFinish(score, items.length)}
+      stimulusKey={index}
+      stimulus={
+        <div style={styles.promptCard}>
+          <div style={styles.complexityRow}>
+            <span style={styles.complexityBadge}>{complexityLabel}</span>
+            {estimulusSettings?.sequentialStimulus && !revealed && (
+              <span style={styles.listeningBadge}>🔊 Escuchando…</span>
+            )}
+          </div>
+          <p style={styles.instructionText}>
+            {estimulusSettings?.simplifiedInstructions
+              ? current.simplified ?? current.instruction
+              : current.instruction}
+          </p>
+          <button
+            style={styles.audioBtn}
+            onClick={() => speak(current.instruction)}
+          >
+            🔊 Repetir instrucción
+          </button>
         </div>
-        <p style={styles.instructionText}>
-          {estimulusSettings?.simplifiedInstructions
-            ? current.simplified ?? current.instruction
-            : current.instruction}
-        </p>
-        <button
-          style={styles.audioBtn}
-          onClick={() => speak(current.instruction)}
-        >
-          🔊 Repetir instrucción
-        </button>
-      </div>
-
-      {/* Opciones — se revelan después del audio si sequentialStimulus */}
-      <div style={{
-        ...styles.grid,
-        opacity: revealed ? 1 : 0,
-        transition: 'opacity 0.4s ease',
-        pointerEvents: revealed ? 'auto' : 'none',
-      }}>
-        {options.map((opt, i) => {
-          const isCorrect = opt.word === current.correct
-          const isSelected = selected === opt.word
-          let bg = '#fff'
-          let border = '2px solid #e0e0e0'
-          let color = '#333'
-          if (selected !== null) {
-            if (isCorrect)       { bg = '#fff3e0'; border = '2px solid #e8a020'; color = '#b56a00' }
-            else if (isSelected) { bg = '#fdecea'; border = '2px solid #e57373'; color = '#c62828' }
-          }
-          return (
-            <button
-              key={i}
-              style={{ ...styles.optCard, background: bg, border, color }}
-              onClick={() => handleSelect(opt)}
-              disabled={selected !== null || !revealed}
-            >
-              <span style={styles.optEmoji}>{opt.emoji}</span>
-              {!estimulusSettings?.simplifiedInstructions && (
-                <span style={styles.optWord}>{opt.word}</span>
-              )}
-            </button>
-          )
-        })}
-      </div>
-    </div>
+      }
+      response={
+        <div style={{
+          ...styles.grid,
+          opacity: revealed ? 1 : 0,
+          transition: 'opacity 0.4s ease',
+          pointerEvents: revealed ? 'auto' : 'none',
+        }}>
+          {options.map((opt, i) => {
+            const isCorrect = opt.word === current.correct
+            const isSelected = selected === opt.word
+            let bg = '#fff'
+            let border = '2px solid #e0e0e0'
+            let color = '#333'
+            if (selected !== null) {
+              if (isCorrect)       { bg = '#fff3e0'; border = '2px solid #e8a020'; color = '#b56a00' }
+              else if (isSelected) { bg = '#fdecea'; border = '2px solid #e57373'; color = '#c62828' }
+            }
+            return (
+              <button
+                key={i}
+                style={{ ...styles.optCard, background: bg, border, color }}
+                onClick={() => handleSelect(opt)}
+                disabled={selected !== null || !revealed}
+              >
+                <span style={styles.optEmoji}>{opt.emoji}</span>
+                {!estimulusSettings?.simplifiedInstructions && (
+                  <span style={styles.optWord}>{opt.word}</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+      }
+    />
   )
 }
 

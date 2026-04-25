@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import ActivityScreen from '../components/ActivityScreen'
 
 function NarrativeScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
@@ -105,27 +106,26 @@ function NarrativeScreen({ onFinish, onBack }) {
   const instrSize = estimulusSettings.largerText ? '18px' : '13px'
 
   return (
-    <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <div className="activity-header">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <h2 className="activity-title">Ordenar Historia</h2>
-        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {stories.length}</span>
-      </div>
-      <div className="progress-track-thin">
-        <div className="progress-fill-thin" style={{width:`${(idx/stories.length)*100}%`,background:'#e07a5f'}}/>
-      </div>
-
-      <div className="game-area" style={{ gap: '14px' }}>
-        <div className="word-target">
-          <div className="word-target-label">📖 {story.title}</div>
-        </div>
-
-        <p className="instruction" style={{ fontSize: instrSize }}>
-          {estimulusSettings.simplifiedInstructions
-            ? 'Toca dos tarjetas para cambiarlas de lugar'
-            : 'Toca una tarjeta para seleccionarla y luego toca otra para intercambiarlas. Ordena la historia.'}
-        </p>
-
+    <ActivityScreen
+      title="Ordenar Historia"
+      componentType="morfosintactico"
+      current={idx + 1}
+      total={stories.length}
+      onBack={onBack}
+      stimulusKey={idx}
+      stimulus={
+        <>
+          <div className="word-target">
+            <div className="word-target-label">📖 {story.title}</div>
+          </div>
+          <p className="instruction" style={{ fontSize: instrSize }}>
+            {estimulusSettings.simplifiedInstructions
+              ? 'Toca dos tarjetas para cambiarlas de lugar'
+              : 'Toca una tarjeta para seleccionarla y luego toca otra para intercambiarlas. Ordena la historia.'}
+          </p>
+        </>
+      }
+      response={
         <div className="narrative-grid">
           {cards.map((card, i) => {
             let cls = 'narrative-card'
@@ -140,35 +140,32 @@ function NarrativeScreen({ onFinish, onBack }) {
             )
           })}
         </div>
-
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={handleReset}
-            style={{
-              padding: '10px 20px',
-              background: 'white',
-              border: '2px solid var(--mint2)',
-              borderRadius: '12px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              color: 'var(--text2)',
-            }}
-          >
-            Mezclar
-          </button>
-          <button className="check-btn" onClick={handleCheck}>Verificar ✓</button>
-        </div>
-
-        {feedback && (
-          <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
-        )}
-
-        {showNext && (
-          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
-        )}
-
-      </div>
-    </div>
+      }
+      feedback={feedback && (
+        <div className={`feedback-banner ${feedback.type}`}>{feedback.text}</div>
+      )}
+      action={
+        showNext
+          ? <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+          : <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={handleReset}
+                style={{
+                  padding: '10px 20px',
+                  background: 'white',
+                  border: '2px solid var(--mint2)',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  color: 'var(--text2)',
+                }}
+              >
+                Mezclar
+              </button>
+              <button className="check-btn" onClick={handleCheck}>Verificar ✓</button>
+            </div>
+      }
+    />
   )
 }
 

@@ -105,10 +105,10 @@ function calcWeekProgress(sessionHistory, groupId) {
 
 export default function HomeScreen({ onNavigate }) {
   const { patient, stimulusConfig } = usePatient()
-  const { logout } = useAuth()
-  const [showPanel,  setShowPanel]  = useState(false)
-  const [showLogout, setShowLogout] = useState(false)
-  const [expanded,   setExpanded]   = useState({
+  const { logout } = useAuth()                          // ← useAuth conectado
+  const [showPanel,    setShowPanel]    = useState(false)
+  const [showLogout,   setShowLogout]   = useState(false) // confirm dialog
+  const [expanded,     setExpanded]     = useState({
     fonetico: true, lexico: true, morfosintactico: true, pragmatico: true
   })
   const level = LEVELS[patient.levelId]
@@ -119,66 +119,72 @@ export default function HomeScreen({ onNavigate }) {
     tl_tdah:     { bg: '#fff8e1', color: '#854F0B' },
     tl_tea_tdah: { bg: '#fdf0ec', color: '#993C1D' },
   }
-  const dc        = diagColors[patient.diagnosis] ?? diagColors.tel
+  const dc       = diagColors[patient.diagnosis] ?? diagColors.tel
   const diagLabel = stimulusConfig?.label ?? patient.diagnosis?.toUpperCase()
   const suggestions = SUGGESTIONS[patient.diagnosis] ?? SUGGESTIONS.tel
+
+  function handleLogout() {
+    setShowLogout(false)
+    logout()
+  }
 
   return (
     <div className="screen">
 
-      {/* ── Header ── */}
-      <div className="home-header">
+      {/* ── Header con logout ───────────────────────────────────────────── */}
+      <div className="home-header" style={{ position: 'relative' }}>
         <span className="logo-text">AuraPlay</span>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div className="star-count">
             <span>⭐</span>
             <span>{patient.stars ?? 0}</span>
           </div>
 
-          {/* BOTÓN CERRAR SESIÓN — visible sobre fondo blanco */}
+          {/* Botón cerrar sesión — visible sobre header blanco */}
           <button
             onClick={() => setShowLogout(true)}
             style={{
               background: '#fef4f2',
-              border: '1.5px solid #f5c6be',
-              borderRadius: 8,
-              padding: '5px 10px',
-              color: '#c0392b',
+              border: '1.5px solid #fde0da',
+              borderRadius: 10,
+              padding: '6px 12px',
+              color: '#e07a5f',
               fontSize: 12,
               fontWeight: 700,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              whiteSpace: 'nowrap',
             }}
           >
-            ⎋ Salir
+            <span style={{ fontSize: 13 }}>⎋</span> Salir
           </button>
         </div>
       </div>
 
-      {/* ── Confirm logout ── */}
+      {/* ── Confirm dialog logout ──────────────────────────────────────── */}
       {showLogout && (
         <div style={{
           position: 'fixed', inset: 0,
-          background: 'rgba(0,0,0,0.5)',
+          background: 'rgba(0,0,0,0.45)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 999, padding: 24,
+          zIndex: 200, padding: 24,
         }}>
           <div style={{
             background: '#fff', borderRadius: 20,
-            padding: '28px 24px', maxWidth: 300, width: '100%',
-            textAlign: 'center', boxShadow: '0 8px 40px rgba(0,0,0,0.25)',
+            padding: '28px 24px', maxWidth: 320, width: '100%',
+            textAlign: 'center', boxShadow: '0 8px 40px rgba(0,0,0,0.2)',
             display: 'flex', flexDirection: 'column', gap: 16,
           }}>
-            <span style={{ fontSize: 40 }}>👋</span>
+            <span style={{ fontSize: 36 }}>👋</span>
             <div>
               <h3 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700, color: '#1a2a1a' }}>
                 ¿Cerrar sesión?
               </h3>
               <p style={{ margin: 0, fontSize: 13, color: '#666', lineHeight: 1.5 }}>
-                Volverás a la pantalla de inicio.
+                Volverás a la pantalla de inicio de AuraPlay.
               </p>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -193,14 +199,15 @@ export default function HomeScreen({ onNavigate }) {
                 Cancelar
               </button>
               <button
-                onClick={() => { setShowLogout(false); logout() }}
+                onClick={handleLogout}
                 style={{
-                  flex: 1, padding: '12px', borderRadius: 12, border: 'none',
-                  background: '#e07a5f',
+                  flex: 1, padding: '12px', borderRadius: 12,
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #e07a5f, #c0392b)',
                   fontSize: 14, fontWeight: 700, color: '#fff', cursor: 'pointer',
                 }}
               >
-                Salir
+                Cerrar sesión
               </button>
             </div>
           </div>

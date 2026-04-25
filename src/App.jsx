@@ -60,7 +60,7 @@ function App() {
   const [welcomed,   setWelcomed]   = useState(!isFirstRun)
   const activityStartRef = useRef(null)
 
-  // Cuando la familia hace login, cargar su paciente en contexto
+  // Cargar paciente cuando familia hace login
   useEffect(() => {
     if (isFamily && familyPatientId) {
       const p = getPatientById(familyPatientId)
@@ -68,20 +68,21 @@ function App() {
     }
   }, [isFamily, familyPatientId])
 
-  // ── Gate 0: sin sesión ─────────────────────────────────────────────────────
+  // ── Gate 0: sin sesión → LandingScreen ────────────────────────────────────
   if (!isLoggedIn) {
     return (
       <div className="app-wrapper">
-        <LandingScreen onAuth={() => { /* re-render automático por cambio en AuthContext */ }} />
+        <LandingScreen onAuth={() => {}} />
       </div>
     )
   }
 
-  // ── Gate 1: Modo Familia ───────────────────────────────────────────────────
+  // ── Gate 1: Modo Familia → solo HomeModeScreen ─────────────────────────────
+  // HomeModeScreen maneja su propio logout internamente con useAuth()
   if (isFamily) {
     return (
       <div className="app-wrapper" style={{ overflowY: 'auto' }}>
-        <HomeModeScreen onBack={logout} />
+        <HomeModeScreen />
       </div>
     )
   }
@@ -203,7 +204,7 @@ function App() {
       {screen === 'progress' && <ProgressScreen onBack={() => goTo('home')} />}
       {screen === 'session-history' && <SessionHistoryScreen onBack={() => goTo('home')} />}
       {screen === 'therapy-plan' && <TherapyPlanScreen onBack={() => goTo('home')} onNavigate={goTo} />}
-      {screen === 'home-mode' && <HomeModeScreen onBack={() => goTo('home')} />}
+      {screen === 'home-mode' && <HomeModeScreen />}
       {screen === 'results' && <ResultsScreen result={lastResult} onHome={() => goTo('home')} />}
     </div>
   )

@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
+import ActivityScreen from '../components/ActivityScreen'
 
 function speak(text, rate = 0.82, pitch = 1.05) {
   const synth = window.speechSynthesis
@@ -89,27 +90,26 @@ function MinimalPairsScreen({ onFinish, onBack }) {
   }
 
   return (
-    <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
-      <div className="activity-header">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <h2 className="activity-title">Palabras Similares</h2>
-        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {pairs.length}</span>
-      </div>
-      <div className="progress-track-thin">
-        <div className="progress-fill-thin" style={{width:`${(idx/pairs.length)*100}%`,background:'#4aab8a'}}/>
-      </div>
-
-      <div className="game-area">
-        <p className="instruction" style={{ fontSize: instrSize }}>
-          {estimulusSettings.simplifiedInstructions
-            ? 'Escucha. ¿Cuál es la palabra?'
-            : estimulusSettings.simultaneousAudioVisual
-              ? 'Toca ▶ y escucha con atención. ¿Cuál de estas palabras escuchas?'
-              : 'Primero mira las imágenes. Luego toca ▶ y escucha con atención.'}
-        </p>
-
-        <button className="play-btn" onClick={handlePlay}>▶</button>
-
+    <ActivityScreen
+      title="Palabras Similares"
+      componentType="fonologico"
+      current={idx + 1}
+      total={pairs.length}
+      onBack={onBack}
+      stimulusKey={idx}
+      stimulus={
+        <>
+          <p className="instruction" style={{ fontSize: instrSize }}>
+            {estimulusSettings.simplifiedInstructions
+              ? 'Escucha. ¿Cuál es la palabra?'
+              : estimulusSettings.simultaneousAudioVisual
+                ? 'Toca ▶ y escucha con atención. ¿Cuál de estas palabras escuchas?'
+                : 'Primero mira las imágenes. Luego toca ▶ y escucha con atención.'}
+          </p>
+          <button className="play-btn" onClick={handlePlay}>▶</button>
+        </>
+      }
+      response={
         <div className="word-choices">
           {choices.map(choice => {
             let cardClass = 'word-card'
@@ -126,19 +126,16 @@ function MinimalPairsScreen({ onFinish, onBack }) {
             )
           })}
         </div>
-
-        {feedback && (
-          <div className={`feedback-banner ${feedback.type}`}>
-            {feedback.text}
-          </div>
-        )}
-
-        {showNext && (
-          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
-        )}
-
-      </div>
-    </div>
+      }
+      feedback={feedback && (
+        <div className={`feedback-banner ${feedback.type}`}>
+          {feedback.text}
+        </div>
+      )}
+      action={showNext && (
+        <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+      )}
+    />
   )
 }
 

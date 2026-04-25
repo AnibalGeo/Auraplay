@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { getContent } from '../data/getContent'
 import { getDifficultyForActivity } from '../utils/componentMap'
 import { playVoiceFeedback } from '../utils/audioFeedback'
+import ActivityScreen from '../components/ActivityScreen'
 
 export default function PointImageScreen({ onFinish }) {
   const { patient, estimulusSettings } = usePatient()
@@ -73,58 +74,52 @@ export default function PointImageScreen({ onFinish }) {
   const progress = (index / items.length) * 100
 
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button style={styles.backBtn} onClick={() => onFinish(score, items.length)}>←</button>
-        <span style={styles.title}>👆 Señala la imagen</span>
-        <span style={styles.counter}>{index + 1} / {items.length}</span>
-      </div>
-
-      {/* Progreso */}
-      <div style={styles.progressTrack}>
-        <div style={{ ...styles.progressFill, width: `${progress}%` }} />
-      </div>
-
-      {/* Instrucción + audio */}
-      <div style={styles.promptCard}>
-        <p style={styles.instruction}>
-          {estimulusSettings?.simplifiedInstructions ? 'Toca' : 'Señala la imagen de…'}
-        </p>
-        <div style={styles.wordRow}>
-          <span style={styles.wordText}>{current.word}</span>
-          <button style={styles.audioBtn} onClick={() => speak(current.word)}>🔊</button>
+    <ActivityScreen
+      title="👆 Señala la imagen"
+      componentType="lexico"
+      current={index + 1}
+      total={items.length}
+      onBack={() => onFinish(score, items.length)}
+      stimulusKey={index}
+      stimulus={
+        <div style={styles.promptCard}>
+          <p style={styles.instruction}>
+            {estimulusSettings?.simplifiedInstructions ? 'Toca' : 'Señala la imagen de…'}
+          </p>
+          <div style={styles.wordRow}>
+            <span style={styles.wordText}>{current.word}</span>
+            <button style={styles.audioBtn} onClick={() => speak(current.word)}>🔊</button>
+          </div>
         </div>
-      </div>
-
-      {/* Grid de imágenes */}
-      <div style={{
-        ...styles.imageGrid,
-        gridTemplateColumns: options.length <= 2 ? '1fr 1fr' : '1fr 1fr',
-      }}>
-        {options.map((opt, i) => {
-          const isCorrect = opt.word === current.word
-          const isSelected = selected === opt.word
-          let border = '3px solid transparent'
-          let bg = '#fff'
-          if (selected !== null) {
-            if (isCorrect)        { border = '3px solid #4aab8a'; bg = '#e8f5e9' }
-            else if (isSelected)  { border = '3px solid #e57373'; bg = '#fdecea' }
-          }
-          return (
-            <button
-              key={i}
-              style={{ ...styles.imageCard, border, background: bg }}
-              onClick={() => handleSelect(opt)}
-              disabled={selected !== null}
-            >
-              <span style={styles.imageEmoji}>{opt.emoji}</span>
-              {/* No mostramos la palabra — el ejercicio es receptivo puro */}
-            </button>
-          )
-        })}
-      </div>
-    </div>
+      }
+      response={
+        <div style={{
+          ...styles.imageGrid,
+          gridTemplateColumns: options.length <= 2 ? '1fr 1fr' : '1fr 1fr',
+        }}>
+          {options.map((opt, i) => {
+            const isCorrect = opt.word === current.word
+            const isSelected = selected === opt.word
+            let border = '3px solid transparent'
+            let bg = '#fff'
+            if (selected !== null) {
+              if (isCorrect)        { border = '3px solid #4aab8a'; bg = '#e8f5e9' }
+              else if (isSelected)  { border = '3px solid #e57373'; bg = '#fdecea' }
+            }
+            return (
+              <button
+                key={i}
+                style={{ ...styles.imageCard, border, background: bg }}
+                onClick={() => handleSelect(opt)}
+                disabled={selected !== null}
+              >
+                <span style={styles.imageEmoji}>{opt.emoji}</span>
+              </button>
+            )
+          })}
+        </div>
+      }
+    />
   )
 }
 
