@@ -1015,7 +1015,11 @@ body {
 
 /* Reducción de movimiento — accesibilidad y TEA */
 .no-anim,
-.no-anim *,
+.no-anim * {
+  animation: none !important;
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
