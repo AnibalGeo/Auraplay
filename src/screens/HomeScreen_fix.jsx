@@ -3,6 +3,7 @@ import { usePatient } from '../context/PatientContext'
 import { useAuth } from '../context/AuthContext'
 import { LEVELS } from '../data/levels'
 import TherapistPanel from './TherapistPanel'
+import { APP_CONFIG } from '../config/app.config'
 
 function hasContent(obj) {
   if (!obj) return false
@@ -133,7 +134,7 @@ export default function HomeScreen({ onNavigate }) {
 
       {/* ── Header con logout ───────────────────────────────────────────── */}
       <div className="home-header" style={{ position: 'relative' }}>
-        <span className="logo-text">AuraPlay</span>
+        <span className="logo-text">{APP_CONFIG.name}</span>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div className="star-count">
@@ -184,7 +185,7 @@ export default function HomeScreen({ onNavigate }) {
                 ¿Cerrar sesión?
               </h3>
               <p style={{ margin: 0, fontSize: 13, color: '#666', lineHeight: 1.5 }}>
-                Volverás a la pantalla de inicio de AuraPlay.
+                Volverás a la pantalla de inicio de {APP_CONFIG.name}.
               </p>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>

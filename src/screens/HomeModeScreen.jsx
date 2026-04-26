@@ -17,6 +17,7 @@ import { useState, useMemo } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { useAuth } from '../context/AuthContext'
 import { updatePatient as persistPatient } from '../data/patients'
+import { APP_CONFIG } from '../config/app.config'
 
 // ─── buildDailyTask ───────────────────────────────────────────────────────────
 
@@ -278,7 +279,7 @@ function FamilyHeader({ name, onLogout }) {
             <span style={{ fontSize: 36 }}>👋</span>
             <div>
               <h3 style={S.confirmTitle}>¿Cerrar sesión?</h3>
-              <p style={S.confirmText}>Volverás a la pantalla de inicio de AuraPlay.</p>
+              <p style={S.confirmText}>Volverás a la pantalla de inicio de {APP_CONFIG.name}.</p>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
               <button style={S.cancelBtn} onClick={() => setConfirmLogout(false)}>Cancelar</button>

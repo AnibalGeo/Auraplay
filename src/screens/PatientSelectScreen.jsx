@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { APP_CONFIG } from '../config/app.config'
 import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
 import { getAllPatients, searchPatients } from '../data/patients'
 import NewPatientForm from '../components/NewPatientForm'
@@ -149,7 +150,7 @@ function PatientSelectScreen({ onDone }) {
   }
 
   return (
-    <div className="screen" style={{ background: '#f5f9f7', overflowY: 'auto' }}>
+    <div className="min-h-screen bg-gray-50 overflow-y-auto">
       {selected && (
         <ConfirmCard
           p={selected}
@@ -158,101 +159,75 @@ function PatientSelectScreen({ onDone }) {
         />
       )}
 
-      <div style={{ padding: '32px 20px 24px' }}>
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '6px' }}>🌟</div>
-          <h1 style={{ fontSize: '22px', fontWeight: '800', color: '#2d2d2d' }}>NexiaPlay</h1>
-          <p style={{ fontSize: '13px', color: '#aaa' }}>Selecciona un paciente para comenzar</p>
+      <div className="px-5 pt-8 pb-24">
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h1 className="text-xl font-bold text-gray-800">Pacientes</h1>
+            <p className="text-xs text-gray-400 mt-0.5">Selecciona para iniciar sesión</p>
+          </div>
+          <button
+            onClick={() => setShowNew(true)}
+            className="flex items-center gap-1.5 bg-emerald-500 text-white text-sm font-semibold px-3 py-2 rounded-xl cursor-pointer"
+          >
+            <span>＋</span><span>Registrar</span>
+          </button>
         </div>
 
-        {/* Botón nueva sesión */}
-        <button
-          onClick={() => setShowNew(true)}
-          style={{
-            width: '100%', padding: '16px', borderRadius: '16px', border: 'none',
-            background: '#4aab8a', color: 'white', fontSize: '16px', fontWeight: '800',
-            cursor: 'pointer', marginBottom: '20px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-          }}
-        >
-          <span style={{ fontSize: '18px' }}>＋</span> Nueva sesión
-        </button>
+        <input
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Buscar por nombre o RUT…"
+          className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 outline-none bg-white mb-4"
+        />
 
-        {/* Buscador */}
-        <div style={{ position: 'relative', marginBottom: '16px' }}>
-          <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '16px', color: '#aaa', pointerEvents: 'none' }}>🔍</span>
-          <input
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Buscar por nombre o RUT…"
-            style={{
-              ...inputStyle,
-              paddingLeft: '38px',
-              border: '2px solid #e8f5f0',
-            }}
-          />
-        </div>
-
-        {/* Lista */}
-        {filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '32px 0', color: '#ccc' }}>
-            <p style={{ fontSize: '32px', marginBottom: '8px' }}>🔍</p>
-            <p style={{ fontSize: '14px' }}>No se encontraron pacientes.</p>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {!query.trim() && (
-              <p style={{ fontSize: '11px', fontWeight: '700', color: '#aaa', letterSpacing: '0.4px', marginBottom: '4px' }}>
-                RECIENTES
-              </p>
-            )}
-            {filtered.map(p => {
-              const cfg = STIMULUS_CONFIG[p.diagnosis]
-              const level = LEVELS[p.levelId]
-              const lastEntry = [...(p.sessionHistory ?? [])].reverse()[0]
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setSelected(p)}
-                  style={{
-                    width: '100%', background: 'white', border: '2px solid #f0f0f0',
-                    borderRadius: '16px', padding: '14px 16px', cursor: 'pointer',
-                    textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px',
-                  }}
-                >
-                  <div style={{
-                    width: '40px', height: '40px', borderRadius: '12px', flexShrink: 0,
-                    background: (cfg?.color ?? '#aaa') + '20',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '20px',
-                  }}>
-                    🧒
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <p style={{ fontSize: '15px', fontWeight: '700', color: '#2d2d2d', marginBottom: '2px' }}>{p.name}</p>
-                      <span style={{
-                        background: (cfg?.color ?? '#aaa') + '20', color: cfg?.color ?? '#aaa',
-                        borderRadius: '8px', padding: '2px 8px', fontSize: '10px', fontWeight: '700', flexShrink: 0, marginLeft: '8px',
-                      }}>
-                        {cfg?.label ?? p.diagnosis}
-                      </span>
-                    </div>
-                    <p style={{ fontSize: '12px', color: '#aaa' }}>
-                      {p.rut || '—'} · {level?.label ?? p.levelId}
-                    </p>
-                    {lastEntry && (
-                      <p style={{ fontSize: '11px', color: '#bbb', marginTop: '2px' }}>
-                        Última sesión: {fmtDate(lastEntry.date)}
-                      </p>
-                    )}
-                  </div>
-                </button>
-              )
-            })}
-          </div>
+        {!query.trim() && (
+          <p className="text-xs font-bold text-gray-300 tracking-wider mb-3">RECIENTES</p>
         )}
+
+        <div className="flex flex-col gap-2">
+          {filtered.length === 0 ? (
+            <div className="text-center py-10 text-gray-300">
+              <p className="text-3xl mb-2">🔍</p>
+              <p className="text-sm">No se encontraron pacientes.</p>
+            </div>
+          ) : filtered.map(p => {
+            const cfg = STIMULUS_CONFIG[p.diagnosis]
+            const level = LEVELS[p.levelId]
+            const lastEntry = [...(p.sessionHistory ?? [])].reverse()[0]
+            const initial = (p.name || 'P').charAt(0).toUpperCase()
+            const color = cfg?.color ?? '#4aab8a'
+            return (
+              <button
+                key={p.id}
+                onClick={() => setSelected(p)}
+                className="w-full bg-white rounded-2xl border border-gray-100 p-4 flex items-center gap-3 shadow-sm text-left"
+              >
+                <div
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+                  style={{ background: color + '20', color }}
+                >
+                  {initial}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm text-gray-900 truncate">{p.name}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{level?.label ?? p.levelId}</p>
+                  <span
+                    className="inline-block mt-1 text-xs font-semibold px-2 py-0.5 rounded-full"
+                    style={{ background: color + '18', color }}
+                  >
+                    {cfg?.label ?? p.diagnosis}
+                  </span>
+                </div>
+                <div className="flex flex-col items-end gap-1 flex-shrink-0 ml-2">
+                  {lastEntry && (
+                    <p className="text-xs text-gray-300 whitespace-nowrap">{fmtDate(lastEntry.date)}</p>
+                  )}
+                  <span className="text-gray-200 text-lg">›</span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

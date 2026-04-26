@@ -20,6 +20,7 @@
 import { useState, useMemo } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { updatePatient as persistPatient } from '../data/patients'
+import { APP_CONFIG } from '../config/app.config'
 
 // ─── Cálculo de edad ──────────────────────────────────────────────────────────
 
@@ -56,7 +57,7 @@ function validateBirthDate(birthDate) {
   if (birth > now)             return 'La fecha de nacimiento no puede ser futura'
   const ageMonths = calcAgeFromBirthDate(birthDate)
   if (ageMonths < 0)           return 'La fecha de nacimiento no puede ser futura'
-  if (ageMonths > 18 * 12)     return 'AuraPlay está diseñado para niños de hasta 18 años. Verifica la fecha.'
+  if (ageMonths > 18 * 12)     return `${APP_CONFIG.name} está diseñado para niños de hasta 18 años. Verifica la fecha.`
   return null
 }
 
@@ -374,7 +375,7 @@ export default function InitialAssessmentScreen({ onDone }) {
         <div style={styles.headerTop}>
           <div style={styles.logo}>
             <span style={{ fontSize: 24 }}>🎯</span>
-            <span style={styles.logoText}>AuraPlay</span>
+            <span style={styles.logoText}>{APP_CONFIG.name}</span>
           </div>
           <button onClick={handleSkip} style={styles.skipBtn}>Omitir evaluación</button>
         </div>
@@ -442,7 +443,7 @@ export default function InitialAssessmentScreen({ onDone }) {
               <div style={{ ...styles.dateWarning, background: '#fff8e6', borderColor: '#f0d080' }}>
                 <span>💡</span>
                 <span style={{ ...styles.dateWarningText, color: '#7a5c00' }}>
-                  AuraPlay está optimizado para niños de 18 meses a 12 años. Este perfil puede estar fuera del rango clínico habitual.
+                  {APP_CONFIG.name} está optimizado para niños de 18 meses a 12 años. Este perfil puede estar fuera del rango clínico habitual.
                 </span>
               </div>
             )}

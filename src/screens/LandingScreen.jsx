@@ -1,6 +1,6 @@
 /**
  * LandingScreen.jsx — v3
- * Login premium — AuraPlay Beta
+ * Login premium
  *
  * Incluye:
  *   - Registro con pregunta de seguridad
@@ -13,6 +13,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { APP_CONFIG } from '../config/app.config'
 
 // ─── Preguntas de seguridad predefinidas ──────────────────────────────────────
 
@@ -91,7 +92,7 @@ function Selector({ onTherapist, onFamily }) {
       <div style={S.card}>
         <div style={S.logoBox}>
           <span style={{ fontSize: 52, lineHeight: 1, marginBottom: 8, display: 'block' }}>🎯</span>
-          <h1 style={S.appName}>AuraPlay</h1>
+          <h1 style={S.appName}>{APP_CONFIG.name}</h1>
           <p style={S.appTag}>Plataforma clínica fonoaudiológica</p>
         </div>
 
@@ -116,7 +117,7 @@ function Selector({ onTherapist, onFamily }) {
           <span style={S.arrow}>›</span>
         </button>
 
-        <p style={S.legal}>AuraPlay · Fonoaudiología infantil</p>
+        <p style={S.legal}>{APP_CONFIG.name} · Fonoaudiología infantil</p>
       </div>
     </div>
   )
@@ -170,7 +171,7 @@ function RegisterScreen({ onDone }) {
       <div style={S.card}>
         <div style={S.logoBox}>
           <span style={{ fontSize: 40, marginBottom: 6, display: 'block' }}>🎯</span>
-          <h1 style={{ ...S.appName, fontSize: 22 }}>Bienvenido/a a AuraPlay</h1>
+          <h1 style={{ ...S.appName, fontSize: 22 }}>Bienvenido/a a {APP_CONFIG.name}</h1>
           <p style={S.appTag}>Crea tu cuenta profesional</p>
         </div>
 

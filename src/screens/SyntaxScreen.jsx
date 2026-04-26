@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { usePatient } from '../context/PatientContext'
-import { getContent } from '../data/getContent'
+import { getContentWithCustom } from '../data/getContentWithCustom'
 import { playFeedback, playVoiceFeedback } from '../utils/audioFeedback'
 import { getDifficultyForActivity } from '../utils/componentMap'
-import ActivityScreen from '../components/ActivityScreen'
 
 function SyntaxScreen({ onFinish, onBack }) {
   const { patient, level, estimulusSettings } = usePatient()
-  const contentData = getContent(patient.levelId)
+  const contentData = getContentWithCustom(patient.levelId, 'syntax', getDifficultyForActivity('syntax', patient.componentLevels))
   const difficulty = getDifficultyForActivity('syntax', patient.componentLevels)
   const _exercises = contentData.connectors?.[difficulty] ?? contentData.connectors?.inicial ?? []
   const n = estimulusSettings.exerciseCount?.['syntax'] ?? 12
@@ -87,30 +86,31 @@ function SyntaxScreen({ onFinish, onBack }) {
   }
 
   return (
-    <ActivityScreen
-      title="Completar Frases"
-      componentType="morfosintactico"
-      current={idx + 1}
-      total={exercises.length}
-      onBack={onBack}
-      stimulusKey={idx}
-      stimulus={
-        <>
-          <p className="instruction" style={{ fontSize: instrSize }}>
-            {estimulusSettings.simplifiedInstructions
-              ? 'Elige la palabra correcta'
-              : 'Elige la palabra que completa mejor la oración'}
+    <div className={`screen${noAnim ? ' no-anim' : ''}`} style={whiteBg ? { background: 'white' } : undefined}>
+      <div className="activity-header">
+        <button className="back-btn" onClick={onBack}>←</button>
+        <h2 className="activity-title">Completar Frases</h2>
+        <span style={{fontSize:13,color:'#999'}}>{idx+1} / {exercises.length}</span>
+      </div>
+      <div className="progress-track-thin">
+        <div className="progress-fill-thin" style={{width:`${(idx/exercises.length)*100}%`,background:'#e07a5f'}}/>
+      </div>
+
+      <div className="game-area" style={{ gap: '20px' }}>
+        <p className="instruction" style={{ fontSize: instrSize }}>
+          {estimulusSettings.simplifiedInstructions
+            ? 'Elige la palabra correcta'
+            : 'Elige la palabra que completa mejor la oración'}
+        </p>
+
+        <div className="prompt-card">
+          <p className="syntax-sentence">
+            {parts[0]}
+            <span className="syntax-blank">{selected || '___'}</span>
+            {parts[1]}
           </p>
-          <div className="prompt-card">
-            <p className="syntax-sentence">
-              {parts[0]}
-              <span className="syntax-blank">{selected || '___'}</span>
-              {parts[1]}
-            </p>
-          </div>
-        </>
-      }
-      response={
+        </div>
+
         <div className="connector-options">
           {visibleOptions.map(option => {
             let cls = 'connector-opt'
@@ -126,16 +126,19 @@ function SyntaxScreen({ onFinish, onBack }) {
             )
           })}
         </div>
-      }
-      feedback={feedback && (
-        <div className={`feedback-banner ${feedback.type}`} style={{ maxWidth: '400px', lineHeight: '1.5' }}>
-          {feedback.text}
-        </div>
-      )}
-      action={showNext && (
-        <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
-      )}
-    />
+
+        {feedback && (
+          <div className={`feedback-banner ${feedback.type}`} style={{ maxWidth: '400px', lineHeight: '1.5' }}>
+            {feedback.text}
+          </div>
+        )}
+
+        {showNext && (
+          <button className="check-btn" onClick={() => nextAction.current?.()}>Siguiente →</button>
+        )}
+
+      </div>
+    </div>
   )
 }
 

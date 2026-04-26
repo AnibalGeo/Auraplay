@@ -11,6 +11,7 @@
 
 import { useState, useEffect } from 'react'
 import { usePatient } from '../context/PatientContext'
+import { APP_CONFIG } from '../config/app.config'
 import { updatePatient as persistPatient } from '../data/patients'
 import { generateTherapyPlan } from '../data/generateTherapyPlan'
 
@@ -115,7 +116,7 @@ export default function TherapyPlanScreen({ onBack, onNavigate }) {
           <span style={{ fontSize: 48 }}>📋</span>
           <h2 style={styles.emptyTitle}>Evaluación requerida</h2>
           <p style={styles.emptyText}>
-            Completa el screening inicial para que AuraPlay pueda generar un plan terapéutico personalizado.
+            Completa el screening inicial para que {APP_CONFIG.name} pueda generar un plan terapéutico personalizado.
           </p>
           <button onClick={onBack} style={styles.primaryBtn}>← Volver al panel</button>
         </div>

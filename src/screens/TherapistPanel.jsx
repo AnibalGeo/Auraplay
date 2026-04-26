@@ -1471,7 +1471,7 @@ function ConfigPanel({ onViewProgress, onViewHistory }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, onOpenHomeMode }) {
+function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, onOpenHomeMode, onOpenBuilder, onOpenMyExercises }) {
   const { patient, level, loadPatient, setLevelById, estimulusSettings, resetAssessment } = usePatient()
   const [view, setView]         = useState('menu')
   const [savedMsg, setSavedMsg] = useState(false)
@@ -1568,6 +1568,18 @@ function TherapistPanel({ onClose, onViewProgress, onViewHistory, onStartPlan, o
                     <button onClick={onViewProgress} style={{ ...actionBtnStyle, background: '#fff8e8', color: '#b87000', border: '1.5px solid #fde8a0' }}>
                       <span style={{ fontSize: 18 }}>📊</span>
                       <span>Progreso</span>
+                    </button>
+                  )}
+                  {onOpenBuilder && (
+                    <button onClick={onOpenBuilder} style={{ ...actionBtnStyle, background: '#f0f9ff', color: '#0369a1', border: '1.5px solid #bae6fd' }}>
+                      <span style={{ fontSize: 18 }}>✨</span>
+                      <span>Crear ejercicio</span>
+                    </button>
+                  )}
+                  {onOpenMyExercises && (
+                    <button onClick={onOpenMyExercises} style={{ ...actionBtnStyle, background: '#fdf4ff', color: '#7e22ce', border: '1.5px solid #e9d5ff' }}>
+                      <span style={{ fontSize: 18 }}>📝</span>
+                      <span>Mis ejercicios</span>
                     </button>
                   )}
                 </div>

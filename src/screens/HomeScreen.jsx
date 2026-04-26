@@ -215,6 +215,8 @@ export default function HomeScreen({ onNavigate }) {
           onViewHistory={() => { setShowPanel(false); onNavigate('session-history') }}
           onStartPlan={() => { setShowPanel(false); onNavigate('therapy-plan') }}
           onOpenHomeMode={() => { setShowPanel(false); onNavigate('home-mode') }}
+          onOpenBuilder={() => { setShowPanel(false); onNavigate('exercise-builder') }}
+          onOpenMyExercises={() => { setShowPanel(false); onNavigate('my-exercises') }}
         />
       )}
 

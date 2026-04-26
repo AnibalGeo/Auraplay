@@ -24,6 +24,8 @@ import InitialAssessmentScreen from './screens/InitialAssessmentScreen'
 import TherapyPlanScreen from './screens/TherapyPlanScreen'
 import HomeModeScreen from './screens/HomeModeScreen'
 import LandingScreen from './screens/LandingScreen'
+import ExerciseBuilderScreen from './screens/ExerciseBuilderScreen'
+import MyExercisesScreen from './screens/MyExercisesScreen'
 import { updatePatient as persistPatient, getPatientById, getAllPatients } from './data/patients'
 
 const ACTIVITY_LABELS = {
@@ -54,13 +56,14 @@ function App() {
   const { isLoggedIn, isTherapist, isFamily, logout, familyPatientId } = useAuth()
   const { patient, loadPatient, estimulusSettings, addStars, addSessionEntry } = usePatient()
 
-  const [screen,     setScreen]     = useState('home')
-  const [lastResult, setLastResult] = useState(null)
+  const [screen,          setScreen]          = useState('home')
+  const [lastResult,      setLastResult]      = useState(null)
+  const [exerciseToEdit,  setExerciseToEdit]  = useState(null)
   const [showSelect, setShowSelect] = useState(hasPatients)
   const [welcomed,   setWelcomed]   = useState(!isFirstRun)
   const activityStartRef = useRef(null)
 
-  // Cargar paciente cuando familia hace login
+  // Cuando la familia hace login, cargar su paciente en contexto
   useEffect(() => {
     if (isFamily && familyPatientId) {
       const p = getPatientById(familyPatientId)
@@ -68,21 +71,20 @@ function App() {
     }
   }, [isFamily, familyPatientId])
 
-  // ── Gate 0: sin sesión → LandingScreen ────────────────────────────────────
+  // ── Gate 0: sin sesión ─────────────────────────────────────────────────────
   if (!isLoggedIn) {
     return (
       <div className="app-wrapper">
-        <LandingScreen onAuth={() => {}} />
+        <LandingScreen onAuth={() => { /* re-render automático por cambio en AuthContext */ }} />
       </div>
     )
   }
 
-  // ── Gate 1: Modo Familia → solo HomeModeScreen ─────────────────────────────
-  // HomeModeScreen maneja su propio logout internamente con useAuth()
+  // ── Gate 1: Modo Familia ───────────────────────────────────────────────────
   if (isFamily) {
     return (
       <div className="app-wrapper" style={{ overflowY: 'auto' }}>
-        <HomeModeScreen />
+        <HomeModeScreen onBack={logout} />
       </div>
     )
   }
@@ -204,8 +206,34 @@ function App() {
       {screen === 'progress' && <ProgressScreen onBack={() => goTo('home')} />}
       {screen === 'session-history' && <SessionHistoryScreen onBack={() => goTo('home')} />}
       {screen === 'therapy-plan' && <TherapyPlanScreen onBack={() => goTo('home')} onNavigate={goTo} />}
-      {screen === 'home-mode' && <HomeModeScreen />}
+      {screen === 'home-mode' && <HomeModeScreen onBack={() => goTo('home')} />}
       {screen === 'results' && <ResultsScreen result={lastResult} onHome={() => goTo('home')} />}
+      {screen === 'exercise-builder' && (
+        <ExerciseBuilderScreen
+          exerciseToEdit={exerciseToEdit}
+          onBack={() => {
+            setExerciseToEdit(null)
+            goTo('my-exercises')
+          }}
+          onSaved={() => {
+            setExerciseToEdit(null)
+            goTo('my-exercises')
+          }}
+        />
+      )}
+      {screen === 'my-exercises' && (
+        <MyExercisesScreen
+          onBack={() => goTo('home')}
+          onNew={() => {
+            setExerciseToEdit(null)
+            goTo('exercise-builder')
+          }}
+          onEdit={(exercise) => {
+            setExerciseToEdit(exercise)
+            goTo('exercise-builder')
+          }}
+        />
+      )}
     </div>
   )
 }
