@@ -136,6 +136,25 @@ export default function HomeScreen({ onNavigate }) {
             <span>{patient.stars ?? 0}</span>
           </div>
 
+          <button
+            onClick={() => onNavigate('agenda')}
+            style={{
+              background: '#e8f5ee',
+              border: '1.5px solid #b2dfcc',
+              borderRadius: 8,
+              padding: '5px 10px',
+              color: '#2d7a62',
+              fontSize: 12,
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
+            📅 Agenda
+          </button>
+
           {/* BOTÓN CERRAR SESIÓN — visible sobre fondo blanco */}
           <button
             onClick={() => setShowLogout(true)}

@@ -18,6 +18,8 @@ import { usePatient } from '../context/PatientContext'
 import { useAuth } from '../context/AuthContext'
 import { updatePatient as persistPatient } from '../data/patients'
 import { APP_CONFIG } from '../config/app.config'
+import { getAllAppointments } from '../modules/clinicScheduler/schedulerStorage'
+import { getNextAppointment, DAY_NAMES } from '../modules/clinicScheduler/schedulerUtils'
 
 // ─── buildDailyTask ───────────────────────────────────────────────────────────
 
@@ -420,6 +422,7 @@ function HomeMainScreen({ patient, onLogout }) {
   const currentWeek      = getCurrentPlanWeek(patient.therapyPlan)
   const dailyTask        = useMemo(() => buildDailyTask(currentWeek?.homeTask, name), [currentWeek?.homeTask?.area, name])
   const weeklyTip        = getWeeklyTip(patient.diagnosis, currentWeek?.week || 1)
+  const nextAppt         = useMemo(() => { const all = getAllAppointments(); return getNextAppointment(all) }, [])
 
   if (!patient.therapyPlan || !currentWeek || !dailyTask) {
     return (
@@ -460,6 +463,39 @@ function HomeMainScreen({ patient, onLogout }) {
       <FamilyHeader name={name} onLogout={onLogout} />
 
       <div style={S.mainContent}>
+        {nextAppt && (
+          <div style={{
+            background: 'linear-gradient(135deg, #e8f5ee, #f0fdf4)',
+            border: '1.5px solid #86efac',
+            borderRadius: 16,
+            padding: '14px 16px',
+            margin: '12px 0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+          }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 12,
+              background: '#4aab8a',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 22, flexShrink: 0,
+            }}>📅</div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: '#4aab8a', margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                Próxima sesión
+              </p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#1a2a1a', margin: '2px 0 0' }}>
+                {nextAppt.daysUntil === 0
+                  ? `Hoy a las ${nextAppt.appointment.startTime}`
+                  : nextAppt.daysUntil === 1
+                    ? `Mañana a las ${nextAppt.appointment.startTime}`
+                    : `${DAY_NAMES[nextAppt.appointment.dayOfWeek]} a las ${nextAppt.appointment.startTime}`
+                }
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Tarea del día */}
         <div style={S.taskCard}>
           <p style={S.taskMeta}>HOY TOCA · {currentWeek.sessionDuration} min</p>

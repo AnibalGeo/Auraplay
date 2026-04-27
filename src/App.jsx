@@ -27,6 +27,7 @@ import LandingScreen from './screens/LandingScreen'
 import ExerciseBuilderScreen from './screens/ExerciseBuilderScreen'
 import MyExercisesScreen from './screens/MyExercisesScreen'
 import { updatePatient as persistPatient, getPatientById, getAllPatients } from './data/patients'
+import ClinicSchedulerDashboard from './modules/clinicScheduler/ClinicSchedulerDashboard'
 
 const ACTIVITY_LABELS = {
   'minimal-pairs':        'Palabras Similares',
@@ -59,6 +60,7 @@ function App() {
   const [screen,          setScreen]          = useState('home')
   const [lastResult,      setLastResult]      = useState(null)
   const [exerciseToEdit,  setExerciseToEdit]  = useState(null)
+  const [showScheduler, setShowScheduler] = useState(true)
   const [showSelect, setShowSelect] = useState(hasPatients)
   const [welcomed,   setWelcomed]   = useState(!isFirstRun)
   const activityStartRef = useRef(null)
@@ -131,6 +133,29 @@ function App() {
 
     setLastResult({ score, total, earned })
     setScreen('results')
+  }
+
+  // ── Gate scheduler ────────────────────────────────────────────────────────────
+  if (showScheduler) {
+    return (
+      <div className="app-wrapper">
+        <ClinicSchedulerDashboard
+          onSelectPatient={(patientId) => {
+            const p = getPatientById(patientId)
+            if (p) {
+              loadPatient(p)
+              setWelcomed(true)
+            }
+            setShowScheduler(false)
+            setShowSelect(false)
+          }}
+          onClose={() => {
+            setShowScheduler(false)
+            setShowSelect(hasPatients)
+          }}
+        />
+      </div>
+    )
   }
 
   // ── Gate 2: selector paciente ──────────────────────────────────────────────
@@ -207,6 +232,17 @@ function App() {
       {screen === 'session-history' && <SessionHistoryScreen onBack={() => goTo('home')} />}
       {screen === 'therapy-plan' && <TherapyPlanScreen onBack={() => goTo('home')} onNavigate={goTo} />}
       {screen === 'home-mode' && <HomeModeScreen onBack={() => goTo('home')} />}
+      {screen === 'agenda' && (
+        <ClinicSchedulerDashboard
+          onSelectPatient={(patientId) => {
+            const p = getPatientById(patientId)
+            if (p) loadPatient(p)
+            setScreen('home')
+          }}
+          onClose={() => setScreen('home')}
+          onNavigate={goTo}
+        />
+      )}
       {screen === 'results' && <ResultsScreen result={lastResult} onHome={() => goTo('home')} />}
       {screen === 'exercise-builder' && (
         <ExerciseBuilderScreen
