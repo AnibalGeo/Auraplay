@@ -14,6 +14,8 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { APP_CONFIG } from '../config/app.config'
+import RUTInput from '../components/RUTInput'
+import { useRUT } from '../hooks/useRUT'
 
 // ─── Preguntas de seguridad predefinidas ──────────────────────────────────────
 
@@ -506,28 +508,22 @@ function ForgotPasswordFlow({ onBack, onDone }) {
 
 function FamilyLoginForm({ onBack, onDone }) {
   const { loginFamily } = useAuth()
-  const [rut, setRut]       = useState('')
+  const rut = useRUT()
   const [pin, setPin]       = useState('')
   const [show, setShow]     = useState(false)
   const [keepSession, setKeep] = useState(false)
   const [error, setError]   = useState('')
   const [loading, setLoading] = useState(false)
 
-  function handleRut(v) {
-    const clean = v.replace(/[^0-9kK]/g, '').toUpperCase()
-    if (!clean) { setRut(''); return }
-    const body = clean.slice(0, -1)
-    const dv   = clean.slice(-1)
-    setRut(clean.length === 1 ? clean : `${body.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}-${dv}`)
-    setError('')
-  }
-
   function handleSubmit() {
-    if (!rut.trim() || !pin.trim()) { setError('Ingresa RUT y PIN'); return }
+    if (!rut.value.trim() || !pin.trim()) {
+      setError('Ingresa RUT y PIN')
+      return
+    }
     setLoading(true)
     setError('')
     setTimeout(() => {
-      const r = loginFamily(rut, pin, keepSession)
+      const r = loginFamily(rut.value, pin, keepSession)
       setLoading(false)
       if (r.ok) onDone({ patient: r.patient, mustChangePin: r.mustChangePin })
       else setError(r.error)
@@ -547,11 +543,14 @@ function FamilyLoginForm({ onBack, onDone }) {
 
         <div style={S.fields}>
           <div style={S.fieldWrap}>
-            <label style={S.fieldLabel}>RUT del paciente</label>
-            <input style={S.fieldInput} type="text"
-              placeholder="12.345.678-9"
-              value={rut} onChange={e => handleRut(e.target.value)}
-              inputMode="numeric" autoComplete="off" />
+            <RUTInput
+              value={rut.value}
+              onChange={rut.onChange}
+              onBlur={rut.onBlur}
+              error={rut.error || error}
+              label="RUT del paciente"
+              placeholder="Ej: 12.345.678-K"
+            />
           </div>
 
           <div style={S.fieldWrap}>

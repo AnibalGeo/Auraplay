@@ -2,32 +2,9 @@ import { useState } from 'react'
 import { usePatient } from '../context/PatientContext'
 import { LEVELS, STIMULUS_CONFIG } from '../data/levels'
 import { savePatient } from '../data/patients'
-
-function formatRut(value) {
-  const clean = value.replace(/[^0-9kK]/g, '').toUpperCase()
-  if (clean.length === 0) return ''
-  if (clean.length === 1) return clean
-  const body = clean.slice(0, -1)
-  const dv = clean.slice(-1)
-  const bodyDots = body.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-  return `${bodyDots}-${dv}`
-}
-
-function validateRut(rut) {
-  const clean = rut.replace(/[^0-9kK]/g, '').toUpperCase()
-  if (clean.length < 2) return false
-  const body = clean.slice(0, -1)
-  const dv = clean.slice(-1)
-  if (!/^\d+$/.test(body)) return false
-  let sum = 0, mul = 2
-  for (let i = body.length - 1; i >= 0; i--) {
-    sum += parseInt(body[i]) * mul
-    mul = mul === 7 ? 2 : mul + 1
-  }
-  const expected = 11 - (sum % 11)
-  const expectedStr = expected === 11 ? '0' : expected === 10 ? 'K' : String(expected)
-  return dv === expectedStr
-}
+import RUTInput from '../components/RUTInput'
+import { useRUT } from '../hooks/useRUT'
+import { validateRUT } from '../utils/rutUtils'
 
 function calcAgeMonths(birthDate) {
   if (!birthDate) return 0
@@ -51,8 +28,10 @@ const labelStyle = {
 
 export default function NewPatientForm({ onSaved, onBack }) {
   const { loadPatient, setLevelById } = usePatient()
+  const rut = useRUT()
+
   const [form, setForm] = useState({
-    rut: '', name: '', birthDate: '', phone: '', guardianName: '',
+    name: '', birthDate: '', phone: '', guardianName: '',
     diagnosis: 'tel', levelId: 'N4',
   })
   const [errors, setErrors] = useState({})
@@ -64,26 +43,28 @@ export default function NewPatientForm({ onSaved, onBack }) {
     setErrors(e => ({ ...e, [field]: null }))
   }
 
-  function handleRutChange(value) {
-    const formatted = formatRut(value)
-    setForm(f => ({ ...f, rut: formatted }))
-    if (formatted.length > 3) {
-      setErrors(e => ({ ...e, rut: validateRut(formatted) ? null : 'RUT inválido' }))
-    } else {
-      setErrors(e => ({ ...e, rut: null }))
-    }
-  }
-
   function handleSave() {
     const newErrors = {}
     if (!form.name.trim()) newErrors.name = 'El nombre es obligatorio.'
-    if (!form.rut.trim()) newErrors.rut = 'El RUT es obligatorio.'
-    else if (!validateRut(form.rut)) newErrors.rut = 'RUT inválido.'
+    if (!rut.value.trim()) newErrors.rut = 'El RUT es obligatorio.'
+    else if (rut.error) newErrors.rut = rut.error
+    else if (!rut.isValid) newErrors.rut = 'RUT inválido.'
     if (!form.birthDate) newErrors.birthDate = 'La fecha de nacimiento es obligatoria.'
-    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
 
     const now = new Date().toISOString()
-    const saved = savePatient({ ...form, ageMonths, initialLevelId: form.levelId, createdAt: now, updatedAt: now })
+    const saved = savePatient({
+      rut: rut.value,
+      ...form,
+      ageMonths,
+      initialLevelId: form.levelId,
+      createdAt: now,
+      updatedAt: now,
+    })
     loadPatient(saved)
     setLevelById(saved.levelId)
     onSaved()
@@ -93,40 +74,65 @@ export default function NewPatientForm({ onSaved, onBack }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
         {onBack && (
-          <button onClick={onBack} style={{ background: '#f0faf6', border: 'none', borderRadius: '10px', padding: '8px 12px', cursor: 'pointer', fontSize: '16px', color: '#2d7a62' }}>←</button>
+          <button
+            onClick={onBack}
+            style={{
+              background: '#f0faf6', border: 'none', borderRadius: '10px',
+              padding: '8px 12px', cursor: 'pointer', fontSize: '16px', color: '#2d7a62',
+            }}
+          >←</button>
         )}
         <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#3a3a3a' }}>Nuevo paciente</h3>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        {/* RUT Input mejorado */}
         <div>
-          <label style={labelStyle}>RUT</label>
-          <input
-            value={form.rut}
-            onChange={e => handleRutChange(e.target.value)}
-            placeholder="Ej: 12.345.678-9"
-            style={{ ...inputStyle, borderColor: errors.rut ? '#e07a5f' : '#e8f5f0' }}
+          <RUTInput
+            value={rut.value}
+            onChange={rut.onChange}
+            onBlur={rut.onBlur}
+            error={rut.error || errors.rut}
+            label="RUT"
+            placeholder="Ej: 12.345.678-K"
           />
-          {errors.rut && <p style={{ fontSize: '12px', color: '#e07a5f', marginTop: '4px' }}>{errors.rut}</p>}
         </div>
 
-        {[
-          { label: 'NOMBRE COMPLETO', field: 'name', placeholder: 'Ej: Mateo González', error: errors.name },
-          { label: 'TELÉFONO (opcional)', field: 'phone', placeholder: 'Ej: +56 9 8765 4321' },
-          { label: 'NOMBRE DEL TUTOR (opcional)', field: 'guardianName', placeholder: 'Ej: Ana González' },
-        ].map(({ label, field, placeholder, error }) => (
-          <div key={field}>
-            <label style={labelStyle}>{label}</label>
-            <input
-              value={form[field]}
-              onChange={e => set(field, e.target.value)}
-              placeholder={placeholder}
-              style={{ ...inputStyle, borderColor: error ? '#e07a5f' : '#e8f5f0' }}
-            />
-            {error && <p style={{ fontSize: '12px', color: '#e07a5f', marginTop: '4px' }}>{error}</p>}
-          </div>
-        ))}
+        {/* Nombre */}
+        <div>
+          <label style={labelStyle}>NOMBRE COMPLETO</label>
+          <input
+            value={form.name}
+            onChange={e => set('name', e.target.value)}
+            placeholder="Ej: Mateo González"
+            style={{ ...inputStyle, borderColor: errors.name ? '#e07a5f' : '#e8f5f0' }}
+          />
+          {errors.name && <p style={{ fontSize: '12px', color: '#e07a5f', marginTop: '4px' }}>{errors.name}</p>}
+        </div>
 
+        {/* Teléfono */}
+        <div>
+          <label style={labelStyle}>TELÉFONO (opcional)</label>
+          <input
+            value={form.phone}
+            onChange={e => set('phone', e.target.value)}
+            placeholder="Ej: +56 9 8765 4321"
+            style={{ ...inputStyle }}
+          />
+        </div>
+
+        {/* Tutor */}
+        <div>
+          <label style={labelStyle}>NOMBRE DEL TUTOR (opcional)</label>
+          <input
+            value={form.guardianName}
+            onChange={e => set('guardianName', e.target.value)}
+            placeholder="Ej: Ana González"
+            style={{ ...inputStyle }}
+          />
+        </div>
+
+        {/* Fecha de nacimiento */}
         <div>
           <label style={labelStyle}>FECHA DE NACIMIENTO</label>
           <input
@@ -135,7 +141,9 @@ export default function NewPatientForm({ onSaved, onBack }) {
             onChange={e => set('birthDate', e.target.value)}
             style={{ ...inputStyle, borderColor: errors.birthDate ? '#e07a5f' : '#e8f5f0' }}
           />
-          {errors.birthDate && <p style={{ fontSize: '12px', color: '#e07a5f', marginTop: '4px' }}>{errors.birthDate}</p>}
+          {errors.birthDate && (
+            <p style={{ fontSize: '12px', color: '#e07a5f', marginTop: '4px' }}>{errors.birthDate}</p>
+          )}
           {form.birthDate && !errors.birthDate && (
             <p style={{ fontSize: '12px', color: '#4aab8a', marginTop: '4px' }}>
               {Math.floor(ageMonths / 12)},{ageMonths % 12} años ({ageMonths} meses)
@@ -143,6 +151,7 @@ export default function NewPatientForm({ onSaved, onBack }) {
           )}
         </div>
 
+        {/* Diagnóstico */}
         <div>
           <label style={labelStyle}>DIAGNÓSTICO</label>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -165,6 +174,7 @@ export default function NewPatientForm({ onSaved, onBack }) {
           </div>
         </div>
 
+        {/* Nivel inicial */}
         <div>
           <label style={labelStyle}>NIVEL INICIAL</label>
           <select
@@ -178,6 +188,7 @@ export default function NewPatientForm({ onSaved, onBack }) {
           </select>
         </div>
 
+        {/* Botón guardar */}
         <button
           onClick={handleSave}
           style={{

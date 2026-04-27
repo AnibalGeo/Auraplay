@@ -26,8 +26,9 @@ import HomeModeScreen from './screens/HomeModeScreen'
 import LandingScreen from './screens/LandingScreen'
 import ExerciseBuilderScreen from './screens/ExerciseBuilderScreen'
 import MyExercisesScreen from './screens/MyExercisesScreen'
-import { updatePatient as persistPatient, getPatientById, getAllPatients } from './data/patients'
+import OnboardingScreen from './screens/OnboardingScreen'
 import ClinicSchedulerDashboard from './modules/clinicScheduler/ClinicSchedulerDashboard'
+import { updatePatient as persistPatient, getPatientById, getAllPatients } from './data/patients'
 
 const ACTIVITY_LABELS = {
   'minimal-pairs':        'Palabras Similares',
@@ -50,19 +51,25 @@ const ACTIVITY_SCREENS = new Set([
   'follow-instruction', 'communicative-intent',
 ])
 
-const hasPatients = getAllPatients().length > 0
-const isFirstRun  = !localStorage.getItem('auraplay_patient')
-
 function App() {
-  const { isLoggedIn, isTherapist, isFamily, logout, familyPatientId } = useAuth()
+  const { isLoggedIn, isFamily, logout, familyPatientId } = useAuth()
   const { patient, loadPatient, estimulusSettings, addStars, addSessionEntry } = usePatient()
 
-  const [screen,          setScreen]          = useState('home')
-  const [lastResult,      setLastResult]      = useState(null)
-  const [exerciseToEdit,  setExerciseToEdit]  = useState(null)
-  const [showScheduler, setShowScheduler] = useState(true)
-  const [showSelect, setShowSelect] = useState(hasPatients)
-  const [welcomed,   setWelcomed]   = useState(!isFirstRun)
+  // Calcular dentro del componente para reflejar estado actual
+  const patients = getAllPatients()
+  const hasPatients = patients.length > 0
+
+  const [screen,         setScreen]         = useState('home')
+  const [lastResult,     setLastResult]      = useState(null)
+  const [exerciseToEdit, setExerciseToEdit]  = useState(null)
+
+  // Gates de navegación
+  // showOnboarding: true si no hay pacientes y no hay sesión activa
+  const [showOnboarding, setShowOnboarding] = useState(!hasPatients)
+  const [showScheduler,  setShowScheduler]  = useState(false)
+  const [showSelect,     setShowSelect]     = useState(hasPatients)
+  const [welcomed,       setWelcomed]       = useState(hasPatients)
+
   const activityStartRef = useRef(null)
 
   // Cuando la familia hace login, cargar su paciente en contexto
@@ -77,7 +84,7 @@ function App() {
   if (!isLoggedIn) {
     return (
       <div className="app-wrapper">
-        <LandingScreen onAuth={() => { /* re-render automático por cambio en AuthContext */ }} />
+        <LandingScreen onAuth={() => {}} />
       </div>
     )
   }
@@ -135,7 +142,32 @@ function App() {
     setScreen('results')
   }
 
-  // ── Gate scheduler ────────────────────────────────────────────────────────────
+  // ── Gate 1.5: Onboarding (sin pacientes) ───────────────────────────────────
+  if (showOnboarding) {
+    return (
+      <div className="app-wrapper">
+        <OnboardingScreen
+          onOpenScheduler={() => {
+            setShowOnboarding(false)
+            setShowScheduler(true)
+          }}
+          onNewPatient={() => {
+            setShowOnboarding(false)
+            setShowSelect(false)
+            setWelcomed(false)
+          }}
+          onImportPatient={() => {
+            // TODO Sprint 2: SmartIntake
+            setShowOnboarding(false)
+            setShowSelect(false)
+            setWelcomed(false)
+          }}
+        />
+      </div>
+    )
+  }
+
+  // ── Gate 1.7: Scheduler ────────────────────────────────────────────────────
   if (showScheduler) {
     return (
       <div className="app-wrapper">
@@ -151,7 +183,12 @@ function App() {
           }}
           onClose={() => {
             setShowScheduler(false)
-            setShowSelect(hasPatients)
+            // Si no hay pacientes volver a onboarding, si hay ir a select
+            if (!hasPatients) {
+              setShowOnboarding(true)
+            } else {
+              setShowSelect(true)
+            }
           }}
         />
       </div>
@@ -172,7 +209,10 @@ function App() {
     return (
       <div className="app-wrapper">
         <div className="screen" style={{ overflowY: 'auto', padding: '24px 20px' }}>
-          <NewPatientForm onSaved={() => setWelcomed(true)} />
+          <NewPatientForm onSaved={() => {
+            setWelcomed(true)
+            setShowSelect(true)  // Ir a seleccionar el paciente recién creado
+          }} />
         </div>
       </div>
     )
@@ -228,10 +268,12 @@ function App() {
       {screen === 'communicative-intent' && (
         <CommunicativeIntentScreen onFinish={(s,t) => finishActivity(s,t,'communicative-intent')} />
       )}
-      {screen === 'progress' && <ProgressScreen onBack={() => goTo('home')} />}
-      {screen === 'session-history' && <SessionHistoryScreen onBack={() => goTo('home')} />}
-      {screen === 'therapy-plan' && <TherapyPlanScreen onBack={() => goTo('home')} onNavigate={goTo} />}
-      {screen === 'home-mode' && <HomeModeScreen onBack={() => goTo('home')} />}
+      {screen === 'progress'         && <ProgressScreen onBack={() => goTo('home')} />}
+      {screen === 'session-history'  && <SessionHistoryScreen onBack={() => goTo('home')} />}
+      {screen === 'therapy-plan'     && <TherapyPlanScreen onBack={() => goTo('home')} onNavigate={goTo} />}
+      {screen === 'home-mode'        && <HomeModeScreen onBack={() => goTo('home')} />}
+      {screen === 'results'          && <ResultsScreen result={lastResult} onHome={() => goTo('home')} />}
+
       {screen === 'agenda' && (
         <ClinicSchedulerDashboard
           onSelectPatient={(patientId) => {
@@ -243,31 +285,19 @@ function App() {
           onNavigate={goTo}
         />
       )}
-      {screen === 'results' && <ResultsScreen result={lastResult} onHome={() => goTo('home')} />}
+
       {screen === 'exercise-builder' && (
         <ExerciseBuilderScreen
           exerciseToEdit={exerciseToEdit}
-          onBack={() => {
-            setExerciseToEdit(null)
-            goTo('my-exercises')
-          }}
-          onSaved={() => {
-            setExerciseToEdit(null)
-            goTo('my-exercises')
-          }}
+          onBack={() => { setExerciseToEdit(null); goTo('my-exercises') }}
+          onSaved={() => { setExerciseToEdit(null); goTo('my-exercises') }}
         />
       )}
       {screen === 'my-exercises' && (
         <MyExercisesScreen
           onBack={() => goTo('home')}
-          onNew={() => {
-            setExerciseToEdit(null)
-            goTo('exercise-builder')
-          }}
-          onEdit={(exercise) => {
-            setExerciseToEdit(exercise)
-            goTo('exercise-builder')
-          }}
+          onNew={() => { setExerciseToEdit(null); goTo('exercise-builder') }}
+          onEdit={(exercise) => { setExerciseToEdit(exercise); goTo('exercise-builder') }}
         />
       )}
     </div>
