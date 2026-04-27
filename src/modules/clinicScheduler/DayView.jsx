@@ -191,76 +191,128 @@ function AppointmentRow({ appt, onEdit, onAttendance, onStartSession, onShowHist
   return (
     <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: colors.border }}>
       <div className="h-1" style={{ background: colors.dot }} />
-      <div className="px-4 pt-3 pb-2">
-        <div className="flex items-start gap-3">
+      
+      {/* Header clickeable — zona táctil 56px mínimo */}
+      <button
+        onClick={() => setExpanded(e => !e)}
+        className="w-full text-left px-4 py-3.5 hover:bg-gray-50 transition-colors active:bg-gray-100"
+        style={{ minHeight: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+      >
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 12 }}>
           {/* Hora */}
-          <div className="text-center shrink-0 w-12">
-            <p className="text-base font-black leading-none" style={{ color: colors.text }}>{appt.startTime}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{end}</p>
+          <div style={{ textAlign: 'center', minWidth: '48px', flexShrink: 0 }}>
+            <p style={{ fontSize: 16, fontWeight: 900, lineHeight: 1, color: colors.text }}>{appt.startTime}</p>
+            <p style={{ fontSize: 11, color: '#999', marginTop: 4 }}>{end}</p>
           </div>
-          <div className="w-px self-stretch" style={{ background: colors.border }} />
-          {/* Info */}
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-gray-800 truncate">{appt.patientName}</p>
-            <p className="text-xs text-gray-400">{formatDuration(appt.duration)}</p>
-          </div>
-          {/* Acciones rápidas */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            {appt.isRegistered && appt.patientId && (
-              <button
-                onClick={() => onShowHistory(appt.patientId)}
-                className="w-7 h-7 rounded-lg bg-purple-100 text-purple-600 text-xs flex items-center justify-center hover:bg-purple-200 transition-colors"
-                title="Ver historial"
-              >📋</button>
-            )}
-            <button
-              onClick={() => setExpanded(e => !e)}
-              className="w-7 h-7 rounded-lg bg-gray-100 text-gray-400 text-xs flex items-center justify-center hover:bg-gray-200 transition-colors"
-            >{expanded ? '▲' : '▼'}</button>
+          <div style={{ width: 1, alignSelf: 'stretch', background: colors.border }} />
+          
+          {/* Info paciente */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a', margin: '0 0 2px' }}>
+              {appt.patientName}
+            </p>
+            <p style={{ fontSize: 12, color: '#888', margin: 0 }}>
+              {formatDuration(appt.duration)}
+              {appt.isRegistered && appt.patientId ? '' : ' · Puntual'}
+            </p>
           </div>
         </div>
 
-        {/* Acciones expandidas */}
-        {expanded && (
-          <div className="mt-3 pt-3 border-t border-gray-100 space-y-2">
-            {!appt.attendance && (
-              <div className="flex gap-2">
-                <button
-                  onClick={() => onAttendance(appt.id, 'asistió')}
-                  className="flex-1 py-2 text-xs font-semibold text-emerald-600 bg-emerald-50 rounded-xl border border-emerald-200 hover:bg-emerald-100 transition-colors"
-                >✓ Asistió</button>
-                <button
-                  onClick={() => onAttendance(appt.id, 'no-asistió')}
-                  className="flex-1 py-2 text-xs font-semibold text-red-500 bg-red-50 rounded-xl border border-red-200 hover:bg-red-100 transition-colors"
-                >✗ No asistió</button>
-              </div>
-            )}
-            {appt.attendance && (
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: colors.bg }}>
-                <span className="text-xs font-semibold" style={{ color: colors.text }}>
-                  {appt.attendance === 'asistió' ? '✓ Asistió' : '✗ No asistió'}
-                </span>
-                <button
-                  onClick={() => onAttendance(appt.id, null)}
-                  className="ml-auto text-xs text-gray-400 hover:text-gray-600 underline"
-                >Deshacer</button>
-              </div>
-            )}
-            <div className="flex gap-2">
-              {appt.isRegistered && (
-                <button
-                  onClick={() => onStartSession(appt.patientId)}
-                  className="flex-1 py-2 text-xs font-semibold text-teal-600 bg-teal-50 rounded-xl border border-teal-200 hover:bg-teal-100 transition-colors"
-                >▶ Iniciar sesión</button>
-              )}
+        {/* Chevron */}
+        <div style={{ color: colors.text, marginLeft: 8, fontSize: 14, fontWeight: 700 }}>
+          {expanded ? '▲' : '▼'}
+        </div>
+      </button>
+
+      {/* Acciones expandidas */}
+      {expanded && (
+        <div style={{ padding: '12px 16px 16px', borderTop: `1px solid ${colors.border}`, background: '#fafafa', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          
+          {/* Estado asistencia */}
+          {!appt.attendance && (
+            <div style={{ display: 'flex', gap: 8 }}>
               <button
-                onClick={() => onEdit(appt)}
-                className="py-2 px-3 text-xs font-semibold text-gray-500 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors"
-              >✏️ Editar</button>
+                onClick={() => onAttendance(appt.id, 'asistió')}
+                style={{
+                  flex: 1, padding: '12px 16px', borderRadius: 12, border: 'none',
+                  background: '#d1f2e8', color: '#2d7a62', fontSize: 12, fontWeight: 700,
+                  cursor: 'pointer', transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => e.target.style.background = '#b8ebe0'}
+                onMouseLeave={e => e.target.style.background = '#d1f2e8'}
+              >✓ Asistió</button>
+              <button
+                onClick={() => onAttendance(appt.id, 'no-asistió')}
+                style={{
+                  flex: 1, padding: '12px 16px', borderRadius: 12, border: 'none',
+                  background: '#fde8e8', color: '#c63c3c', fontSize: 12, fontWeight: 700,
+                  cursor: 'pointer', transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => e.target.style.background = '#f5d5d5'}
+                onMouseLeave={e => e.target.style.background = '#fde8e8'}
+              >✗ No asistió</button>
             </div>
+          )}
+
+          {appt.attendance && (
+            <div style={{
+              padding: '12px 16px', borderRadius: 12, background: colors.bg,
+              color: colors.text, fontSize: 12, fontWeight: 700,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+            }}>
+              <span>{appt.attendance === 'asistió' ? '✓ Asistió' : '✗ No asistió'}</span>
+              <button
+                onClick={() => onAttendance(appt.id, null)}
+                style={{
+                  background: 'none', border: 'none', color: 'inherit', cursor: 'pointer',
+                  fontSize: 11, textDecoration: 'underline', opacity: 0.7,
+                }}
+              >Deshacer</button>
+            </div>
+          )}
+
+          {/* Acciones principales */}
+          <div style={{ display: 'flex', gap: 8, flexDirection: 'column' }}>
+            {/* Iniciar sesión - SIEMPRE mostrar */}
+            <button
+              onClick={() => onStartSession(appt.patientId || appt.patientName)}
+              style={{
+                width: '100%', padding: '14px 16px', borderRadius: 12, border: 'none',
+                background: '#4aab8a', color: 'white', fontSize: 13, fontWeight: 700,
+                cursor: 'pointer', transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => e.target.style.background = '#3d8a6e'}
+              onMouseLeave={e => e.target.style.background = '#4aab8a'}
+            >▶ INICIAR SESIÓN</button>
+
+            {/* Historial (si es registrado) */}
+            {appt.isRegistered && appt.patientId && (
+              <button
+                onClick={() => onShowHistory(appt.patientId)}
+                style={{
+                  width: '100%', padding: '12px 16px', borderRadius: 12, border: 'none',
+                  background: '#f3e8ff', color: '#6a4c9c', fontSize: 12, fontWeight: 700,
+                  cursor: 'pointer', transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => e.target.style.background = '#ede9fe'}
+                onMouseLeave={e => e.target.style.background = '#f3e8ff'}
+              >📋 Ver historial</button>
+            )}
+
+            {/* Editar */}
+            <button
+              onClick={() => onEdit(appt)}
+              style={{
+                width: '100%', padding: '12px 16px', borderRadius: 12, border: '1px solid #ddd',
+                background: 'white', color: '#666', fontSize: 12, fontWeight: 700,
+                cursor: 'pointer', transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { e.target.style.background = '#f9f9f9'; e.target.style.borderColor = '#ccc' }}
+              onMouseLeave={e => { e.target.style.background = 'white'; e.target.style.borderColor = '#ddd' }}
+            >✏️ Editar</button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

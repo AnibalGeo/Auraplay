@@ -119,12 +119,10 @@ function AppointmentCard({ appt, onEdit, onAttendance, onSkip, onStartSession })
 
             {/* Acciones secundarias */}
             <div className="flex gap-2">
-              {appt.isRegistered && (
-                <button
-                  onClick={() => onStartSession(appt.patientId)}
-                  className="flex-1 py-2 text-xs font-semibold text-teal-600 bg-teal-50 rounded-xl border border-teal-200 hover:bg-teal-100 transition-colors"
-                >▶ Iniciar sesión</button>
-              )}
+              <button
+                onClick={() => onStartSession(appt.patientId || appt.patientName)}
+                className="flex-1 py-2 text-xs font-semibold text-teal-600 bg-teal-50 rounded-xl border border-teal-200 hover:bg-teal-100 transition-colors"
+              >▶ Iniciar sesión</button>
               <button
                 onClick={() => onEdit(appt)}
                 className="py-2 px-3 text-xs font-semibold text-gray-500 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors"

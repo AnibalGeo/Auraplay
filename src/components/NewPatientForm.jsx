@@ -26,12 +26,12 @@ const labelStyle = {
   display: 'block', marginBottom: '5px', letterSpacing: '0.4px',
 }
 
-export default function NewPatientForm({ onSaved, onBack }) {
+export default function NewPatientForm({ onSaved, onBack, initialName = '' }) {
   const { loadPatient, setLevelById } = usePatient()
   const rut = useRUT()
 
   const [form, setForm] = useState({
-    name: '', birthDate: '', phone: '', guardianName: '',
+    name: initialName, birthDate: '', phone: '', guardianName: '',
     diagnosis: 'tel', levelId: 'N4',
   })
   const [errors, setErrors] = useState({})

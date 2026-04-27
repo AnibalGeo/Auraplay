@@ -62,6 +62,7 @@ function App() {
   const [screen,         setScreen]         = useState('home')
   const [lastResult,     setLastResult]      = useState(null)
   const [exerciseToEdit, setExerciseToEdit]  = useState(null)
+  const [adHocName,      setAdHocName]       = useState('')
 
   // Gates de navegación
   // showOnboarding: true si no hay pacientes y no hay sesión activa
@@ -181,9 +182,14 @@ function App() {
             setShowScheduler(false)
             setShowSelect(false)
           }}
+          onAdHocSession={(name) => {
+            setAdHocName(name || '')
+            setShowScheduler(false)
+            setShowSelect(false)
+            setWelcomed(false)
+          }}
           onClose={() => {
             setShowScheduler(false)
-            // Si no hay pacientes volver a onboarding, si hay ir a select
             if (!hasPatients) {
               setShowOnboarding(true)
             } else {
@@ -209,10 +215,14 @@ function App() {
     return (
       <div className="app-wrapper">
         <div className="screen" style={{ overflowY: 'auto', padding: '24px 20px' }}>
-          <NewPatientForm onSaved={() => {
-            setWelcomed(true)
-            setShowSelect(true)  // Ir a seleccionar el paciente recién creado
-          }} />
+          <NewPatientForm
+            initialName={adHocName}
+            onSaved={() => {
+              setAdHocName('')
+              setWelcomed(true)
+              setShowSelect(true)
+            }}
+          />
         </div>
       </div>
     )
@@ -280,6 +290,11 @@ function App() {
             const p = getPatientById(patientId)
             if (p) loadPatient(p)
             setScreen('home')
+          }}
+          onAdHocSession={(name) => {
+            setAdHocName(name || '')
+            setShowSelect(false)
+            setWelcomed(false)
           }}
           onClose={() => setScreen('home')}
           onNavigate={goTo}

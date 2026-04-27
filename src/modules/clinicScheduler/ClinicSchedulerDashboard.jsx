@@ -113,7 +113,7 @@ function TabBar({ active, onChange, todayCount }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
-export default function ClinicSchedulerDashboard({ onSelectPatient, onNavigate, onClose }) {
+export default function ClinicSchedulerDashboard({ onSelectPatient, onAdHocSession, onNavigate, onClose }) {
   const { therapistName, logout } = useAuth()
   const [reminder,     setReminder]     = useState(null)
   const [toast,        setToast]        = useState({ visible: false, message: '' })
@@ -153,9 +153,14 @@ export default function ClinicSchedulerDashboard({ onSelectPatient, onNavigate, 
     }
   }
 
-  function handleStartSession(patientId) {
-    const p = getPatientById(patientId)
-    if (p) onSelectPatient(patientId)
+  function handleStartSession(patientIdOrName) {
+    const p = getPatientById(patientIdOrName)
+    if (p) {
+      onSelectPatient(patientIdOrName)
+    } else {
+      // Ad-hoc: patientIdOrName es el nombre
+      onAdHocSession?.(typeof patientIdOrName === 'string' ? patientIdOrName : '')
+    }
   }
 
   function handleWeekApptClick(appt) {
