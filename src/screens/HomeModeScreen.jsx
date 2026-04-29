@@ -18,8 +18,7 @@ import { usePatient } from '../context/PatientContext'
 import { useAuth } from '../context/AuthContext'
 import { updatePatient as persistPatient } from '../data/patients'
 import { APP_CONFIG } from '../config/app.config'
-import { getAllAppointments } from '../modules/clinicScheduler/schedulerStorage'
-import { getNextAppointment, DAY_NAMES } from '../modules/clinicScheduler/schedulerUtils'
+import FamilyPasswordChangeScreen from './FamilyPasswordChangeScreen'
 
 // ─── buildDailyTask ───────────────────────────────────────────────────────────
 
@@ -409,7 +408,7 @@ function DoneView({ sessionsThisWeek, targetPerWeek, onBack }) {
 
 // ─── Home Main Screen ─────────────────────────────────────────────────────────
 
-function HomeMainScreen({ patient, onLogout }) {
+function HomeMainScreen({ patient, onLogout, onNavigate }) {
   const { addSessionEntry } = usePatient()
   const [view,     setView]     = useState('main')
   const [feedback, setFeedback] = useState(null)
@@ -422,7 +421,6 @@ function HomeMainScreen({ patient, onLogout }) {
   const currentWeek      = getCurrentPlanWeek(patient.therapyPlan)
   const dailyTask        = useMemo(() => buildDailyTask(currentWeek?.homeTask, name), [currentWeek?.homeTask?.area, name])
   const weeklyTip        = getWeeklyTip(patient.diagnosis, currentWeek?.week || 1)
-  const nextAppt         = useMemo(() => { const all = getAllAppointments(); return getNextAppointment(all) }, [])
 
   if (!patient.therapyPlan || !currentWeek || !dailyTask) {
     return (
@@ -463,39 +461,6 @@ function HomeMainScreen({ patient, onLogout }) {
       <FamilyHeader name={name} onLogout={onLogout} />
 
       <div style={S.mainContent}>
-        {nextAppt && (
-          <div style={{
-            background: 'linear-gradient(135deg, #e8f5ee, #f0fdf4)',
-            border: '1.5px solid #86efac',
-            borderRadius: 16,
-            padding: '14px 16px',
-            margin: '12px 0',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-          }}>
-            <div style={{
-              width: 44, height: 44, borderRadius: 12,
-              background: '#4aab8a',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 22, flexShrink: 0,
-            }}>📅</div>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#4aab8a', margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                Próxima sesión
-              </p>
-              <p style={{ fontSize: 14, fontWeight: 700, color: '#1a2a1a', margin: '2px 0 0' }}>
-                {nextAppt.daysUntil === 0
-                  ? `Hoy a las ${nextAppt.appointment.startTime}`
-                  : nextAppt.daysUntil === 1
-                    ? `Mañana a las ${nextAppt.appointment.startTime}`
-                    : `${DAY_NAMES[nextAppt.appointment.dayOfWeek]} a las ${nextAppt.appointment.startTime}`
-                }
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Tarea del día */}
         <div style={S.taskCard}>
           <p style={S.taskMeta}>HOY TOCA · {currentWeek.sessionDuration} min</p>
@@ -546,6 +511,13 @@ function HomeMainScreen({ patient, onLogout }) {
           <p style={{ fontSize: 12, fontWeight: 700, color: '#7a5c00', margin: '0 0 8px' }}>💡 Consejo de la semana</p>
           <p style={{ fontSize: 15, color: '#5a3c00', margin: 0, lineHeight: 1.6, fontWeight: 500 }}>{weeklyTip}</p>
         </div>
+
+        <button
+          onClick={() => onNavigate('family-password-change')}
+          style={{ marginTop: 12, background: 'none', border: '1.5px solid #bbb', borderRadius: 12, padding: '10px 20px', fontSize: 14, color: '#555', cursor: 'pointer' }}
+        >
+          🔐 Cambiar PIN
+        </button>
       </div>
     </div>
   )
@@ -553,12 +525,16 @@ function HomeMainScreen({ patient, onLogout }) {
 
 // ─── Export principal ─────────────────────────────────────────────────────────
 
-export default function HomeModeScreen() {
+export default function HomeModeScreen({ onBack, onNavigate }) {
   const { patient }  = usePatient()
   const { logout }   = useAuth()
+  const [screen, setScreen] = useState("main")
 
-  // logout() llama setSession(null) → App re-renderiza → Gate 0 muestra LandingScreen
-  return <HomeMainScreen patient={patient} onLogout={logout} />
+  if (screen === "family-password-change") {
+    return <FamilyPasswordChangeScreen patientId={patient.id} onBack={() => setScreen("main")} />
+  }
+
+  return <HomeMainScreen patient={patient} onLogout={logout} onNavigate={setScreen} />
 }
 
 // ─── Estilos ──────────────────────────────────────────────────────────────────

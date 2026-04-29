@@ -23,6 +23,7 @@ import SessionHistoryScreen from './screens/SessionHistoryScreen'
 import InitialAssessmentScreen from './screens/InitialAssessmentScreen'
 import TherapyPlanScreen from './screens/TherapyPlanScreen'
 import HomeModeScreen from './screens/HomeModeScreen'
+import FamilyPasswordChangeScreen from './screens/FamilyPasswordChangeScreen'
 import LandingScreen from './screens/LandingScreen'
 import ExerciseBuilderScreen from './screens/ExerciseBuilderScreen'
 import MyExercisesScreen from './screens/MyExercisesScreen'
@@ -94,7 +95,7 @@ function App() {
   if (isFamily) {
     return (
       <div className="app-wrapper" style={{ overflowY: 'auto' }}>
-        <HomeModeScreen onBack={logout} />
+        <HomeModeScreen onBack={logout} onNavigate={goTo} />
       </div>
     )
   }
@@ -281,7 +282,14 @@ function App() {
       {screen === 'progress'         && <ProgressScreen onBack={() => goTo('home')} />}
       {screen === 'session-history'  && <SessionHistoryScreen onBack={() => goTo('home')} />}
       {screen === 'therapy-plan'     && <TherapyPlanScreen onBack={() => goTo('home')} onNavigate={goTo} />}
-      {screen === 'home-mode'        && <HomeModeScreen onBack={() => goTo('home')} />}
+      {screen === 'home-mode'        && <HomeModeScreen onBack={() => goTo('home')} onNavigate={goTo} />}
+      {screen === 'family-change-pin' && <FamilyPasswordChangeScreen patientId={familyPatientId} onBack={() => goTo('home')} />}
+      {screen === 'family-password-change' && (
+        <FamilyPasswordChangeScreen
+          patientId={patient.id}
+          onBack={() => setScreen('home')}
+        />
+      )}
       {screen === 'results'          && <ResultsScreen result={lastResult} onHome={() => goTo('home')} />}
 
       {screen === 'agenda' && (
